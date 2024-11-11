@@ -1,9 +1,14 @@
 package com.glasy.api;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.glasy.LocationData;
+import com.google.gson.Gson;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.glasy.config.ConfigLoader;
@@ -25,7 +30,7 @@ public class Location {
      *         indent factor of 4 for readability.
      * @throws IOException If an I/O error occurs while making the HTTP request or reading the response.
      */
-    public static String getLocations(GeoCoordinates geoCoordinates, Map<String, String> params) throws IOException {
+    public static JSONObject getLocations(GeoCoordinates geoCoordinates, Map<String, String> params) throws IOException {
         final String latLong = geoCoordinates.getLatitude() + "," + geoCoordinates.getLongitude();
 
         final String baseUrl = "https://api.foursquare.com/v3/places/search";
@@ -50,13 +55,12 @@ public class Location {
                 .addHeader("Authorization", ConfigLoader.getKey("foursquare.api.key"))
                 .build();
 
-        String locations = "";
+        JSONObject locations = new JSONObject();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 final JSONObject jsonResponse = new JSONObject(response.body().string());
-                final int indentFactor = 4;
-                locations = jsonResponse.toString(indentFactor);
+                locations = jsonResponse;
             }
         }
         return locations;
@@ -66,9 +70,27 @@ public class Location {
         GeoCoordinates geoCoordinates = new GeoCoordinates();
         Location example = new Location();
         Map<String, String> params = new HashMap<>();
-        params.put("radius", "1000");
+        Gson gson = new Gson();
+
+        params.put("radius", "5000");
         params.put("categories", "13000"); // Dining & Drinking
-        String getResponse = example.getLocations(geoCoordinates, params);
-        System.out.println(getResponse);
+        JSONObject getResult = example.getLocations(geoCoordinates, params);
+        JSONArray locations = getResult.getJSONArray("results");
+
+        List result = new ArrayList();
+
+        for (Object n: locations) {
+            JSONObject node = (JSONObject) n;
+            LocationData locationNode = new LocationData();
+            JSONObject loc = node.getJSONObject("location");
+
+            locationNode = gson.fromJson(loc.toString(), LocationData.class);
+            locationNode.setName(node.getString("name"));
+            result.add(locationNode);
+
+            System.out.println(locationNode.getName() + " " + locationNode.getAddress());
+            System.out.println(result);
+
+        }
     }
 }

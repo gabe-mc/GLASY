@@ -9,7 +9,7 @@ public class ConfigLoader {
 
     static {
         try {
-            String configFile = "config/application.properties";
+            String configFile = "src/main/resources/application.properties";
             FileInputStream input = new FileInputStream(configFile);
             properties.load(input);
         } catch (IOException e) {

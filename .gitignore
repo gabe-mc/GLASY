@@ -1,5 +1,5 @@
 # Ignore project configuration
-/config
+resources/
 
 # DS Store Files
 .DS_Store

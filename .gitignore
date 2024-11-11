@@ -1,0 +1,11 @@
+# Ignore project configuration
+/config
+
+# DS Store Files
+.DS_Store
+*.DS_Store
+
+# IntelliJ
+.idea
+glasy.iml
+/target

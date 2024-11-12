@@ -6,19 +6,18 @@ import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.Font;
-import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.awt.FontFormatException;
 
 import java.io.IOException;
 import java.io.File;
 
-public class SplashScreenView extends JFrame {
+public class GeneralView extends JFrame {
     private Font koulenFont;
     private Font montserratFont;
 
-    public SplashScreenView() {
-        ImageIcon bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage.png");
+    public GeneralView() {
+        ImageIcon bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage2.png");
 
         // Load and register the Koulen font
         try {
@@ -38,28 +37,6 @@ public class SplashScreenView extends JFrame {
         // Set the background image
         JLabel splashLabel = new JLabel(bkgImage);
 
-        // Add in the title
-        JLabel titleLabel = new JLabel("GLASY", JLabel.CENTER);
-        titleLabel.setFont(koulenFont);
-        titleLabel.setForeground(new Color(202, 210, 197));
-        titleLabel.setBounds(0, 130, bkgImage.getIconWidth(), 280);
-        splashLabel.add(titleLabel);
-
-        // Add in the subtitle
-        JLabel subtitleLabel = new JLabel("The only trip planner you'll ever use.", JLabel.CENTER);
-        subtitleLabel.setFont(montserratFont);
-        subtitleLabel.setForeground(new Color(202, 210, 197));
-        subtitleLabel.setBounds(0, 400, bkgImage.getIconWidth(), 30);
-        splashLabel.add(subtitleLabel);
-
-        // Add in the button
-        JButton startButton = new JButton("Click Here to Start");
-        startButton.setFont(montserratFont);
-        startButton.setForeground(new Color(82, 121, 111));
-        startButton.setBackground(new Color(202, 210, 197));
-        startButton.setBounds((bkgImage.getIconWidth() - 200) / 2 - 50, 450, 300, 40);
-        splashLabel.add(startButton);
-
         add(splashLabel, BorderLayout.CENTER);
         setSize(bkgImage.getIconWidth() + 10, bkgImage.getIconHeight() + 30);
 
@@ -69,10 +46,11 @@ public class SplashScreenView extends JFrame {
         setLocation(x, y);
     }
 
-    public static void main(String[] args) {
-        SplashScreenView splashScreenView = new SplashScreenView();
-        splashScreenView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        splashScreenView.setVisible(true);
-        splashScreenView.setResizable(false);
+    public Font getKoulenFont() {
+        return koulenFont;
+    }
+
+    public Font getMontserratFont() {
+        return montserratFont;
     }
 }

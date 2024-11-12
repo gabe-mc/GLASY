@@ -15,9 +15,11 @@ import java.io.File;
 public class GeneralView extends JFrame {
     private Font koulenFont;
     private Font montserratFont;
+    private ImageIcon bkgImage;
+    private JLabel backgroundLabel;
 
     public GeneralView() {
-        ImageIcon bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage2.png");
+        this.bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage2.png");
 
         // Load and register the Koulen font
         try {
@@ -35,10 +37,10 @@ public class GeneralView extends JFrame {
         }
 
         // Set the background image
-        JLabel splashLabel = new JLabel(bkgImage);
+        this.backgroundLabel = new JLabel(this.bkgImage);
 
-        add(splashLabel, BorderLayout.CENTER);
-        setSize(bkgImage.getIconWidth() + 10, bkgImage.getIconHeight() + 30);
+        add(this.backgroundLabel, BorderLayout.CENTER);
+        setSize(this.bkgImage.getIconWidth() + 10, this.bkgImage.getIconHeight() + 30);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - bkgImage.getIconWidth()) / 2;
@@ -52,5 +54,13 @@ public class GeneralView extends JFrame {
 
     public Font getMontserratFont() {
         return montserratFont;
+    }
+
+    public ImageIcon getBackgroundImage() {
+        return this.bkgImage;
+    }
+
+    public JLabel getBackgroundLabel(){
+        return this.backgroundLabel;
     }
 }

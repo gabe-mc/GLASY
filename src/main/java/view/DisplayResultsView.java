@@ -10,8 +10,8 @@ public class DisplayResultsView extends GeneralView {
 
     public static void main(String[] args) {
         DisplayResultsView displayResultsView = new DisplayResultsView();
-        displayResultsView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        displayResultsView.setVisible(true);
-        displayResultsView.setResizable(false);
+        displayResultsView.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        displayResultsView.getMainFrame().setVisible(true);
+        displayResultsView.getMainFrame().setResizable(false);
     }
 }

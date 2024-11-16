@@ -12,12 +12,13 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.File;
 
-public class GeneralView extends JFrame {
+public class GeneralView {
     private Font koulenFont;
     private Font montserratFont;
     private Font montserratBoldItalicFont;
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
+    private JFrame mainFrame;
 
     public GeneralView() {
         this.bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage2.png");
@@ -39,16 +40,19 @@ public class GeneralView extends JFrame {
             this.montserratFont = new Font("SansSerif", Font.BOLD, 180);
         }
 
+        // Make the frame
+        this.mainFrame = new JFrame();
+
         // Set the background image
         this.backgroundLabel = new JLabel(this.bkgImage);
 
-        add(this.backgroundLabel, BorderLayout.CENTER);
-        setSize(this.bkgImage.getIconWidth() + 10, this.bkgImage.getIconHeight() + 30);
+        this.mainFrame.add(this.backgroundLabel, BorderLayout.CENTER);
+        this.mainFrame.setSize(this.bkgImage.getIconWidth() + 10, this.bkgImage.getIconHeight() + 30);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - bkgImage.getIconWidth()) / 2;
         int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
-        setLocation(x, y);
+        this.mainFrame.setLocation(x, y);
     }
 
     public Font getKoulenFont() {
@@ -69,5 +73,9 @@ public class GeneralView extends JFrame {
 
     public JLabel getBackgroundLabel(){
         return this.backgroundLabel;
+    }
+
+    public JFrame getMainFrame() {
+        return mainFrame;
     }
 }

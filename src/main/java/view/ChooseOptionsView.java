@@ -23,6 +23,7 @@ public class ChooseOptionsView extends GeneralView {
         radiusLabel.setBounds(95, 100, getBackgroundImage().getIconWidth(), 30);
         getBackgroundLabel().add(radiusLabel);
 
+        JPanel radiusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JSlider radiusSlider = new JSlider(0, 50, 25);
         radiusSlider.setMajorTickSpacing(10);
         radiusSlider.setMinorTickSpacing(1);
@@ -42,8 +43,8 @@ public class ChooseOptionsView extends GeneralView {
 
     public static void main(String[] args) {
         ChooseOptionsView chooseOptionsView = new ChooseOptionsView();
-        chooseOptionsView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        chooseOptionsView.setVisible(true);
-        chooseOptionsView.setResizable(false);
+        chooseOptionsView.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        chooseOptionsView.getMainFrame().setVisible(true);
+        chooseOptionsView.getMainFrame().setResizable(false);
     }
 }

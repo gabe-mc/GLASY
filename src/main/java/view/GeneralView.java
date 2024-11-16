@@ -15,6 +15,7 @@ import java.io.File;
 public class GeneralView extends JFrame {
     private Font koulenFont;
     private Font montserratFont;
+    private Font montserratBoldItalicFont;
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
 
@@ -23,17 +24,19 @@ public class GeneralView extends JFrame {
 
         // Load and register the Koulen font
         try {
-            koulenFont = Font.createFont(Font.TRUETYPE_FONT,
+            this.koulenFont = Font.createFont(Font.TRUETYPE_FONT,
                     new File("src/main/java/view/fonts/Koulen/Koulen-Regular.ttf")).deriveFont(280f);
-            montserratFont = Font.createFont(Font.TRUETYPE_FONT,
+            this.montserratFont = Font.createFont(Font.TRUETYPE_FONT,
                     new File("src/main/java/view/fonts/Montserrat/Montserrat-Regular.ttf")).deriveFont(23f);
+            this.montserratBoldItalicFont = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("src/main/java/view/fonts/Montserrat/Montserrat-SemiBoldItalic.ttf")).deriveFont(23f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(koulenFont);
-            ge.registerFont(montserratFont);
+            ge.registerFont(this.koulenFont);
+            ge.registerFont(this.montserratFont);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
-            koulenFont = new Font("SansSerif", Font.BOLD, 180);
-            montserratFont = new Font("SansSerif", Font.BOLD, 180);
+            this.koulenFont = new Font("SansSerif", Font.BOLD, 180);
+            this.montserratFont = new Font("SansSerif", Font.BOLD, 180);
         }
 
         // Set the background image
@@ -49,11 +52,15 @@ public class GeneralView extends JFrame {
     }
 
     public Font getKoulenFont() {
-        return koulenFont;
+        return this.koulenFont;
     }
 
     public Font getMontserratFont() {
-        return montserratFont;
+        return this.montserratFont;
+    }
+
+    public Font getMontserratBoldItalicFont() {
+        return this.montserratBoldItalicFont;
     }
 
     public ImageIcon getBackgroundImage() {

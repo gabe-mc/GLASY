@@ -9,6 +9,10 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.awt.FontFormatException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import java.io.IOException;
 import java.io.File;

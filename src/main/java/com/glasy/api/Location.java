@@ -20,6 +20,10 @@ import okhttp3.Response;
  * Class to get nearby locations.
  */
 public class Location {
+
+    private static JSONObject JSONResults;
+    private static List<LocationData> listResults;
+
     /**
      * Retrieves location data from the Foursquare Places API based on the provided geographic coordinates
      * and optional query parameters.
@@ -66,31 +70,55 @@ public class Location {
         return locations;
     }
 
+    public static void resultToList(Location example, int max_items) {
+        final Gson gson = new Gson();
+        JSONArray locations = example.getJSONResults().getJSONArray("results");
+        List<LocationData> result = new ArrayList<>();
+
+        for (Object n: locations) {
+
+            JSONObject node = (JSONObject) n;
+            JSONObject loc = node.getJSONObject("location");
+
+            LocationData locationNode = gson.fromJson(loc.toString(), LocationData.class);
+            locationNode.setName(node.getString("name"));
+            result.add(locationNode);
+
+            max_items--;
+            if (max_items == 0) {
+                break;
+            }
+//          System.out.println(locationNode.getName() + " " + locationNode.getAddress());
+        }
+        example.setListResults(result);
+    }
+
+    public JSONObject getJSONResults() {
+        return JSONResults;
+    }
+
+    public void setJSONResults(JSONObject results) {
+        this.JSONResults = results;
+    }
+
+    public List<LocationData> getListResults() {
+        return listResults;
+    }
+
+    public void setListResults(List<LocationData> listResults) {
+        this.listResults = listResults;
+    }
+
     public static void main(String[] args) throws IOException {
         GeoCoordinates geoCoordinates = new GeoCoordinates();
         Location example = new Location();
         Map<String, String> params = new HashMap<>();
-        Gson gson = new Gson();
 
-        params.put("radius", "5000");
+        params.put("radius", "800");
         params.put("categories", "13000"); // Dining & Drinking
-        JSONObject getResult = example.getLocations(geoCoordinates, params);
-        JSONArray locations = getResult.getJSONArray("results");
-
-        List result = new ArrayList();
-
-        for (Object n: locations) {
-            JSONObject node = (JSONObject) n;
-            LocationData locationNode = new LocationData();
-            JSONObject loc = node.getJSONObject("location");
-
-            locationNode = gson.fromJson(loc.toString(), LocationData.class);
-            locationNode.setName(node.getString("name"));
-            result.add(locationNode);
-
-            System.out.println(locationNode.getName() + " " + locationNode.getAddress());
-            System.out.println(result);
-
-        }
+        JSONObject getResult = Location.getLocations(geoCoordinates, params);
+        System.out.println(getResult.toString(3));
+        example.setJSONResults(getResult);
+        resultToList(example, 5);
     }
 }

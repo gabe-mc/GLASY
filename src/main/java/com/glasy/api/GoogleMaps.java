@@ -1,18 +1,23 @@
 package com.glasy.api;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class googleAPI {
+import org.json.JSONObject;
 
-    OkHttpClient client = new OkHttpClient();
-    String APIKEY = "AIzaSyBweNOe6qrpFyf7xeKEX360vCn4UbQ30AU";
+import com.glasy.config.ConfigLoader;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+/**
+ * Class to use Google Maps Geocoding API.
+ */
+public class GoogleMaps {
+
+    private OkHttpClient client = new OkHttpClient();
+    private String apiKey = ConfigLoader.getKey("google.api.key");
 
     /**
      * Constructs a URL for the Google Maps Geocoding API based on the provided address.
@@ -22,38 +27,28 @@ public class googleAPI {
      * @throws IOException If an encoding error occurs while processing the address components.
      */
     public String createGeocodeUrl(String address) throws IOException {
-        StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
-        String[] address_components = address.split(" ");
-        for (String component : address_components) {
-            if (component.contains(",")) {
-                url.append(component, 0, component.length() - 1);
-            }
-            else {
-                url.append(component).append("%20");
-            }
-        }
-        return url.substring(0, url.length() - 2) + "&key=" + APIKEY;
+        final StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
+        formatAddress(address, url);
+        return url.substring(0, url.length() - 2) + "&key=" + apiKey;
     }
 
+    /**
+     * Constructs a Google Maps Distance Matrix API URL for calculating the distance
+     * between two given addresses.
+     *
+     * @param address1 The origin address, which will be used as the starting point for the distance calculation.
+     * @param address2 The destination address, which will be used as the endpoint for the distance calculation.
+     * @return A properly formatted URL to the Google Maps Distance Matrix API for the given addresses.
+     * @throws IOException If there is an issue with network connectivity or API access during URL construction.
+     */
     public String createDistanceMatrixUrl(String address1, String address2) throws IOException {
-        StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/distancematrix/json?destinations=");
-        String[] address_1_components = address1.split(" ");
-        for (String component : address_1_components) {
-            if (component.contains(",")) {
-                url.append(component, 0, component.length() - 1);
-            }
-            else {url.append(component).append("%20");}
-        }
+        final StringBuilder url = new
+                StringBuilder("https://maps.googleapis.com/maps/api/distancematrix/json?destinations=");
+        formatAddress(address1, url);
         url.append("&origins=");
 
-        String[] address_2_components = address2.split(" ");
-        for (String component : address_2_components) {
-            if (component.contains(",")) {
-                url.append(component, 0, component.length() - 1);
-            }
-            else {url.append(component).append("%20");}
-        }
-        return url.substring(0, url.length() - 2) + "&key=" + APIKEY;
+        formatAddress(address2, url);
+        return url.substring(0, url.length() - 2) + "&key=" + apiKey;
     }
 
     /**
@@ -67,23 +62,22 @@ public class googleAPI {
      *                     or receiving the response.
      */
     public ArrayList<Double> getAddress(String address) throws IOException {
-        String url = createGeocodeUrl(address);
-        Request request = new Request.Builder().url(url).build();
+        final String url = createGeocodeUrl(address);
+        final Request request = new Request.Builder().url(url).build();
         try (Response response = client.newCall(request).execute()) {
-            assert response.body() != null;
-            String responseBody = response.body().string();
-            JSONObject jsonObject = new JSONObject(responseBody);
-            JSONObject locationData = jsonObject.
-                    getJSONArray("results").
-                    getJSONObject(0).
-                    getJSONObject("geometry").
-                    getJSONObject("location");
-            ArrayList<Double> result = new ArrayList<>();
+            final String responseBody = response.body().string();
+            final JSONObject jsonObject = new JSONObject(responseBody);
+            final JSONObject locationData = jsonObject
+                    .getJSONArray("results")
+                    .getJSONObject(0)
+                    .getJSONObject("geometry")
+                    .getJSONObject("location");
+            final ArrayList<Double> result = new ArrayList<>();
             result.add(locationData.getDouble("lat"));
             result.add(locationData.getDouble("lng"));
             return result;
         }
-        }
+    }
 
     /**
      * Calculates the distance between two locations using the Google Maps Distance Matrix API.
@@ -94,19 +88,18 @@ public class googleAPI {
      * @throws IOException If an error occurs while building the request or processing the response.
      */
     public Float matrixDistance(String address1, String address2) throws IOException {
-        String url = createDistanceMatrixUrl(address1, address2);
-        Request request = new Request.Builder().url(url).build();
+        final String url = createDistanceMatrixUrl(address1, address2);
+        final Request request = new Request.Builder().url(url).build();
         try (Response response = client.newCall(request).execute()) {
-            assert response.body() != null;
-            String responseBody = response.body().string();
-            JSONObject jsonObject = new JSONObject(responseBody);
-            String result = jsonObject.
-                    getJSONArray("rows").
-                    getJSONObject(0).
-                    getJSONArray("elements").
-                    getJSONObject(0).
-                    getJSONObject("distance").
-                    getString("text");
+            final String responseBody = response.body().string();
+            final JSONObject jsonObject = new JSONObject(responseBody);
+            final String result = jsonObject
+                    .getJSONArray("rows")
+                    .getJSONObject(0)
+                    .getJSONArray("elements")
+                    .getJSONObject(0)
+                    .getJSONObject("distance")
+                    .getString("text");
             return Float.parseFloat(result.substring(0, result.length() - 2));
         }
     }
@@ -123,20 +116,19 @@ public class googleAPI {
      * @throws IOException If an error occurs during the distance calculation requests.
      */
     public ArrayList<String> findShortestRoute(ArrayList<String> locations) throws IOException {
-        String origin = locations.get(0);
-        ArrayList<String> result = new ArrayList<>();
+        final String origin = locations.get(0);
+        final ArrayList<String> result = new ArrayList<>();
         result.add(origin);
         HashMap<String, Float> temp = new HashMap<>();
-        int size = locations.size() - 2;
+        final int size = locations.size() - 2;
         int i = 0;
         while (i < size) {
             for (int j = 1; j < locations.size(); j++) {
-                Float dist = matrixDistance(locations.get(i), locations.get(j));
+                final Float dist = matrixDistance(locations.get(i), locations.get(j));
                 temp.put(locations.get(j), dist);
             }
             String minName = "";
-            Float minValue = 999999999999999F;
-            int index = 0;
+            Float minValue = Float.MAX_VALUE;
             for (String location: temp.keySet()) {
                 if (temp.get(location) < minValue) {
                     minName = location;
@@ -163,18 +155,24 @@ public class googleAPI {
      * @return A URL string for Google Maps showing a route through the specified destinations.
      */
     public String generateMapsLink(ArrayList<String> destinations) {
-        StringBuilder url = new StringBuilder("https://www.google.ca/maps/dir/");
+        final StringBuilder url = new StringBuilder("https://www.google.ca/maps/dir/");
         for (String destination : destinations) {
-            String[] address_1_components = destination.split(" ");
-            for (String component : address_1_components) {
-                if (component.contains(",")) {
-                    url.append(component, 0, component.length() - 1);
-                }
-                else {url.append(component).append("%20");}
-            }
+            formatAddress(destination, url);
             url.append("/");
         }
         return url.toString();
+    }
+
+    private static void formatAddress(String address, StringBuilder url) {
+        final String[] addressComponents = address.split(" ");
+        for (String component : addressComponents) {
+            if (component.contains(",")) {
+                url.append(component, 0, component.length() - 1);
+            }
+            else {
+                url.append(component).append("%20");
+            }
+        }
     }
 
 }

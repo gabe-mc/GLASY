@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.glasy.LocationData;
+import entity.CommonLocationData;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,7 +22,7 @@ import okhttp3.Response;
 public class Location {
 
     private static JSONObject JSONResults;
-    private static List<LocationData> listResults;
+    private static List<CommonLocationData> listResults;
 
     /**
      * Retrieves location data from the Foursquare Places API based on the provided geographic coordinates
@@ -73,22 +73,21 @@ public class Location {
     public static void resultToList(Location example, int max_items) {
         final Gson gson = new Gson();
         JSONArray locations = example.getJSONResults().getJSONArray("results");
-        List<LocationData> result = new ArrayList<>();
+        List<CommonLocationData> result = new ArrayList<>();
 
         for (Object n: locations) {
 
             JSONObject node = (JSONObject) n;
             JSONObject loc = node.getJSONObject("location");
 
-            LocationData locationNode = gson.fromJson(loc.toString(), LocationData.class);
-            locationNode.setName(node.getString("name"));
+            CommonLocationData locationNode = gson.fromJson(loc.toString(), CommonLocationData.class);
+//            locationNode.setName(node.getString("name"));
             result.add(locationNode);
 
             max_items--;
             if (max_items == 0) {
                 break;
             }
-//          System.out.println(locationNode.getName() + " " + locationNode.getAddress());
         }
         example.setListResults(result);
     }
@@ -101,11 +100,11 @@ public class Location {
         this.JSONResults = results;
     }
 
-    public List<LocationData> getListResults() {
+    public List<CommonLocationData> getListResults() {
         return listResults;
     }
 
-    public void setListResults(List<LocationData> listResults) {
+    public void setListResults(List<CommonLocationData> listResults) {
         this.listResults = listResults;
     }
 

@@ -17,9 +17,10 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.File;
 
-public class SplashScreenView extends JFrame {
+public class SplashScreenView {
     private Font koulenFont;
     private Font montserratFont;
+    private JFrame mainFrame;
 
     public SplashScreenView() {
         ImageIcon bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage.png");
@@ -38,6 +39,7 @@ public class SplashScreenView extends JFrame {
             koulenFont = new Font("SansSerif", Font.BOLD, 180);
             montserratFont = new Font("SansSerif", Font.BOLD, 180);
         }
+        this.mainFrame = new JFrame();
 
         // Set the background image
         JLabel splashLabel = new JLabel(bkgImage);
@@ -64,19 +66,23 @@ public class SplashScreenView extends JFrame {
         startButton.setBounds((bkgImage.getIconWidth() - 200) / 2 - 50, 450, 300, 40);
         splashLabel.add(startButton);
 
-        add(splashLabel, BorderLayout.CENTER);
-        setSize(bkgImage.getIconWidth() + 10, bkgImage.getIconHeight() + 30);
+        this.mainFrame.add(splashLabel, BorderLayout.CENTER);
+        this.mainFrame.setSize(bkgImage.getIconWidth() + 10, bkgImage.getIconHeight() + 30);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - bkgImage.getIconWidth()) / 2;
         int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
-        setLocation(x, y);
+        this.mainFrame.setLocation(x, y);
+    }
+
+    public JFrame getMainFrame() {
+        return mainFrame;
     }
 
     public static void main(String[] args) {
         SplashScreenView splashScreenView = new SplashScreenView();
-        splashScreenView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        splashScreenView.setVisible(true);
-        splashScreenView.setResizable(false);
+        splashScreenView.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        splashScreenView.getMainFrame().setVisible(true);
+        splashScreenView.getMainFrame().setResizable(false);
     }
 }

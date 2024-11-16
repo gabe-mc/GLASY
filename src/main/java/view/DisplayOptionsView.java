@@ -17,8 +17,8 @@ public class DisplayOptionsView extends GeneralView {
 
     public static void main(String[] args) {
         DisplayOptionsView displayOptionsView = new DisplayOptionsView();
-        displayOptionsView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        displayOptionsView.setVisible(true);
-        displayOptionsView.setResizable(false);
+        displayOptionsView.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        displayOptionsView.getMainFrame().setVisible(true);
+        displayOptionsView.getMainFrame().setResizable(false);
     }
 }

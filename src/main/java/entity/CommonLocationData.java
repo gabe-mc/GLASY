@@ -1,6 +1,6 @@
-package com.glasy;
+package entity;
 
-public class LocationData {
+public class CommonLocationData implements LocationData {
     private String longitude;
     private String latitude;
     private String address;
@@ -8,7 +8,8 @@ public class LocationData {
     private String postcode;
     private String region;
     private String country;
-    private String name;
+
+    public CommonLocationData() { /* Instantiated as an empty method because  */ }
 
     public String getLongitude() {
         return longitude;
@@ -66,12 +67,5 @@ public class LocationData {
         this.country = country;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
 

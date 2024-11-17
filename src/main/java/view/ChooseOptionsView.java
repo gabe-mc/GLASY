@@ -5,6 +5,10 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Hashtable;
 
 public class ChooseOptionsView extends GeneralView {
@@ -23,14 +27,15 @@ public class ChooseOptionsView extends GeneralView {
             JPanel optionsPanel = new JPanel();
             optionsPanel.setLayout(new BoxLayout(optionsPanel,BoxLayout.Y_AXIS));
 
+            //add location
             JPanel addLocationPanel = new JPanel();
             addLocationPanel.setLayout(new BoxLayout(addLocationPanel,BoxLayout.Y_AXIS));
             JLabel addLocationLabel = new JLabel("Your current Location:");
-            DefaultListModel listModel = new DefaultListModel();
+            DefaultListModel<String> listModel = new DefaultListModel<>();
             JList<String> aLocLst = new JList<>(listModel);
             String[] locationOptions = {"om","nom","minecraft", "applesauce","sauch", "yummyyum"};
             for (String word : locationOptions) {
-                listModel.addElement(word); //add everything over idk why there are two :(
+                listModel.addElement(word); //add everything over
             }
             //creates place to type (JTextField)
             JTextField helpTextField = new JTextField();
@@ -38,59 +43,68 @@ public class ChooseOptionsView extends GeneralView {
                 public void keyReleased(KeyEvent e) {
                     listModel.clear();
                     for(String word : locationOptions) {
-                        if( word.toLowerCase().contains(helpTextField.getText())){
-                            listModel.addElement(word);
+                        if( word.toLowerCase().contains(helpTextField.getText())){ //searches for matching
+                            listModel.addElement(word); // checkstyled ...
                         }
                     }
                 }//changes on release !
             });
+
+            // clicking
+            aLocLst.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    String selectedLocation = aLocLst.getSelectedValue(); //clicked location
+                    if (selectedLocation != null) {
+                        helpTextField.setText(selectedLocation); // changes the text, to the selected location
+                    }
+                }
+            });
+
             addLocationPanel.add(addLocationLabel);
             addLocationPanel.add(helpTextField);
             addLocationPanel.add(new JScrollPane(aLocLst));
-
 
             // start time - end time
 
             JPanel setTimePanel = new JPanel();
             setTimePanel.setLayout(new BoxLayout(setTimePanel,BoxLayout.Y_AXIS));
 
-            //this needs to be fixed, not updating properly, only updates to last input, eg either hour or minute will be one off
             JLabel setTimeLabel = new JLabel("Set your start time and end time");
             setTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             setTimeLabel.setFont(getMontserratFont());
             setTimePanel.add(setTimeLabel);
 
-
             // start time
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+
             SpinnerDateModel model = new SpinnerDateModel();
             JSpinner startTime = new JSpinner(model);
             JSpinner.DateEditor startTimeEditor = new JSpinner.DateEditor(startTime, "HH:mm");
 
-            JLabel startTimeLabel = new JLabel("Start time:" + startTimeEditor.getTextField().getText());
+            JLabel startTimeLabel = new JLabel("End time:" + dateFormat.format((Date)startTime.getValue()));
 
             startTime.setEditor(startTimeEditor);
             setTimePanel.add(startTimeLabel);
             setTimePanel.add(startTime);
 
-
             startTime.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
-                    String startTimeString = startTimeEditor.getTextField().getText();
-
-                   startTimeLabel.setText("Start time:" + startTimeString);
+                   startTimeLabel.setText("Start time:" + dateFormat.format((Date)startTime.getValue()));
                 }
             });
+
             //end time
 
             SpinnerDateModel model1 = new SpinnerDateModel();
             JSpinner endTime = new JSpinner(model1);
             JSpinner.DateEditor endTimeEditor = new JSpinner.DateEditor(endTime, "HH:mm");
-            JLabel endTimeLabel = new JLabel("End time:" + endTimeEditor.getTextField().getText());
+            JLabel endTimeLabel = new JLabel("End time:" + dateFormat.format((Date)endTime.getValue()));
 
             endTime.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
 
-                    endTimeLabel.setText("End time:" + endTimeEditor.getTextField().getText());
+                    endTimeLabel.setText("End time:" + dateFormat.format((Date)endTime.getValue()));
                 }
             });
 
@@ -98,10 +112,8 @@ public class ChooseOptionsView extends GeneralView {
             setTimePanel.add(endTimeLabel);
             setTimePanel.add(endTime);
 
-            //Start Location
-
-
 //          distance
+
             JPanel distancePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             JSlider distanceSlider = new JSlider(0, 20, 0);
             distanceSlider.setMajorTickSpacing(5);
@@ -123,6 +135,7 @@ public class ChooseOptionsView extends GeneralView {
             distancePanel.add(distanceSlider);
 
             //Rating
+
             JPanel ratingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             JSlider ratingSlider = new JSlider(0, 10,0);
             ratingSlider.setMajorTickSpacing(2);
@@ -130,7 +143,8 @@ public class ChooseOptionsView extends GeneralView {
             ratingSlider.setPaintTicks(true);
             ratingSlider.setPaintLabels(true);
 
-            Hashtable<Integer, JLabel> starTable = new Hashtable<Integer, JLabel>();
+            //changes the labels below to be 1/2 of the actual value (so it could be .5 stars
+            Hashtable<Integer, JLabel> starTable = new Hashtable<>();
             starTable.put(0, new JLabel("0"));
             starTable.put(2, new JLabel("1"));
             starTable.put(4, new JLabel("2"));
@@ -165,17 +179,11 @@ public class ChooseOptionsView extends GeneralView {
 //                resturant = true;
 //            }
 //        });
-
-
             JPanel checkboxPanel = new JPanel();
             checkboxPanel.add(locationTypesLabel);
             checkboxPanel.add(resturantCheck);
             checkboxPanel.add(attractionCheck);
             checkboxPanel.add(shopCheck);
-
-
-
-
 
             ratingPanel.add(ratingLabel);
             ratingPanel.add(ratingSlider);
@@ -188,9 +196,7 @@ public class ChooseOptionsView extends GeneralView {
             optionsPanel.add(ratingPanel);
             optionsPanel.add(checkboxPanel);
 
-
             getMainFrame().add(optionsPanel);
-
         }
     }
 }

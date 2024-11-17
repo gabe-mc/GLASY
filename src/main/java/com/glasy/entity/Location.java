@@ -1,12 +1,13 @@
-package com.glasy.api;
+package com.glasy.entity;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.glasy.use_case.set_user_info.GeoCoordinates;
 import org.json.JSONObject;
 
-import com.glasy.config.ConfigLoader;
+import com.glasy.use_case.config.ConfigLoader;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

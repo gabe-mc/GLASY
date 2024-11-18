@@ -1,4 +1,5 @@
 package view;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -11,24 +12,25 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 
-public class ChooseOptionsView extends GeneralView {
-    public static void main(String[] args){
-        ChooseOptionsView chooseOptionsView = new ChooseOptionsView();
-        chooseOptionsView.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        chooseOptionsView.getMainFrame().setVisible(true);
-        chooseOptionsView.getMainFrame().setResizable(false);
-    }
+public class ChooseOptionsView {
+    private ImageIcon bkgImage;
+    private JLabel backgroundLabel;
+    private JFrame mainFrame;
+
     public ChooseOptionsView() {
         {
-            JLabel titleLabel = new JLabel("Please choose your desired preferences below, and we will plan your day for you");
-            titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            titleLabel.setFont(getMontserratBoldItalicFont());
+            LoadFonts loadFonts = new LoadFonts();
 
-            JPanel optionsPanel = new JPanel();
-            optionsPanel.setLayout(new BoxLayout(optionsPanel,BoxLayout.Y_AXIS));
+            JLabel titleLabel = new JLabel("Please choose your desired preferences below, and we will plan your day for you.");
+            titleLabel.setOpaque(false);
+            titleLabel.setBackground(new Color(0, 0, 0, 0));
+            titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            titleLabel.setFont(loadFonts.montserratFont);
 
             //add location
             JPanel addLocationPanel = new JPanel();
+            addLocationPanel.setOpaque(false);
+            addLocationPanel.setBackground(new Color(0, 0, 0, 0));
             addLocationPanel.setLayout(new BoxLayout(addLocationPanel,BoxLayout.Y_AXIS));
             JLabel addLocationLabel = new JLabel("Your current Location:");
             DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -68,10 +70,12 @@ public class ChooseOptionsView extends GeneralView {
 
             JPanel setTimePanel = new JPanel();
             setTimePanel.setLayout(new BoxLayout(setTimePanel,BoxLayout.Y_AXIS));
+            setTimePanel.setOpaque(false);
+            setTimePanel.setBackground(new Color(0, 0, 0, 0));
 
             JLabel setTimeLabel = new JLabel("Set your start time and end time");
             setTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            setTimeLabel.setFont(getMontserratFont());
+            setTimeLabel.setFont(loadFonts.montserratFont);
             setTimePanel.add(setTimeLabel);
 
             // start time
@@ -112,15 +116,16 @@ public class ChooseOptionsView extends GeneralView {
             setTimePanel.add(endTimeLabel);
             setTimePanel.add(endTime);
 
-//          distance
-
+            //Distance
             JPanel distancePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            distancePanel.setOpaque(false);
+            distancePanel.setBackground(new Color(0, 0, 0, 0));
             JSlider distanceSlider = new JSlider(0, 20, 0);
             distanceSlider.setMajorTickSpacing(5);
             distanceSlider.setMinorTickSpacing(1);
             distanceSlider.setPaintTicks(true);
             distanceSlider.setPaintLabels(true);
-            distanceSlider.setFont(getMontserratFont());
+            distanceSlider.setFont(loadFonts.montserratFont);
 
             JLabel distanceLabel = new JLabel("Distance (km): " + distanceSlider.getValue());
 
@@ -137,6 +142,8 @@ public class ChooseOptionsView extends GeneralView {
             //Rating
 
             JPanel ratingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            ratingPanel.setOpaque(false);
+            ratingPanel.setBackground(new Color(0, 0, 0, 0));
             JSlider ratingSlider = new JSlider(0, 10,0);
             ratingSlider.setMajorTickSpacing(2);
             ratingSlider.setMinorTickSpacing(1);
@@ -168,18 +175,9 @@ public class ChooseOptionsView extends GeneralView {
             JCheckBox attractionCheck = new JCheckBox("Attraction");
             JCheckBox shopCheck = new JCheckBox("Shop");
 
-            //listeners?
-
-//        boolean resturant = false;
-//        boolean attraction = false;
-//        boolean shop = false;
-//
-//        resturantCheck.addItemListener(e -> {
-//            if (e.getStateChange() == ItemEvent.SELECTED){
-//                resturant = true;
-//            }
-//        });
             JPanel checkboxPanel = new JPanel();
+            checkboxPanel.setOpaque(false);
+            checkboxPanel.setBackground(new Color(0, 0, 0, 0));
             checkboxPanel.add(locationTypesLabel);
             checkboxPanel.add(resturantCheck);
             checkboxPanel.add(attractionCheck);
@@ -187,6 +185,17 @@ public class ChooseOptionsView extends GeneralView {
 
             ratingPanel.add(ratingLabel);
             ratingPanel.add(ratingSlider);
+
+            // Starting to add the components to something the user will actually see
+
+            this.bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage2.png");
+
+            JPanel optionsPanel = new JPanel();
+            optionsPanel.setPreferredSize(new Dimension(this.bkgImage.getIconWidth() - 1000,
+                    this.bkgImage.getIconHeight() - 1000));
+            optionsPanel.setOpaque(false);
+            optionsPanel.setBackground(new Color(0, 0, 0, 0));
+            optionsPanel.setLayout(new BoxLayout(optionsPanel,BoxLayout.Y_AXIS));
 
             optionsPanel.add(titleLabel);
             optionsPanel.add(addLocationPanel);
@@ -196,7 +205,44 @@ public class ChooseOptionsView extends GeneralView {
             optionsPanel.add(ratingPanel);
             optionsPanel.add(checkboxPanel);
 
-            getMainFrame().add(optionsPanel);
+            optionsPanel.setBounds(
+                    90,
+                    50,
+                    this.bkgImage.getIconWidth() - 180,
+                    this.bkgImage.getIconHeight() - 230);
+
+            // Make the frame
+            this.mainFrame = new JFrame();
+
+            // Set the background image
+            this.backgroundLabel = new JLabel(this.bkgImage);
+            this.backgroundLabel.setLayout(null);
+
+            this.backgroundLabel.add(optionsPanel);
+
+            // Add in the continue button
+            JButton startButton = new JButton("Continue");
+            startButton.setFont(loadFonts.montserratFont);
+            startButton.setForeground(new Color(82, 121, 111));
+            startButton.setBackground(new Color(202, 210, 197));
+            startButton.setBounds((this.bkgImage.getIconWidth() - 200) / 2 - 50, 600, 300, 40);
+            this.backgroundLabel.add(startButton);
+
+            this.mainFrame.add(this.backgroundLabel, BorderLayout.CENTER);
+            this.mainFrame.setSize(this.bkgImage.getIconWidth() + 10, this.bkgImage.getIconHeight() + 30);
+
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            int x = (screenSize.width - bkgImage.getIconWidth()) / 2;
+            int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
+            this.mainFrame.setLocation(x, y);
+
+            this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.mainFrame.setVisible(true);
+            this.mainFrame.setResizable(false);
         }
+    }
+
+    public static void main(String[] args){
+        ChooseOptionsView chooseOptionsView = new ChooseOptionsView();
     }
 }

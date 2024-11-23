@@ -1,4 +1,4 @@
-package com.glasy.api;
+package com.glasy.use_case.set_user_info;
 
 import org.json.JSONObject;
 

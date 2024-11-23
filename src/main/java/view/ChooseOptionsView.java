@@ -8,6 +8,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
@@ -18,64 +20,42 @@ public class ChooseOptionsView {
     private JFrame mainFrame;
 
     public ChooseOptionsView() {
-        {
             LoadFonts loadFonts = new LoadFonts();
 
+            // instructions at the top of the page
             JLabel titleLabel = new JLabel("Please choose your desired preferences below, and we will plan your day for you.");
             titleLabel.setOpaque(false);
             titleLabel.setBackground(new Color(0, 0, 0, 0));
             titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            titleLabel.setFont(loadFonts.montserratFont);
+            titleLabel.setFont(loadFonts.montserratBoldItalicFont);
 
-            //add location
+            // add location section
             JPanel addLocationPanel = new JPanel();
             addLocationPanel.setOpaque(false);
             addLocationPanel.setBackground(new Color(0, 0, 0, 0));
-            addLocationPanel.setLayout(new BoxLayout(addLocationPanel,BoxLayout.Y_AXIS));
-            JLabel addLocationLabel = new JLabel("Your current Location:");
-            DefaultListModel<String> listModel = new DefaultListModel<>();
-            JList<String> aLocLst = new JList<>(listModel);
-            String[] locationOptions = {"om","nom","minecraft", "applesauce","sauch", "yummyyum"};
-            for (String word : locationOptions) {
-                listModel.addElement(word); //add everything over
-            }
+            addLocationPanel.setLayout(new BoxLayout(addLocationPanel, BoxLayout.Y_AXIS));
+            addLocationPanel.setSize(new Dimension(300, 10));
+
+            JLabel addLocationLabel = new JLabel("Please enter your current location:");
+            addLocationLabel.setFont(loadFonts.montserratFontSmall);
+
             //creates place to type (JTextField)
             JTextField helpTextField = new JTextField();
-            helpTextField.addKeyListener(new KeyAdapter() {
-                public void keyReleased(KeyEvent e) {
-                    listModel.clear();
-                    for(String word : locationOptions) {
-                        if( word.toLowerCase().contains(helpTextField.getText())){ //searches for matching
-                            listModel.addElement(word); // checkstyled ...
-                        }
-                    }
-                }//changes on release !
-            });
-
-            // clicking
-            aLocLst.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    String selectedLocation = aLocLst.getSelectedValue(); //clicked location
-                    if (selectedLocation != null) {
-                        helpTextField.setText(selectedLocation); // changes the text, to the selected location
-                    }
-                }
-            });
+            helpTextField.setFont(loadFonts.montserratFontSmall);
 
             addLocationPanel.add(addLocationLabel);
             addLocationPanel.add(helpTextField);
-            addLocationPanel.add(new JScrollPane(aLocLst));
 
             // start time - end time
 
             JPanel setTimePanel = new JPanel();
-            setTimePanel.setLayout(new BoxLayout(setTimePanel,BoxLayout.Y_AXIS));
+            setTimePanel.setLayout(new BoxLayout(setTimePanel, BoxLayout.Y_AXIS));
             setTimePanel.setOpaque(false);
             setTimePanel.setBackground(new Color(0, 0, 0, 0));
 
             JLabel setTimeLabel = new JLabel("Set your start time and end time");
             setTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            setTimeLabel.setFont(loadFonts.montserratFont);
+            setTimeLabel.setFont(loadFonts.montserratFontSmall);
             setTimePanel.add(setTimeLabel);
 
             // start time
@@ -84,9 +64,13 @@ public class ChooseOptionsView {
 
             SpinnerDateModel model = new SpinnerDateModel();
             JSpinner startTime = new JSpinner(model);
+            startTime.setFont(loadFonts.montserratFontSmall);
             JSpinner.DateEditor startTimeEditor = new JSpinner.DateEditor(startTime, "HH:mm");
+            startTimeEditor.setFont(loadFonts.montserratFontSmall);
 
-            JLabel startTimeLabel = new JLabel("End time:" + dateFormat.format((Date)startTime.getValue()));
+            JLabel startTimeLabel = new JLabel("Start Time: " + dateFormat.format((Date)startTime.getValue()));
+            startTimeLabel.setFont(loadFonts.montserratFontSmall);
+            startTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             startTime.setEditor(startTimeEditor);
             setTimePanel.add(startTimeLabel);
@@ -102,8 +86,13 @@ public class ChooseOptionsView {
 
             SpinnerDateModel model1 = new SpinnerDateModel();
             JSpinner endTime = new JSpinner(model1);
+            endTime.setFont(loadFonts.montserratFontSmall);
             JSpinner.DateEditor endTimeEditor = new JSpinner.DateEditor(endTime, "HH:mm");
-            JLabel endTimeLabel = new JLabel("End time:" + dateFormat.format((Date)endTime.getValue()));
+            endTimeEditor.setFont(loadFonts.montserratFontSmall);
+
+            JLabel endTimeLabel = new JLabel("End Time: " + dateFormat.format((Date)endTime.getValue()));
+            endTimeLabel.setFont(loadFonts.montserratFontSmall);
+            endTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             endTime.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
@@ -125,9 +114,12 @@ public class ChooseOptionsView {
             distanceSlider.setMinorTickSpacing(1);
             distanceSlider.setPaintTicks(true);
             distanceSlider.setPaintLabels(true);
-            distanceSlider.setFont(loadFonts.montserratFont);
+            distanceSlider.setFont(loadFonts.montserratFontSmall);
+            distanceSlider.setOpaque(false);
+            distanceSlider.setBackground(new Color(0, 0, 0, 0));
 
             JLabel distanceLabel = new JLabel("Distance (km): " + distanceSlider.getValue());
+            distanceLabel.setFont(loadFonts.montserratFontSmall);
 
             distanceSlider.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
@@ -149,18 +141,35 @@ public class ChooseOptionsView {
             ratingSlider.setMinorTickSpacing(1);
             ratingSlider.setPaintTicks(true);
             ratingSlider.setPaintLabels(true);
+            ratingSlider.setOpaque(false);
+            ratingSlider.setBackground(new Color(0, 0, 0, 0));
 
             //changes the labels below to be 1/2 of the actual value (so it could be .5 stars
             Hashtable<Integer, JLabel> starTable = new Hashtable<>();
-            starTable.put(0, new JLabel("0"));
-            starTable.put(2, new JLabel("1"));
-            starTable.put(4, new JLabel("2"));
-            starTable.put(6, new JLabel("3"));
-            starTable.put(8, new JLabel("4"));
-            starTable.put(10, new JLabel("5"));
+
+            JLabel zero = new JLabel("0");
+            JLabel first = new JLabel("1");
+            JLabel second = new JLabel("2");
+            JLabel third = new JLabel("3");
+            JLabel fourth = new JLabel("4");
+            JLabel fifth = new JLabel("5");
+            zero.setFont(loadFonts.montserratFontSmall);
+            first.setFont(loadFonts.montserratFontSmall);
+            second.setFont(loadFonts.montserratFontSmall);
+            third.setFont(loadFonts.montserratFontSmall);
+            fourth.setFont(loadFonts.montserratFontSmall);
+            fifth.setFont(loadFonts.montserratFontSmall);
+
+            starTable.put(0, zero);
+            starTable.put(2, first);
+            starTable.put(4, second);
+            starTable.put(6, third);
+            starTable.put(8, fourth);
+            starTable.put(10, fifth);
             ratingSlider.setLabelTable(starTable);
 
             JLabel ratingLabel = new JLabel(  ratingSlider.getValue()/2 + " Stars ");
+            ratingLabel.setFont(loadFonts.montserratFontSmall);
 
             ratingSlider.addChangeListener(new ChangeListener() {
                 public void stateChanged(ChangeEvent e) {
@@ -169,11 +178,27 @@ public class ChooseOptionsView {
                 }
             });
 
+            ratingPanel.add(ratingLabel);
+            ratingPanel.add(ratingSlider);
+
             //checkboxes
             JLabel locationTypesLabel = new JLabel("Location types: ");
+            locationTypesLabel.setFont(loadFonts.montserratFontSmall);
+
             JCheckBox resturantCheck = new JCheckBox("Resturant");
+            resturantCheck.setFont(loadFonts.montserratFontSmall);
+            resturantCheck.setOpaque(false);
+            resturantCheck.setBackground(new Color(0, 0, 0, 0));
+
             JCheckBox attractionCheck = new JCheckBox("Attraction");
+            attractionCheck.setFont(loadFonts.montserratFontSmall);
+            attractionCheck.setOpaque(false);
+            attractionCheck.setBackground(new Color(0, 0, 0, 0));
+
             JCheckBox shopCheck = new JCheckBox("Shop");
+            shopCheck.setFont(loadFonts.montserratFontSmall);
+            shopCheck.setOpaque(false);
+            shopCheck.setBackground(new Color(0, 0, 0, 0));
 
             JPanel checkboxPanel = new JPanel();
             checkboxPanel.setOpaque(false);
@@ -182,9 +207,6 @@ public class ChooseOptionsView {
             checkboxPanel.add(resturantCheck);
             checkboxPanel.add(attractionCheck);
             checkboxPanel.add(shopCheck);
-
-            ratingPanel.add(ratingLabel);
-            ratingPanel.add(ratingSlider);
 
             // Starting to add the components to something the user will actually see
 
@@ -199,7 +221,6 @@ public class ChooseOptionsView {
 
             optionsPanel.add(titleLabel);
             optionsPanel.add(addLocationPanel);
-            optionsPanel.add(addLocationPanel);
             optionsPanel.add(setTimePanel);
             optionsPanel.add(distancePanel);
             optionsPanel.add(ratingPanel);
@@ -209,7 +230,7 @@ public class ChooseOptionsView {
                     90,
                     50,
                     this.bkgImage.getIconWidth() - 180,
-                    this.bkgImage.getIconHeight() - 230);
+                    this.bkgImage.getIconHeight() - 200);
 
             // Make the frame
             this.mainFrame = new JFrame();
@@ -239,7 +260,7 @@ public class ChooseOptionsView {
             this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.mainFrame.setVisible(true);
             this.mainFrame.setResizable(false);
-        }
+
     }
 
     public static void main(String[] args){

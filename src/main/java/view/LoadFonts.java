@@ -10,6 +10,7 @@ import java.io.File;
 public class LoadFonts {
     public Font koulenFont;
     public Font montserratFont;
+    public Font montserratFontSmall;
     public Font montserratBoldItalicFont;
 
     public LoadFonts() {
@@ -19,6 +20,8 @@ public class LoadFonts {
                     new File("src/main/java/view/fonts/Koulen/Koulen-Regular.ttf")).deriveFont(280f);
             this.montserratFont = Font.createFont(Font.TRUETYPE_FONT,
                     new File("src/main/java/view/fonts/Montserrat/Montserrat-Regular.ttf")).deriveFont(23f);
+            this.montserratFontSmall = Font.createFont(Font.TRUETYPE_FONT,
+                    new File("src/main/java/view/fonts/Montserrat/Montserrat-Regular.ttf")).deriveFont(18f);
             this.montserratBoldItalicFont = Font.createFont(Font.TRUETYPE_FONT,
                     new File("src/main/java/view/fonts/Montserrat/Montserrat-SemiBoldItalic.ttf")).deriveFont(23f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();

@@ -1,13 +1,17 @@
-package com.glasy.entity;
+package com.glasy.api;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import com.glasy.use_case.set_user_info.GeoCoordinates;
+import entity.CommonLocationData;
+import com.google.gson.Gson;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.glasy.use_case.config.ConfigLoader;
+import com.glasy.config.ConfigLoader;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -16,6 +20,10 @@ import okhttp3.Response;
  * Class to get nearby locations.
  */
 public class Location {
+
+    private static JSONObject JSONResults;
+    private static List<CommonLocationData> listResults;
+
     /**
      * Retrieves location data from the Foursquare Places API based on the provided geographic coordinates
      * and optional query parameters.
@@ -26,7 +34,7 @@ public class Location {
      *         indent factor of 4 for readability.
      * @throws IOException If an I/O error occurs while making the HTTP request or reading the response.
      */
-    public static String getLocations(GeoCoordinates geoCoordinates, Map<String, String> params) throws IOException {
+    public static JSONObject getLocations(GeoCoordinates geoCoordinates, Map<String, String> params) throws IOException {
         final String latLong = geoCoordinates.getLatitude() + "," + geoCoordinates.getLongitude();
 
         final String baseUrl = "https://api.foursquare.com/v3/places/search";
@@ -51,25 +59,65 @@ public class Location {
                 .addHeader("Authorization", ConfigLoader.getKey("foursquare.api.key"))
                 .build();
 
-        String locations = "";
+        JSONObject locations = new JSONObject();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
                 final JSONObject jsonResponse = new JSONObject(response.body().string());
-                final int indentFactor = 4;
-                locations = jsonResponse.toString(indentFactor);
+                locations = jsonResponse;
             }
         }
         return locations;
+    }
+
+    public static void resultToList(Location example, int max_items) {
+        final Gson gson = new Gson();
+        JSONArray locations = example.getJSONResults().getJSONArray("results");
+        List<CommonLocationData> result = new ArrayList<>();
+
+        for (Object n: locations) {
+
+            JSONObject node = (JSONObject) n;
+            JSONObject loc = node.getJSONObject("location");
+
+            CommonLocationData locationNode = gson.fromJson(loc.toString(), CommonLocationData.class);
+//            locationNode.setName(node.getString("name"));
+            result.add(locationNode);
+
+            max_items--;
+            if (max_items == 0) {
+                break;
+            }
+        }
+        example.setListResults(result);
+    }
+
+    public JSONObject getJSONResults() {
+        return JSONResults;
+    }
+
+    public void setJSONResults(JSONObject results) {
+        this.JSONResults = results;
+    }
+
+    public List<CommonLocationData> getListResults() {
+        return listResults;
+    }
+
+    public void setListResults(List<CommonLocationData> listResults) {
+        this.listResults = listResults;
     }
 
     public static void main(String[] args) throws IOException {
         GeoCoordinates geoCoordinates = new GeoCoordinates();
         Location example = new Location();
         Map<String, String> params = new HashMap<>();
-        params.put("radius", "1000");
+
+        params.put("radius", "800");
         params.put("categories", "13000"); // Dining & Drinking
-        String getResponse = example.getLocations(geoCoordinates, params);
-        System.out.println(getResponse);
+        JSONObject getResult = Location.getLocations(geoCoordinates, params);
+        System.out.println(getResult.toString(3));
+        example.setJSONResults(getResult);
+        resultToList(example, 5);
     }
 }

@@ -1,7 +1,6 @@
-package interface_adapter.displayresultsview;
+package interface_adapter.display_results_view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.displayresultsview.DisplayResultsViewModel;
 
 public class DisplayResultsPresenter {
     private final DisplayResultsViewModel displayResultsViewModel;

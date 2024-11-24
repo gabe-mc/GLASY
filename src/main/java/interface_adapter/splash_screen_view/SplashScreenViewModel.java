@@ -1,4 +1,4 @@
-package interface_adapter.splashscreenview;
+package interface_adapter.splash_screen_view;
 
 import interface_adapter.ViewModel;
 

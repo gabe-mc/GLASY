@@ -1,5 +1,8 @@
 package view;
 
+import interface_adapter.splashscreenview.SplashScreenState;
+import interface_adapter.splashscreenview.SplashScreenViewModel;
+
 import javax.swing.*;
 
 import java.awt.Dimension;
@@ -17,12 +20,15 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.File;
 
-public class SplashScreenView {
+public class SplashScreenView implements ActionListener, PropertyChangeListener {
     private Font koulenFont;
     private Font montserratFont;
     private JFrame mainFrame;
+    private final SplashScreenViewModel splashScreenViewModel;
 
-    public SplashScreenView() {
+    public SplashScreenView(SplashScreenViewModel splashScreenViewModel) {
+        this.splashScreenViewModel = splashScreenViewModel;
+        this.splashScreenViewModel.addPropertyChangeListener(this);
         ImageIcon bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage.png");
 
         // Load and register the Koulen font
@@ -66,6 +72,14 @@ public class SplashScreenView {
         startButton.setBounds((bkgImage.getIconWidth() - 200) / 2 - 50, 450, 300, 40);
         splashLabel.add(startButton);
 
+        startButton.addActionListener(
+                evt -> {
+                    if (evt.getSource() == startButton) {
+                        final SplashScreenState currentState = SplashScreenViewModel.getState();
+                    }
+                }
+        );
+
         this.mainFrame.add(splashLabel, BorderLayout.CENTER);
         this.mainFrame.setSize(bkgImage.getIconWidth() + 10, bkgImage.getIconHeight() + 30);
 
@@ -75,14 +89,15 @@ public class SplashScreenView {
         this.mainFrame.setLocation(x, y);
     }
 
-    public JFrame getMainFrame() {
-        return mainFrame;
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        System.out.println("Click " + evt.getActionCommand());
     }
 
-    public static void main(String[] args) {
-        SplashScreenView splashScreenView = new SplashScreenView();
-        splashScreenView.getMainFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        splashScreenView.getMainFrame().setVisible(true);
-        splashScreenView.getMainFrame().setResizable(false);
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("state")) {
+            final SplashScreenState state = (SplashScreenState) evt.getNewValue();
+        }
     }
 }

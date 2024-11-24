@@ -14,10 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 
-public class ChooseOptionsView {
+public class ChooseOptionsView extends JFrame {
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
-    private JFrame mainFrame;
 
     public ChooseOptionsView() {
             LoadFonts loadFonts = new LoadFonts();
@@ -232,9 +231,6 @@ public class ChooseOptionsView {
                     this.bkgImage.getIconWidth() - 180,
                     this.bkgImage.getIconHeight() - 200);
 
-            // Make the frame
-            this.mainFrame = new JFrame();
-
             // Set the background image
             this.backgroundLabel = new JLabel(this.bkgImage);
             this.backgroundLabel.setLayout(null);
@@ -249,17 +245,17 @@ public class ChooseOptionsView {
             startButton.setBounds((this.bkgImage.getIconWidth() - 200) / 2 - 50, 600, 300, 40);
             this.backgroundLabel.add(startButton);
 
-            this.mainFrame.add(this.backgroundLabel, BorderLayout.CENTER);
-            this.mainFrame.setSize(this.bkgImage.getIconWidth() + 10, this.bkgImage.getIconHeight() + 30);
+            add(this.backgroundLabel, BorderLayout.CENTER);
+            setSize(this.bkgImage.getIconWidth() + 10, this.bkgImage.getIconHeight() + 30);
 
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             int x = (screenSize.width - bkgImage.getIconWidth()) / 2;
             int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
-            this.mainFrame.setLocation(x, y);
+            setLocation(x, y);
 
-            this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.mainFrame.setVisible(true);
-            this.mainFrame.setResizable(false);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setVisible(true);
+            setResizable(false);
 
     }
 

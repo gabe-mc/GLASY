@@ -20,10 +20,9 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.File;
 
-public class SplashScreenView implements ActionListener, PropertyChangeListener {
+public class SplashScreenView extends JFrame implements ActionListener, PropertyChangeListener {
     private Font koulenFont;
     private Font montserratFont;
-    private JFrame mainFrame;
     private final SplashScreenViewModel splashScreenViewModel;
 
     public SplashScreenView(SplashScreenViewModel splashScreenViewModel) {
@@ -45,8 +44,6 @@ public class SplashScreenView implements ActionListener, PropertyChangeListener 
             koulenFont = new Font("SansSerif", Font.BOLD, 180);
             montserratFont = new Font("SansSerif", Font.BOLD, 180);
         }
-        this.mainFrame = new JFrame();
-
         // Set the background image
         JLabel splashLabel = new JLabel(bkgImage);
 
@@ -80,13 +77,13 @@ public class SplashScreenView implements ActionListener, PropertyChangeListener 
                 }
         );
 
-        this.mainFrame.add(splashLabel, BorderLayout.CENTER);
-        this.mainFrame.setSize(bkgImage.getIconWidth() + 10, bkgImage.getIconHeight() + 30);
+        add(splashLabel, BorderLayout.CENTER);
+        setSize(bkgImage.getIconWidth() + 10, bkgImage.getIconHeight() + 30);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (screenSize.width - bkgImage.getIconWidth()) / 2;
         int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
-        this.mainFrame.setLocation(x, y);
+        setLocation(x, y);
     }
 
     @Override

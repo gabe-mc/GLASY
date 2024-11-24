@@ -1,10 +1,9 @@
-package interface_adapter;
+package interface_adapter.choose_options;
 
 import entity.CommonLocationData;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ChooseOptionsState {

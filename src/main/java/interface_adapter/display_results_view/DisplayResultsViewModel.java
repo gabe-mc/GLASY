@@ -1,7 +1,6 @@
-package interface_adapter.displayresultsview;
+package interface_adapter.display_results_view;
 
 import interface_adapter.ViewModel;
-import interface_adapter.splashscreenview.SplashScreenState;
 
 public class DisplayResultsViewModel extends ViewModel<DisplayResultsState> {
 

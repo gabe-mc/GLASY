@@ -1,7 +1,7 @@
 package view;
 
-import interface_adapter.splashscreenview.SplashScreenState;
-import interface_adapter.splashscreenview.SplashScreenViewModel;
+import interface_adapter.splash_screen_view.SplashScreenState;
+import interface_adapter.splash_screen_view.SplashScreenViewModel;
 
 import javax.swing.*;
 

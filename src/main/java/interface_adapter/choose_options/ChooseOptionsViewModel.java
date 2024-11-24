@@ -1,4 +1,6 @@
-package interface_adapter;
+package interface_adapter.choose_options;
+
+import interface_adapter.ViewModel;
 
 public class ChooseOptionsViewModel extends ViewModel<ChooseOptionsState> {
 

@@ -50,8 +50,18 @@ public class DisplayResultsView extends JPanel implements ActionListener, Proper
         //setResizable(false);
 
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        //setVisible(true);
         //setResizable(false);
+        startButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(startButton)) {
+                            displayResultsController.execute();
+                        }
+                    }
+                }
+        );
+
     }
 
 //    public static void main(String[] args) {

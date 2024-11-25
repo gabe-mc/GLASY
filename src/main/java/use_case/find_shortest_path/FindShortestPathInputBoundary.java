@@ -14,6 +14,4 @@ public interface FindShortestPathInputBoundary {
      * @param inputData is the input data for this use case
      */
     void findShortestPath(FindShortestPathInputData inputData) throws IOException;
-
-    void execute();
 }

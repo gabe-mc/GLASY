@@ -19,7 +19,7 @@ public class SplashScreenPresenter implements StartAppOutputBoundary {
     @Override
     public void prepareView(StartAppOutputData response) {
         final ChooseOptionsState chooseOptionsState = chooseOptionsViewModel.getState();
-        chooseOptionsState.setStartingLocation(response.getLocation());
+        chooseOptionsState.setStartingAddress(response.getLocation().getAddress());
         this.chooseOptionsViewModel.setState(chooseOptionsState);
         this.chooseOptionsViewModel.firePropertyChanged();
 

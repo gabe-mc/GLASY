@@ -1,6 +1,6 @@
 package entity;
 
- interface LocationData {
+ public interface LocationData {
      Double getLongitude();
 
      void setLongitude(Double longitude);

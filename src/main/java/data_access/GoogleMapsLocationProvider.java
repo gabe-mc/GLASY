@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import org.json.JSONObject;
 
-import com.glasy.use_case.config.ConfigLoader;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

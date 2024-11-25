@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.glasy.use_case.config.ConfigLoader;
+import data_access.ConfigLoader;
 import com.glasy.use_case.set_user_info.GeoCoordinates;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

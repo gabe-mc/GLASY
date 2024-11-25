@@ -1,4 +1,4 @@
-package com.glasy.use_case.config;
+package data_access;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -1,12 +1,18 @@
 package view;
 
 import entity.CommonLocationData;
+import interface_adapter.display_results_view.DisplayResultsController;
+import interface_adapter.display_results_view.DisplayResultsState;
 import interface_adapter.display_results_view.DisplayResultsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class DisplayResultsView extends JFrame {
+public class DisplayResultsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "display results";
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
@@ -39,16 +45,31 @@ public class DisplayResultsView extends JFrame {
         startButton.setBackground(new Color(202, 210, 197));
         startButton.setBounds((this.bkgImage.getIconWidth() - 200) / 2 - 50, 600, 300, 40);
         this.backgroundLabel.add(startButton);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        setResizable(false);
+        //setResizable(false);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        setResizable(false);
+        //setResizable(false);
     }
 
-    public static void main(String[] args) {
-        DisplayResultsView displayResultsView = new DisplayResultsView();
+//    public static void main(String[] args) {
+//        DisplayResultsView displayResultsView = new DisplayResultsView();
+//    }
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        System.out.println("Click " + evt.getActionCommand());
     }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("state")){
+            final DisplayResultsState state = (DisplayResultsState) evt.getNewValue();
+        }
+    }
+    public String getViewName() {
+        return viewName;
+    }
+
 }

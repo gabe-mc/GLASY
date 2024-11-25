@@ -14,10 +14,10 @@ import use_case.start_app.StartAppCurrentLocationDataAccessInterface;
 /**
  * Implementation of api call that determines the user's current location based on their ip address.
  */
-public class CurrentLocationDataAccessObject implements StartAppCurrentLocationDataAccessInterface {
+public class CurrentLocationProvider implements StartAppCurrentLocationDataAccessInterface {
     private CommonLocationData commonLocationData;
 
-    public CurrentLocationDataAccessObject() {
+    public CurrentLocationProvider() {
         final OkHttpClient client = new OkHttpClient();
         final String url = "http://ip-api.com/json/";
         final Request request = new Request.Builder()
@@ -30,8 +30,8 @@ public class CurrentLocationDataAccessObject implements StartAppCurrentLocationD
                 final JSONObject jsonObject = new JSONObject(responseBody);
                 final Double longitude = jsonObject.getDouble("lon");
                 final Double latitude = jsonObject.getDouble("lat");
-                GoogleMapsDataAccessObject googleMapsDataAccessObject = new GoogleMapsDataAccessObject();
-                final String address = googleMapsDataAccessObject.getAddress(longitude, latitude);
+                GoogleMapsLocationProvider googleMapsLocationProvider = new GoogleMapsLocationProvider();
+                final String address = googleMapsLocationProvider.getAddress(longitude, latitude);
                 commonLocationData = new CommonLocationData(
                         longitude, latitude, address,
                         jsonObject.getString("city"),

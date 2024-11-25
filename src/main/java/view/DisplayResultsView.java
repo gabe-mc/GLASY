@@ -1,5 +1,7 @@
 package view;
 
+import entity.CommonLocationData;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,6 +29,17 @@ public class DisplayResultsView {
         int x = (screenSize.width - bkgImage.getIconWidth()) / 2;
         int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
         this.mainFrame.setLocation(x, y);
+
+        // Results Checkboxes
+        JPanel resultsCheckboxes = new JPanel();
+        //CommonLocationData[] = {new CommonLocationData("1","2","3","4","5","6","7"),new CommonLocationData("1","2","3","4","5","6","7")};
+        String[] possibleLocations = {"a","b","c","d","e","f","g","h","i","j","k","sdfs","ghgh","aaaa","mellow","okayd","sk"};
+        for(String possibleLocation : possibleLocations) {
+            JCheckBox checkBox = new JCheckBox(possibleLocation);
+            resultsCheckboxes.add(checkBox);
+        }
+        JScrollPane scrollCheckboxes = new JScrollPane(resultsCheckboxes);
+        this.backgroundLabel.add(scrollCheckboxes);
 
         // Add in the continue button
         JButton startButton = new JButton("Continue");

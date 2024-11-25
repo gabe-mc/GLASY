@@ -7,7 +7,7 @@ import java.util.HashMap;
 import data_access.ConfigLoaderDataAccess;
 import org.json.JSONObject;
 
-import com.glasy.config.ConfigLoader;
+import data_access.ConfigLoader;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

@@ -13,11 +13,11 @@ public class PrepareLocationsInteractor implements PrepareLocationsInputBoundary
     }
 
     @Override
-    public void prepareLocations(ArrayList<String> wantedLocations, ArrayList<AttractionData> allLocations, int startTime) {
+    public void prepareLocations(PrepareLocationsInputData inputData) {
         HashMap<AttractionData, String> result = new HashMap<>();
-        int currentTime = startTime;
-        for (AttractionData location : allLocations) {
-            if (wantedLocations.contains(location.getAddress())) {
+        int currentTime = inputData.getStartTime();
+        for (AttractionData location : inputData.getAllLocations()) {
+            if (inputData.getWantedLocations().contains(location.getAddress())) {
                 int previousTime = currentTime;
                 int hours = currentTime / 100;
                 int minutes = currentTime % 100;

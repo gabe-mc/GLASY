@@ -11,6 +11,6 @@ public class DisplayOptionsController {
     }
 
     public void execute() {
-        findShortestPathUseCaseInteractor.execute();
+//        findShortestPathUseCaseInteractor.execute();
     }
 }

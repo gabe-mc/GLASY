@@ -23,7 +23,7 @@ public class PrepareLocationsInteractor implements PrepareLocationsInputBoundary
                 int minutes = currentTime % 100;
 
                 // Add increment in minutes
-                minutes += location.getTimeRequired();
+//                minutes += location.getTimeRequired();
 
                 // Handle overflow in minutes
                 hours += minutes / 60;

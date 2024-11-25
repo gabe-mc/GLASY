@@ -22,6 +22,7 @@ public class Main {
         final JFrame application = appBuilder
                 .addSplashScreenView()
                 .addChooseOptionsView()
+                .addDisplayOptionsView()
                 .addStartAppUseCase()
                 .build();
         application.pack();

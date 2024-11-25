@@ -67,7 +67,7 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         );
 
 //        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+//        setVisible(true);
 //        setResizable(false);
     }
 

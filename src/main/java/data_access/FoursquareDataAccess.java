@@ -1,27 +1,18 @@
-package com.glasy.entity;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package data_access;
 
 import com.glasy.use_case.set_user_info.GeoCoordinates;
 import entity.CommonLocationData;
-import com.google.gson.Gson;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import data_access.ConfigLoaderDataAccess;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.json.JSONObject;
+import use_case.add_location.AddLocationDataAccessInterface;
 
-/**
- * Class to get nearby locations.
- */
-public class Location {
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
+public class FoursquareDataAccess implements AddLocationDataAccessInterface {
     private static JSONObject JSONResults;
     private static List<CommonLocationData> listResults;
 
@@ -35,7 +26,7 @@ public class Location {
      *         indent factor of 4 for readability.
      * @throws IOException If an I/O error occurs while making the HTTP request or reading the response.
      */
-    public static JSONObject getLocations(GeoCoordinates geoCoordinates, Map<String, String> params) throws IOException {
+    public static JSONObject get(GeoCoordinates geoCoordinates, Map<String, String> params) throws IOException {
         final String latLong = geoCoordinates.getLatitude() + "," + geoCoordinates.getLongitude();
 
         final String baseUrl = "https://api.foursquare.com/v3/places/search";
@@ -64,61 +55,27 @@ public class Location {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                final JSONObject jsonResponse = new JSONObject(response.body().string());
-                locations = jsonResponse;
+                locations = new JSONObject(response.body().string());
             }
         }
         return locations;
     }
 
-    public static void resultToList(Location example, int max_items) {
-        final Gson gson = new Gson();
-        JSONArray locations = example.getJSONResults().getJSONArray("results");
-        List<CommonLocationData> result = new ArrayList<>();
-
-        for (Object n: locations) {
-
-            JSONObject node = (JSONObject) n;
-            JSONObject loc = node.getJSONObject("location");
-
-            CommonLocationData locationNode = gson.fromJson(loc.toString(), CommonLocationData.class);
-//            locationNode.setName(node.getString("name"));
-            result.add(locationNode);
-
-            max_items--;
-            if (max_items == 0) {
-                break;
-            }
-        }
-        example.setListResults(result);
-    }
-
+    @Override
     public JSONObject getJSONResults() {
         return JSONResults;
     }
 
-    public void setJSONResults(JSONObject results) {
-        this.JSONResults = results;
+    @Override
+    public void setJSONResults(JSONObject JSONResults) {
+        FoursquareDataAccess.JSONResults = JSONResults;
     }
 
-    public List<CommonLocationData> getListResults() {
+    public static List<CommonLocationData> getListResults() {
         return listResults;
     }
 
-    public void setListResults(List<CommonLocationData> listResults) {
-        this.listResults = listResults;
-    }
-
-    public static void main(String[] args) throws IOException {
-        GeoCoordinates geoCoordinates = new GeoCoordinates();
-        Location example = new Location();
-        Map<String, String> params = new HashMap<>();
-
-        params.put("radius", "800");
-        params.put("categories", "13000"); // Dining & Drinking
-        JSONObject getResult = Location.getLocations(geoCoordinates, params);
-        System.out.println(getResult.toString(3));
-        example.setJSONResults(getResult);
-        resultToList(example, 5);
+    public static void setListResults(List<CommonLocationData> listResults) {
+        FoursquareDataAccess.listResults = listResults;
     }
 }

@@ -1,6 +1,6 @@
 package entity;
 
- interface LocationData {
+ public interface LocationData {
      String getLongitude();
 
      void setLongitude(String longitude);

@@ -5,7 +5,7 @@ import interface_adapter.ViewModel;
 public class DisplayResultsViewModel extends ViewModel<DisplayResultsState> {
 
     public DisplayResultsViewModel() {
-        super("Splash Screen View");
+        super("display results");
         setState(new DisplayResultsState());
     }
 

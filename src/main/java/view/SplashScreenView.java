@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.splash_screen_view.SplashScreenController;
 import interface_adapter.splash_screen_view.SplashScreenState;
 import interface_adapter.splash_screen_view.SplashScreenViewModel;
 
@@ -20,10 +21,13 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.File;
 
-public class SplashScreenView extends JFrame implements ActionListener, PropertyChangeListener {
+public class SplashScreenView extends JPanel implements ActionListener, PropertyChangeListener {
+    private final String viewName = "splash screen";
+
     private Font koulenFont;
     private Font montserratFont;
     private final SplashScreenViewModel splashScreenViewModel;
+    private SplashScreenController splashScreenController;
 
     public SplashScreenView(SplashScreenViewModel splashScreenViewModel) {
         this.splashScreenViewModel = splashScreenViewModel;
@@ -70,9 +74,11 @@ public class SplashScreenView extends JFrame implements ActionListener, Property
         splashLabel.add(startButton);
 
         startButton.addActionListener(
-                evt -> {
-                    if (evt.getSource() == startButton) {
-                        final SplashScreenState currentState = SplashScreenViewModel.getState();
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(startButton)) {
+                            splashScreenController.execute();
+                        }
                     }
                 }
         );
@@ -97,4 +103,10 @@ public class SplashScreenView extends JFrame implements ActionListener, Property
             final SplashScreenState state = (SplashScreenState) evt.getNewValue();
         }
     }
+
+    public void setSplashScreenController(SplashScreenController splashScreenController) {
+        this.splashScreenController = splashScreenController;
+    }
+
+    public String getViewName() { return viewName; }
 }

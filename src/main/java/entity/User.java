@@ -6,16 +6,16 @@ package entity;
 public class User {
 
     private double timeAvailable;
-    private CommonLocationData userLocation;
+    private CommonLocationData location;
     private String attractionCategory;
 
     public Double getTimeAvailable() {return timeAvailable;}
 
     public void setTimeAvailable(double timeAvailable) {this.timeAvailable = timeAvailable;}
 
-    public CommonLocationData getUserLocation() {return userLocation;}
+    public CommonLocationData getLocation() {return location;}
 
-    public void setUserLocation(CommonLocationData userLocation) {this.userLocation = userLocation;}
+    public void setLocation(CommonLocationData location) {this.location = location;}
 
     public String getAttractionCategory() {return attractionCategory;}
 

@@ -18,31 +18,41 @@ import view.ViewManager;
 
 public class Main {
     public static void main(String[] args) {
-        final JFrame application = new JFrame("text here");
-        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        final CardLayout cardLayout = new CardLayout();
-
-        //the various view objects only one view is visible at a time ? possibly not needed
-        final JPanel views = new JPanel(cardLayout);
-        application.add(views);
-
-        final ViewManagerModel viewManagerModel = new ViewManagerModel();
-        new ViewManager(views, cardLayout, viewManagerModel);
-
-
-        final SplashScreenViewModel splashScreenViewModel = new SplashScreenViewModel();
-        final ChooseOptionsViewModel chooseOptionsViewModel = new ChooseOptionsViewModel();
-        final DisplayOptionsViewModel displayOptionsViewModel = new DisplayOptionsViewModel();
-        final DisplayResultsViewModel displayResultsViewModel = new DisplayResultsViewModel();
-
-        final SplashScreenView splashScreenView = new SplashScreenView(splashScreenViewModel);
-
-
-        //viewManagerModel.setState(__ view .getViewName())
-        viewManagerModel.firePropertyChanged();
-
+        final AppBuilder appBuilder = new AppBuilder();
+        final JFrame application = appBuilder
+                .addSplashScreenView()
+                .addChooseOptionsView()
+                .addStartAppUseCase()
+                .build();
         application.pack();
         application.setVisible(true);
+        application.setResizable(false);
+
+//        final JFrame application = new JFrame("text here");
+//        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//
+//        final CardLayout cardLayout = new CardLayout();
+//
+//        //the various view objects only one view is visible at a time ? possibly not needed
+//        final JPanel views = new JPanel(cardLayout);
+//        application.add(views);
+//
+//        final ViewManagerModel viewManagerModel = new ViewManagerModel();
+//        new ViewManager(views, cardLayout, viewManagerModel);
+//
+//
+//        final SplashScreenViewModel splashScreenViewModel = new SplashScreenViewModel();
+//        final ChooseOptionsViewModel chooseOptionsViewModel = new ChooseOptionsViewModel();
+//        final DisplayOptionsViewModel displayOptionsViewModel = new DisplayOptionsViewModel();
+//        final DisplayResultsViewModel displayResultsViewModel = new DisplayResultsViewModel();
+//
+//        final SplashScreenView splashScreenView = new SplashScreenView(splashScreenViewModel);
+//
+//
+//        //viewManagerModel.setState(__ view .getViewName())
+//        viewManagerModel.firePropertyChanged();
+//
+//        application.pack();
+//        application.setVisible(true);
     }
 }

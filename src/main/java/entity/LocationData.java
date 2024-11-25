@@ -1,13 +1,13 @@
 package entity;
 
  interface LocationData {
-     String getLongitude();
+     Double getLongitude();
 
-     void setLongitude(String longitude);
+     void setLongitude(Double longitude);
 
-     String getLatitude();
+     Double getLatitude();
 
-     void setLatitude(String latitude);
+     void setLatitude(Double latitude);
 
      String getAddress();
 

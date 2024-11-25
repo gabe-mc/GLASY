@@ -19,7 +19,7 @@ public class SetUserInfoInteractor implements SetUserInfoInputBoundary {
 
     @Override
     public void setUserLocation(CommonLocationData location) {
-        user.setUserLocation(location);
+        user.setLocation(location);
 
     }
 

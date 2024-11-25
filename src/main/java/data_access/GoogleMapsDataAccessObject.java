@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import org.json.JSONObject;
 
-import com.glasy.config.ConfigLoader;
+import com.glasy.use_case.config.ConfigLoader;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -15,7 +15,7 @@ import use_case.find_shortest_path.FindShortestPathInputData;
 /**
  * The DAO for google maps data.
  */
-public class googleMapsDataAccess {
+public class GoogleMapsDataAccessObject {
 
     private final OkHttpClient client = new OkHttpClient();
     private final String apiKey = ConfigLoader.getKey("google.api.key");
@@ -62,7 +62,7 @@ public class googleMapsDataAccess {
      * @throws IOException If an input or output exception occurs while sending the request
      *                     or receiving the response.
      */
-    public ArrayList<Double> getAddress(String address) throws IOException {
+    public ArrayList<Double> getLonLat(String address) throws IOException {
         final String url = createGeocodeUrl(address);
         final Request request = new Request.Builder().url(url).build();
         try (Response response = client.newCall(request).execute()) {
@@ -77,6 +77,30 @@ public class googleMapsDataAccess {
             result.add(locationData.getDouble("lat"));
             result.add(locationData.getDouble("lng"));
             return result;
+        }
+    }
+
+    /**
+     * Retrieves the address for a given longitude and latitude by sending a request
+     * to a geocoding API and parsing the JSON response.
+     *
+     * @param longitude The longitude of the address to be geocoded.
+     * @param latitude The latitude of the address to be geocoded.
+     * @return The address of the location.
+     * @throws IOException If an input or output exception occurs while sending the request
+     *                     or receiving the response.
+     */
+    public String getAddress(Double longitude, Double latitude) throws IOException {
+        final String url = String.format(
+                "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&key=%s",
+                latitude, longitude, apiKey);
+        final Request request = new Request.Builder().url(url).build();
+        try (Response response = client.newCall(request).execute()) {
+            final String responseBody = response.body().string();
+            final JSONObject jsonObject = new JSONObject(responseBody);
+            return jsonObject.getJSONArray("results")
+                    .getJSONObject(0)
+                    .getString("formatted_address");
         }
     }
 

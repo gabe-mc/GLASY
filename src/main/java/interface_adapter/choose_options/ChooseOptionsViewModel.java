@@ -5,7 +5,7 @@ import interface_adapter.ViewModel;
 public class ChooseOptionsViewModel extends ViewModel<ChooseOptionsState> {
 
     public ChooseOptionsViewModel(){
-        super("Choose Options");
+        super("choose options");
         setState(new ChooseOptionsState());
     }
 }

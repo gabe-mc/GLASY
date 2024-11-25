@@ -38,13 +38,13 @@ public class DisplayResultsView extends JPanel implements ActionListener, Proper
         int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
         setLocation(x, y);
 
-        // Add in the continue button
-        JButton startButton = new JButton("Continue");
-        startButton.setFont(loadFonts.montserratFont);
-        startButton.setForeground(new Color(82, 121, 111));
-        startButton.setBackground(new Color(202, 210, 197));
-        startButton.setBounds((this.bkgImage.getIconWidth() - 200) / 2 - 50, 600, 300, 40);
-        this.backgroundLabel.add(startButton);
+        // Add in the back button
+        JButton backButton = new JButton("Back");
+        backButton.setFont(loadFonts.montserratFont);
+        backButton.setForeground(new Color(82, 121, 111));
+        backButton.setBackground(new Color(202, 210, 197));
+        backButton.setBounds(90, 600, 140, 40);
+        this.backgroundLabel.add(backButton);
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         //setResizable(false);
@@ -52,15 +52,15 @@ public class DisplayResultsView extends JPanel implements ActionListener, Proper
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setVisible(true);
         //setResizable(false);
-        startButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(startButton)) {
-                            displayResultsController.execute();
-                        }
-                    }
-                }
-        );
+//        startButton.addActionListener(
+//                new ActionListener() {
+//                    public void actionPerformed(ActionEvent evt) {
+//                        if (evt.getSource().equals(startButton)) {
+//                            displayResultsController.execute();
+//                        }
+//                    }
+//                }
+//        );
 
     }
 

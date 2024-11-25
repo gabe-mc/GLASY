@@ -15,7 +15,7 @@ import use_case.find_shortest_path.FindShortestPathInputData;
 /**
  * The DAO for google maps data.
  */
-public class GoogleMapsDataAccessObject {
+public class GoogleMapsLocationProvider {
 
     private final OkHttpClient client = new OkHttpClient();
     private final String apiKey = ConfigLoader.getKey("google.api.key");

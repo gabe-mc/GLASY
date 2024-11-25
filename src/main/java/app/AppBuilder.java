@@ -1,7 +1,7 @@
 package app;
 
-import data_access.CurrentLocationDataAccessObject;
-import data_access.GoogleMapsDataAccessObject;
+import data_access.CurrentLocationProvider;
+import data_access.GoogleMapsLocationProvider;
 import data_access.UserDataAccessObject;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_options.ChooseOptionsViewModel;
@@ -25,9 +25,9 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
-    private final CurrentLocationDataAccessObject currentLocationDataAccessObject =
-            new CurrentLocationDataAccessObject();
-    private final GoogleMapsDataAccessObject googleMapsDataAccessObject = new GoogleMapsDataAccessObject();
+    private final CurrentLocationProvider currentLocationProvider =
+            new CurrentLocationProvider();
+    private final GoogleMapsLocationProvider googleMapsLocationProvider = new GoogleMapsLocationProvider();
 
     private SplashScreenView splashScreenView;
     private SplashScreenViewModel splashScreenViewModel = new SplashScreenViewModel();
@@ -54,7 +54,7 @@ public class AppBuilder {
         final StartAppOutputBoundary startAppOutputBoundary = new SplashScreenPresenter(viewManagerModel,
                 chooseOptionsViewModel);
         final StartAppInputBoundary startAppInteractor = new StartAppInteractor(
-                currentLocationDataAccessObject, userDataAccessObject, startAppOutputBoundary);
+                currentLocationProvider, userDataAccessObject, startAppOutputBoundary);
 
         final SplashScreenController controller = new SplashScreenController(startAppInteractor);
         splashScreenView.setSplashScreenController(controller);

@@ -9,6 +9,6 @@ import java.util.ArrayList;
  */
 public interface PrepareLocationsInputBoundary {
 
-    void prepareLocations(ArrayList<String> wantedLocations, ArrayList<AttractionData> allLocations, int startTime);
+    void prepareLocations(PrepareLocationsInputData data);
 
 }

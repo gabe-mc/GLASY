@@ -17,7 +17,7 @@ import use_case.find_shortest_path.FindShortestPathInputData;
 public class GoogleMapsLocationProvider {
 
     private final OkHttpClient client = new OkHttpClient();
-    private final String apiKey = ConfigLoaderDataAccess.getKey("google.api.key");
+    private final String apiKey = ConfigLoader.getKey("google.api.key");
 
     /**
      * Constructs a URL for the Google Maps Geocoding API based on the provided address.

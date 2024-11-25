@@ -1,7 +1,7 @@
 package use_case.add_location;
 import com.glasy.use_case.set_user_info.GeoCoordinates;
 import com.google.gson.Gson;
-import data_access.FoursquareDataAccess;
+import data_access.FoursquareLocationProvider;
 import entity.AttractionData;
 import entity.LocationData;
 import org.json.JSONArray;
@@ -72,7 +72,7 @@ public class AddLocationInteractor implements AddLocationInputBoundary{
 
         params.put("radius", addLocationInputData.getRadius());
         params.put("categories", addLocationInputData.getCategories());
-        JSONObject getResult = FoursquareDataAccess.get(geoCoordinates, params);
+        JSONObject getResult = FoursquareLocationProvider.get(geoCoordinates, params);
         userDataAccessObject.setJSONResults(getResult);
         resultToList(addLocationInputData.getMaxLocations());
 

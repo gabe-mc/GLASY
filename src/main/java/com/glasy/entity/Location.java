@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import data_access.ConfigLoaderDataAccess;
+import data_access.ConfigLoader;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -57,7 +57,7 @@ public class Location {
                 .url(urlBuilder.toString())
                 .get()
                 .addHeader("accept", "application/json")
-                .addHeader("Authorization", ConfigLoaderDataAccess.getKey("foursquare.api.key"))
+                .addHeader("Authorization", ConfigLoader.getKey("foursquare.api.key"))
                 .build();
 
         JSONObject locations = new JSONObject();

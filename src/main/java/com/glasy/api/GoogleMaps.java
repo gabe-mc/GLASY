@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import data_access.ConfigLoaderDataAccess;
+import data_access.ConfigLoader;
 import org.json.JSONObject;
 
 import data_access.ConfigLoader;
@@ -18,7 +18,7 @@ import okhttp3.Response;
 public class GoogleMaps {
 
     private OkHttpClient client = new OkHttpClient();
-    private String apiKey = ConfigLoaderDataAccess.getKey("google.api.key");
+    private String apiKey = ConfigLoader.getKey("google.api.key");
 
     /**
      * Constructs a URL for the Google Maps Geocoding API based on the provided address.

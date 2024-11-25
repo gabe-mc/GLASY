@@ -1,15 +1,21 @@
 package view;
 
 import entity.CommonLocationData;
+import interface_adapter.display_results_view.DisplayResultsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class DisplayResultsView extends JFrame {
+    private final String viewName = "display results";
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
+    private final DisplayResultsViewModel displayResultsViewModel;
+    private DisplayResultsController displayResultsController;
 
-    public DisplayResultsView() {
+    public DisplayResultsView(DisplayResultsViewModel displayResultsViewModel) {
+        this.displayResultsViewModel = displayResultsViewModel;
+        this.displayResultsViewModel.addPropertyChangeListener(this);
         LoadFonts loadFonts = new LoadFonts();
 
         // Initialize the image
@@ -25,17 +31,6 @@ public class DisplayResultsView extends JFrame {
         int x = (screenSize.width - bkgImage.getIconWidth()) / 2;
         int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
         setLocation(x, y);
-
-        // Results Checkboxes
-        JPanel resultsCheckboxes = new JPanel();
-        //CommonLocationData[] = {new CommonLocationData("1","2","3","4","5","6","7"),new CommonLocationData("1","2","3","4","5","6","7")};
-        String[] possibleLocations = {"a","b","c","d","e","f","g","h","i","j","k","sdfs","ghgh","aaaa","mellow","okayd","sk"};
-        for(String possibleLocation : possibleLocations) {
-            JCheckBox checkBox = new JCheckBox(possibleLocation);
-            resultsCheckboxes.add(checkBox);
-        }
-        JScrollPane scrollCheckboxes = new JScrollPane(resultsCheckboxes);
-        this.backgroundLabel.add(scrollCheckboxes);
 
         // Add in the continue button
         JButton startButton = new JButton("Continue");

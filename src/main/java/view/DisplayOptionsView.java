@@ -1,15 +1,27 @@
 package view;
 
+import interface_adapter.choose_options.ChooseOptionsState;
+import interface_adapter.display_options.DisplayOptionsController;
+import interface_adapter.display_options.DisplayOptionsState;
+import interface_adapter.display_options.DisplayOptionsViewModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class DisplayOptionsView extends JFrame {
+public class DisplayOptionsView extends JPanel implements ActionListener, PropertyChangeListener {
+    private final String viewName = "display options";
+
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
-
-    public DisplayOptionsView() {
+    private final DisplayOptionsViewModel displayOptionsViewModel;
+    private DisplayOptionsController displayOptionsController;
+    public DisplayOptionsView(DisplayOptionsViewModel displayOptionsViewModel) {
+        this.displayOptionsViewModel = displayOptionsViewModel;
+        this.displayOptionsViewModel.addPropertyChangeListener(this);
         LoadFonts loadFonts = new LoadFonts();
 
         // Initialize the image
@@ -26,6 +38,16 @@ public class DisplayOptionsView extends JFrame {
         int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
         setLocation(x, y);
 
+        // Results Checkboxes
+        JPanel resultsCheckboxes = new JPanel();
+        String[] possibleLocations = {"a","b","c","d","e","f","g","h","i","j","k","sdfs","ghgh","aaaa","mellow","okayd","sk"};
+        for(String possibleLocation : possibleLocations) {
+            JCheckBox checkBox = new JCheckBox(possibleLocation);
+            resultsCheckboxes.add(checkBox);
+        }
+        JScrollPane scrollCheckboxes = new JScrollPane(resultsCheckboxes);
+        this.backgroundLabel.add(scrollCheckboxes);
+
         // Add in the continue button
         JButton startButton = new JButton("Continue");
         startButton.setFont(loadFonts.montserratFont);
@@ -33,12 +55,33 @@ public class DisplayOptionsView extends JFrame {
         startButton.setBackground(new Color(202, 210, 197));
         startButton.setBounds((this.bkgImage.getIconWidth() - 200) / 2 - 50, 600, 300, 40);
         this.backgroundLabel.add(startButton);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        startButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(startButton)) {
+                            displayOptionsController.execute();
+                        }
+                    }
+                }
+        );
+
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        setResizable(false);
+//        setResizable(false);
     }
 
-    public static void main(String[] args) {
-        DisplayOptionsView displayOptionsView = new DisplayOptionsView();
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        System.out.println("Click " + evt.getActionCommand());
     }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("state")) {
+            final DisplayOptionsState state = (DisplayOptionsState) evt.getNewValue();
+        }
+
+    }
+    public String getViewName() { return viewName; }
 }

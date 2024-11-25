@@ -1,8 +1,15 @@
 package use_case.add_location;
 
-public class AddLocationInputBoundary {
+import java.io.IOException;
 
-    public void execute() {
+/**
+ * Add Location Use Case
+ */
+public interface AddLocationInputBoundary {
 
-    }
+    /**
+     * Execute the Add Location Use Case.
+     * @param addLocationInputData the input data for this use case
+     */
+    void execute(AddLocationInputData addLocationInputData) throws IOException;
 }

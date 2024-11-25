@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.glasy.use_case.set_user_info.GeoCoordinates;
 import entity.CommonLocationData;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import data_access.ConfigLoader;
-import com.glasy.use_case.set_user_info.GeoCoordinates;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

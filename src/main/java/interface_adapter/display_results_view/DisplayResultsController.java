@@ -11,6 +11,6 @@ public class DisplayResultsController {
     }
 
     public void execute(){
-        addLocationUseCaseInteractor.execute();
+//        addLocationUseCaseInteractor.execute();
     }
 }

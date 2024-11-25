@@ -13,18 +13,19 @@ public class PrepareLocationsInteractorTest {
     @Test
     void SuccessTest() {
         ArrayList<AttractionData> attractions = new ArrayList<>();
-
+        ArrayList<String> wantedLocations = new ArrayList<>();
         AttractionData attraction1 = new AttractionData();
         attraction1.setName("Burger King");
         attraction1.setAddress("197 Yonge Street");
         attraction1.setCountry("Canada");
         attractions.add(attraction1);
-        String wantedLocations = "Burger King";
+        wantedLocations.add("Burger King");
         AttractionData attraction2 = new AttractionData();
         attraction2.setName("McDonalds");
         attraction2.setAddress("101 Yonge Street");
         attraction2.setCountry("Canada");
         attractions.add(attraction2);
+        wantedLocations.add("McDonalds");
 
         PrepareLocationsOutputBoundary outputBoundary = new PrepareLocationsOutputBoundary() {
             @Override

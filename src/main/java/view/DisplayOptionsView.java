@@ -1,16 +1,23 @@
 package view;
 
+import interface_adapter.display_options.DisplayOptionsViewModel;
+import interface_adapter.splash_screen_view.SplashScreenState;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class DisplayOptionsView extends JFrame {
+public class DisplayOptionsView extends JFrame implements ActionListener, PropertyChangeListener {
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
+    private final DisplayOptionsViewModel displayOptionsViewModel;
 
-    public DisplayOptionsView() {
+    public DisplayOptionsView(DisplayOptionsViewModel displayOptionsViewModel) {
         LoadFonts loadFonts = new LoadFonts();
+        this.displayOptionsViewModel = displayOptionsViewModel;
 
         // Initialize the image
         this.bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage2.png");
@@ -38,7 +45,15 @@ public class DisplayOptionsView extends JFrame {
         setResizable(false);
     }
 
-    public static void main(String[] args) {
-        DisplayOptionsView displayOptionsView = new DisplayOptionsView();
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        System.out.println("Click " + evt.getActionCommand());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("state")) {
+            final SplashScreenState state = (SplashScreenState) evt.getNewValue();
+        }
     }
 }

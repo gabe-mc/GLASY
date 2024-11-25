@@ -1,14 +1,22 @@
 package view;
 
+import interface_adapter.display_results_view.DisplayResultsViewModel;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class DisplayResultsView extends JFrame {
+public class DisplayResultsView extends JFrame implements ActionListener, PropertyChangeListener {
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
+    private final DisplayResultsViewModel displayResultsViewModel;
 
-    public DisplayResultsView() {
+    public DisplayResultsView(DisplayResultsViewModel displayResultsViewModel) {
         LoadFonts loadFonts = new LoadFonts();
+        this.displayResultsViewModel = displayResultsViewModel;
 
         // Initialize the image
         this.bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage2.png");
@@ -42,5 +50,15 @@ public class DisplayResultsView extends JFrame {
 
     public static void main(String[] args) {
         DisplayResultsView displayResultsView = new DisplayResultsView();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
     }
 }

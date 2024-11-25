@@ -32,42 +32,29 @@ public class SplashScreenView extends JPanel implements ActionListener, Property
     public SplashScreenView(SplashScreenViewModel splashScreenViewModel) {
         this.splashScreenViewModel = splashScreenViewModel;
         this.splashScreenViewModel.addPropertyChangeListener(this);
-        ImageIcon bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage.png");
+        LoadFonts loadFonts = new LoadFonts();
 
-        // Load and register the Koulen font
-        try {
-            koulenFont = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("src/main/java/view/fonts/Koulen/Koulen-Regular.ttf")).deriveFont(280f);
-            montserratFont = Font.createFont(Font.TRUETYPE_FONT,
-                    new File("src/main/java/view/fonts/Montserrat/Montserrat-Regular.ttf")).deriveFont(23f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(koulenFont);
-            ge.registerFont(montserratFont);
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-            koulenFont = new Font("SansSerif", Font.BOLD, 180);
-            montserratFont = new Font("SansSerif", Font.BOLD, 180);
-        }
         // Set the background image
+        ImageIcon bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage.png");
         JLabel splashLabel = new JLabel(bkgImage);
 
         // Add in the title
         JLabel titleLabel = new JLabel("GLASY", JLabel.CENTER);
-        titleLabel.setFont(koulenFont);
+        titleLabel.setFont(loadFonts.koulenFont);
         titleLabel.setForeground(new Color(202, 210, 197));
         titleLabel.setBounds(0, 130, bkgImage.getIconWidth(), 280);
         splashLabel.add(titleLabel);
 
         // Add in the subtitle
         JLabel subtitleLabel = new JLabel("The only trip planner you'll ever use.", JLabel.CENTER);
-        subtitleLabel.setFont(montserratFont);
+        subtitleLabel.setFont(loadFonts.montserratFont);
         subtitleLabel.setForeground(new Color(202, 210, 197));
         subtitleLabel.setBounds(0, 400, bkgImage.getIconWidth(), 30);
         splashLabel.add(subtitleLabel);
 
         // Add in the button
-        JButton startButton = new JButton("Click Here to Start");
-        startButton.setFont(montserratFont);
+        startButton = new JButton("Click Here to Start");
+        startButton.setFont(loadFonts.montserratFont);
         startButton.setForeground(new Color(82, 121, 111));
         startButton.setBackground(new Color(202, 210, 197));
         startButton.setBounds((bkgImage.getIconWidth() - 200) / 2 - 50, 450, 300, 40);

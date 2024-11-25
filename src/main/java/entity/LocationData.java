@@ -1,7 +1,7 @@
 package entity;
 
  public interface LocationData {
-     String getLongitude();
+     Double getLongitude();
 
      void setLongitude(Double longitude);
 

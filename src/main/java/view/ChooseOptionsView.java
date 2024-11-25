@@ -6,6 +6,8 @@ import interface_adapter.choose_options.ChooseOptionsViewModel;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -13,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class ChooseOptionsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "choose options";
@@ -20,6 +23,17 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
     private final ChooseOptionsViewModel chooseOptionsViewModel;
+
+    JTextField helpTextField = new JTextField();
+    SpinnerDateModel startModel = new SpinnerDateModel();
+    JSpinner startTime = new JSpinner(startModel);
+    SpinnerDateModel endModel = new SpinnerDateModel();
+    JSpinner endTime = new JSpinner(endModel);
+    JSlider distanceSlider = new JSlider(0, 20, 0);
+    JSlider ratingSlider = new JSlider(0, 10,0);
+    JCheckBox restaurantCheck = new JCheckBox("Restaurant");
+    JCheckBox attractionCheck = new JCheckBox("Attraction");
+    JCheckBox shopCheck = new JCheckBox("Shop");
 
     public ChooseOptionsView(ChooseOptionsViewModel chooseOptionsViewModel) {
         this.chooseOptionsViewModel = chooseOptionsViewModel;
@@ -44,11 +58,33 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         addLocationLabel.setFont(loadFonts.montserratFontSmall);
 
         //creates place to type (JTextField)
-        JTextField helpTextField = new JTextField();
         helpTextField.setFont(loadFonts.montserratFontSmall);
 
         addLocationPanel.add(addLocationLabel);
         addLocationPanel.add(helpTextField);
+
+        helpTextField.getDocument().addDocumentListener(new DocumentListener() {
+            private void documentListenerHelper() {
+                final ChooseOptionsState currentState = chooseOptionsViewModel.getState();
+                currentState.setStartingAddress(helpTextField.getText());
+                chooseOptionsViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
 
         // start time - end time
 
@@ -66,13 +102,11 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
-        SpinnerDateModel model = new SpinnerDateModel();
-        JSpinner startTime = new JSpinner(model);
         startTime.setFont(loadFonts.montserratFontSmall);
         JSpinner.DateEditor startTimeEditor = new JSpinner.DateEditor(startTime, "HH:mm");
         startTimeEditor.setFont(loadFonts.montserratFontSmall);
 
-        JLabel startTimeLabel = new JLabel("Start Time: " + dateFormat.format((Date)startTime.getValue()));
+        JLabel startTimeLabel = new JLabel("Start Time: " + dateFormat.format(startTime.getValue()));
         startTimeLabel.setFont(loadFonts.montserratFontSmall);
         startTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -80,40 +114,42 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         setTimePanel.add(startTimeLabel);
         setTimePanel.add(startTime);
 
-        startTime.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                startTimeLabel.setText("Start time:" + dateFormat.format((Date)startTime.getValue()));
-            }
-        });
-
         //end time
 
-        SpinnerDateModel model1 = new SpinnerDateModel();
-        JSpinner endTime = new JSpinner(model1);
         endTime.setFont(loadFonts.montserratFontSmall);
         JSpinner.DateEditor endTimeEditor = new JSpinner.DateEditor(endTime, "HH:mm");
         endTimeEditor.setFont(loadFonts.montserratFontSmall);
 
-        JLabel endTimeLabel = new JLabel("End Time: " + dateFormat.format((Date)endTime.getValue()));
+        JLabel endTimeLabel = new JLabel("End Time: " + dateFormat.format(endTime.getValue()));
         endTimeLabel.setFont(loadFonts.montserratFontSmall);
         endTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        endTime.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-
-                endTimeLabel.setText("End time:" + dateFormat.format((Date)endTime.getValue()));
-            }
-        });
 
         endTime.setEditor(endTimeEditor);
         setTimePanel.add(endTimeLabel);
         setTimePanel.add(endTime);
 
+        JSpinner[] spinners = {startTime, endTime};
+        for (JSpinner spinner : spinners) {
+            spinner.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    final ChooseOptionsState currentState = chooseOptionsViewModel.getState();
+                    JSpinner source = (JSpinner) e.getSource();
+                    if (source == startTime) {
+                        startTimeLabel.setText("Start time: " + dateFormat.format(startTime.getValue()));
+                        currentState.setStartTime((Date) source.getValue());
+                    } else if (source == endTime) {
+                        endTimeLabel.setText("End time: " + dateFormat.format(endTime.getValue()));
+                        currentState.setEndTime((Date) source.getValue());
+                    }
+                }
+            });
+        }
+
         //Distance
         JPanel distancePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         distancePanel.setOpaque(false);
         distancePanel.setBackground(new Color(0, 0, 0, 0));
-        JSlider distanceSlider = new JSlider(0, 20, 0);
         distanceSlider.setMajorTickSpacing(5);
         distanceSlider.setMinorTickSpacing(1);
         distanceSlider.setPaintTicks(true);
@@ -125,13 +161,6 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         JLabel distanceLabel = new JLabel("Distance (km): " + distanceSlider.getValue());
         distanceLabel.setFont(loadFonts.montserratFontSmall);
 
-        distanceSlider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                int distanceRequirement = distanceSlider.getValue();
-                distanceLabel.setText("Distance: " + distanceRequirement + " km");
-            }
-        });
-
         distancePanel.add(distanceLabel);
         distancePanel.add(distanceSlider);
 
@@ -140,7 +169,6 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         JPanel ratingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         ratingPanel.setOpaque(false);
         ratingPanel.setBackground(new Color(0, 0, 0, 0));
-        JSlider ratingSlider = new JSlider(0, 10,0);
         ratingSlider.setMajorTickSpacing(2);
         ratingSlider.setMinorTickSpacing(1);
         ratingSlider.setPaintTicks(true);
@@ -150,56 +178,52 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
 
         //changes the labels below to be 1/2 of the actual value (so it could be .5 stars
         Hashtable<Integer, JLabel> starTable = new Hashtable<>();
-
-        JLabel zero = new JLabel("0");
-        JLabel first = new JLabel("1");
-        JLabel second = new JLabel("2");
-        JLabel third = new JLabel("3");
-        JLabel fourth = new JLabel("4");
-        JLabel fifth = new JLabel("5");
-        zero.setFont(loadFonts.montserratFontSmall);
-        first.setFont(loadFonts.montserratFontSmall);
-        second.setFont(loadFonts.montserratFontSmall);
-        third.setFont(loadFonts.montserratFontSmall);
-        fourth.setFont(loadFonts.montserratFontSmall);
-        fifth.setFont(loadFonts.montserratFontSmall);
-
-        starTable.put(0, zero);
-        starTable.put(2, first);
-        starTable.put(4, second);
-        starTable.put(6, third);
-        starTable.put(8, fourth);
-        starTable.put(10, fifth);
+        Font font = loadFonts.montserratFontSmall;
+        for (int i = 0; i <= 5; i++) {
+            JLabel label = new JLabel(String.valueOf(i));
+            label.setFont(font);
+            starTable.put(i * 2, label);
+        }
         ratingSlider.setLabelTable(starTable);
 
-        JLabel ratingLabel = new JLabel(  ratingSlider.getValue()/2 + " Stars ");
+        JLabel ratingLabel = new JLabel( "0.0 Stars");
         ratingLabel.setFont(loadFonts.montserratFontSmall);
-
-        ratingSlider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                double ratingRequirement = ratingSlider.getValue();
-                ratingLabel.setText(ratingRequirement/2 + " Stars");
-            }
-        });
 
         ratingPanel.add(ratingLabel);
         ratingPanel.add(ratingSlider);
+
+        JSlider[] sliders = {distanceSlider, ratingSlider};
+        for (JSlider slider : sliders) {
+            slider.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    final ChooseOptionsState currentState = chooseOptionsViewModel.getState();
+                    JSlider source = (JSlider) e.getSource();
+                    if (source == distanceSlider) {
+                        int distanceRequirement = distanceSlider.getValue();
+                        distanceLabel.setText("Distance: " + distanceRequirement + " km");
+                        currentState.setMaxDistance(source.getValue());
+                    } else if (source == ratingSlider) {
+                        double ratingRequirement = ratingSlider.getValue();
+                        ratingLabel.setText(ratingRequirement/2 + " Stars");
+                        currentState.setMinStars(ratingRequirement/2);
+                    }
+                }
+            });
+        }
 
         //checkboxes
         JLabel locationTypesLabel = new JLabel("Location types: ");
         locationTypesLabel.setFont(loadFonts.montserratFontSmall);
 
-        JCheckBox resturantCheck = new JCheckBox("Resturant");
-        resturantCheck.setFont(loadFonts.montserratFontSmall);
-        resturantCheck.setOpaque(false);
-        resturantCheck.setBackground(new Color(0, 0, 0, 0));
+        restaurantCheck.setFont(loadFonts.montserratFontSmall);
+        restaurantCheck.setOpaque(false);
+        restaurantCheck.setBackground(new Color(0, 0, 0, 0));
 
-        JCheckBox attractionCheck = new JCheckBox("Attraction");
         attractionCheck.setFont(loadFonts.montserratFontSmall);
         attractionCheck.setOpaque(false);
         attractionCheck.setBackground(new Color(0, 0, 0, 0));
 
-        JCheckBox shopCheck = new JCheckBox("Shop");
         shopCheck.setFont(loadFonts.montserratFontSmall);
         shopCheck.setOpaque(false);
         shopCheck.setBackground(new Color(0, 0, 0, 0));
@@ -208,9 +232,22 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         checkboxPanel.setOpaque(false);
         checkboxPanel.setBackground(new Color(0, 0, 0, 0));
         checkboxPanel.add(locationTypesLabel);
-        checkboxPanel.add(resturantCheck);
+        checkboxPanel.add(restaurantCheck);
         checkboxPanel.add(attractionCheck);
         checkboxPanel.add(shopCheck);
+
+        JCheckBox[] checkBoxes = {restaurantCheck, attractionCheck, shopCheck};
+        for (JCheckBox checkBox : checkBoxes) {
+            final ChooseOptionsState currentState = chooseOptionsViewModel.getState();
+            checkBox.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JCheckBox source = (JCheckBox) e.getSource();
+                    currentState.setPossibleLocationTypes(source.getText(), source.isSelected());
+                }
+            });
+            currentState.setPossibleLocationTypes(checkBox.getText(), checkBox.isSelected());
+        }
 
         // Starting to add the components to something the user will actually see
 
@@ -250,6 +287,27 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         startButton.setBounds((this.bkgImage.getIconWidth() - 200) / 2 - 50, 600, 300, 40);
         this.backgroundLabel.add(startButton);
 
+        startButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(startButton)) {
+                            final ChooseOptionsState currentState = chooseOptionsViewModel.getState();
+                            System.out.println(currentState.getStartingAddress());
+                            System.out.println(currentState.getStartTime());
+                            System.out.println(currentState.getEndTime());
+                            System.out.println(currentState.getMaxDistance());
+                            System.out.println(currentState.getMinStars());
+                            System.out.println(currentState.getPossibleLocationTypes());
+
+//                            chooseOptionsController.execute(
+//                                    currentState.getUsername(),
+//                                    currentState.getPassword()
+//                            );
+                        }
+                    }
+                }
+        );
+
         add(this.backgroundLabel, BorderLayout.CENTER);
         setSize(this.bkgImage.getIconWidth() + 10, this.bkgImage.getIconHeight() + 30);
 
@@ -257,11 +315,6 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         int x = (screenSize.width - bkgImage.getIconWidth()) / 2;
         int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
         setLocation(x, y);
-
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        setVisible(true);
-//        setResizable(false);
-
     }
 
     @Override
@@ -271,6 +324,7 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
             final ChooseOptionsState state = (ChooseOptionsState) evt.getNewValue();
+            helpTextField.setText(state.getStartingAddress());
         }
     }
 

@@ -15,4 +15,9 @@ public interface ChooseOptionsOutputBoundary {
      * @param errorMessage the explanation of the failure
      */
     void prepareFailView(String errorMessage);
+
+    /**
+     * Switches to the Splash Screen View.
+     */
+    void switchToPreviousView();
 }

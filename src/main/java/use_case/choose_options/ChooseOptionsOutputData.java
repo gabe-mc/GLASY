@@ -1,19 +1,23 @@
 package use_case.choose_options;
 
-import entity.CommonLocationData;
+import entity.LocationData;
 
 import java.util.List;
 
 public class ChooseOptionsOutputData {
-    private final List<CommonLocationData> locations;
+    private final List<LocationData> locations;
     private final boolean useCaseFailed;
 
-    public ChooseOptionsOutputData(List<CommonLocationData> locations, boolean useCaseFailed) {
+    public ChooseOptionsOutputData(List<LocationData> locations, boolean useCaseFailed) {
         this.locations = locations;
         this.useCaseFailed = useCaseFailed;
     }
 
-    public List<CommonLocationData> getLocations() {
+    public List<LocationData> getLocations() {
         return locations;
+    }
+
+    public boolean isUseCaseFailed() {
+        return useCaseFailed;
     }
 }

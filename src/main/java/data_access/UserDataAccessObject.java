@@ -9,6 +9,6 @@ public class UserDataAccessObject implements StartAppUserDataAccessInterface {
 
     @Override
     public void setCurrentLocation(CommonLocationData currentLocation) {
-        this.user.setLocation(currentLocation);
+        this.user.setCurrentLocation(currentLocation);
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 public class AttractionData extends CommonLocationData{
     private String name;
     private List<Double> hoursOfOperation;
+    /* TODO: add type and time spent at location */
 
     public AttractionData() { /* Instantiated as an empty method because  */ }
 

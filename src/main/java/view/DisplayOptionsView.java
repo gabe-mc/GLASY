@@ -53,7 +53,7 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         startButton.setFont(loadFonts.montserratFont);
         startButton.setForeground(new Color(82, 121, 111));
         startButton.setBackground(new Color(202, 210, 197));
-        startButton.setBounds((this.bkgImage.getIconWidth() - 200) / 2 - 50, 600, 300, 40);
+        startButton.setBounds(this.bkgImage.getIconWidth() - 300, 600, 200, 40);
         this.backgroundLabel.add(startButton);
 
         startButton.addActionListener(
@@ -65,6 +65,14 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                     }
                 }
         );
+
+        // Add in the back button
+        JButton backButton = new JButton("Back");
+        backButton.setFont(loadFonts.montserratFont);
+        backButton.setForeground(new Color(82, 121, 111));
+        backButton.setBackground(new Color(202, 210, 197));
+        backButton.setBounds(90, 600, 140, 40);
+        this.backgroundLabel.add(backButton);
 
 //        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);

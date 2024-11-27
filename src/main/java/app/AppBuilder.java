@@ -5,6 +5,7 @@ import data_access.GoogleMapsLocationProvider;
 import data_access.UserDataAccessObject;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_options.ChooseOptionsViewModel;
+import interface_adapter.display_options.DisplayOptionsViewModel;
 import interface_adapter.splash_screen_view.SplashScreenController;
 import interface_adapter.splash_screen_view.SplashScreenPresenter;
 import interface_adapter.splash_screen_view.SplashScreenViewModel;
@@ -12,6 +13,7 @@ import use_case.start_app.StartAppInputBoundary;
 import use_case.start_app.StartAppInteractor;
 import use_case.start_app.StartAppOutputBoundary;
 import view.ChooseOptionsView;
+import view.DisplayOptionsView;
 import view.SplashScreenView;
 import view.ViewManager;
 
@@ -33,6 +35,8 @@ public class AppBuilder {
     private SplashScreenViewModel splashScreenViewModel = new SplashScreenViewModel();
     private ChooseOptionsView chooseOptionsView;
     private ChooseOptionsViewModel chooseOptionsViewModel = new ChooseOptionsViewModel();
+    private DisplayOptionsView displayOptionsView;
+    private DisplayOptionsViewModel displayOptionsViewModel = new DisplayOptionsViewModel();
 
     public AppBuilder() { cardPanel.setLayout(cardLayout); }
 
@@ -47,6 +51,13 @@ public class AppBuilder {
         chooseOptionsViewModel = new ChooseOptionsViewModel();
         chooseOptionsView = new ChooseOptionsView(chooseOptionsViewModel);
         cardPanel.add(chooseOptionsView, chooseOptionsView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addDisplayOptionsView() {
+        displayOptionsViewModel = new DisplayOptionsViewModel();
+        displayOptionsView = new DisplayOptionsView(displayOptionsViewModel);
+        cardPanel.add(displayOptionsView, displayOptionsView.getViewName());
         return this;
     }
 
@@ -68,6 +79,7 @@ public class AppBuilder {
         application.add(cardPanel);
 
         viewManagerModel.setState(splashScreenView.getViewName());
+//        viewManagerModel.setState(displayOptionsView.getViewName());
         viewManagerModel.firePropertyChanged();
 
         return application;

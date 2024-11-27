@@ -67,8 +67,8 @@ public class FindShortestPathInteractor implements FindShortestPathInputBoundary
         path.add("197 Yonge St, Toronto ON");
         path.add("57 St Joseph St, Toronto ON");
         path.add("4 Hoskin Ave, Toronto ON");
-        FindShortestPathInputData result = new FindShortestPathInputData(path);
-        FindShortestPathInteractor interactor = new FindShortestPathInteractor(example, null);
+//        FindShortestPathInputData result = new FindShortestPathInputData(path);
+//        FindShortestPathInteractor interactor = new FindShortestPathInteractor(example, null);
 //        ArrayList<String> getResponse = interactor.findShortestPath(result);
 //        System.out.println(example.generateMapsLink(getResponse));
     }

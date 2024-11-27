@@ -14,7 +14,6 @@ import okhttp3.Response;
 
 import static java.lang.Integer.parseInt;
 import use_case.choose_options.ChooseOptionsGoogleMapsLocationProviderInterface;
-import use_case.find_shortest_path.FindShortestPathInputData;
 
 /**
  * The DAO for google maps data.

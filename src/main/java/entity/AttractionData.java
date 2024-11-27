@@ -6,7 +6,7 @@ public class AttractionData extends CommonLocationData{
     private String name;
     private List<Double> hoursOfOperation;
     private int travelTime;
-    private String vistTime;
+    private String visitTime;
 
     public AttractionData() { /* Instantiated as an empty method because  */ }
 
@@ -30,8 +30,8 @@ public class AttractionData extends CommonLocationData{
 
     public int getTravelTime() {return travelTime;}
 
-    public void setTime(String time) {this.vistTime = time;}
+    public void setVisitTime(String time) {this.visitTime = time;}
 
-    public String getTime() {return vistTime;}
+    public String getVisitTime() {return visitTime;}
 
 }

@@ -11,9 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DisplayOptionsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "display options";
+    final DisplayOptionsState displayOptionsState;
 
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
@@ -23,6 +26,8 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         this.displayOptionsViewModel = displayOptionsViewModel;
         this.displayOptionsViewModel.addPropertyChangeListener(this);
         LoadFonts loadFonts = new LoadFonts();
+
+        displayOptionsState = displayOptionsViewModel.getState();
 
         // Initialize the image
         this.bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage2.png");
@@ -40,12 +45,20 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
 
         // Results Checkboxes
         JPanel resultsCheckboxes = new JPanel();
-        String[] possibleLocations = {"a","b","c","d","e","f","g","h","i","j","k","sdfs","ghgh","aaaa","mellow","okayd","sk"};
-        for(String possibleLocation : possibleLocations) {
+        List<String> possibleLocations = new ArrayList<>();
+        possibleLocations.add("Hello");
+        possibleLocations.add("My name");
+        possibleLocations.add("Please help me");
+//        {"a","b","c","d","e","f","g","h","i","j","k","sdfs"};
+        System.out.println(possibleLocations);
+        for (String possibleLocation : possibleLocations) {
             JCheckBox checkBox = new JCheckBox(possibleLocation);
             resultsCheckboxes.add(checkBox);
         }
         JScrollPane scrollCheckboxes = new JScrollPane(resultsCheckboxes);
+        resultsCheckboxes.setFont(loadFonts.montserratFontSmall);
+        scrollCheckboxes.setBounds(50, 50, this.bkgImage.getIconWidth() - 100, this.bkgImage.getIconHeight() - 200);
+        resultsCheckboxes.setLayout(new BoxLayout(resultsCheckboxes, BoxLayout.Y_AXIS));
         this.backgroundLabel.add(scrollCheckboxes);
 
         // Add in the continue button
@@ -55,6 +68,7 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         startButton.setBackground(new Color(202, 210, 197));
         startButton.setBounds(this.bkgImage.getIconWidth() - 300, 600, 200, 40);
         this.backgroundLabel.add(startButton);
+
 
         startButton.addActionListener(
                 new ActionListener() {
@@ -75,9 +89,15 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         this.backgroundLabel.add(backButton);
 
 //        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+//        setVisible(true);
 //        setResizable(false);
     }
+
+    /**
+     * The previous view will pass the list of location objects into the DisplayOptionsState
+     * The propertyChange function should call the Google Maps API
+     *
+     */
 
     @Override
     public void actionPerformed(ActionEvent evt) {

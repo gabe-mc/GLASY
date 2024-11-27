@@ -1,5 +1,8 @@
 package use_case.find_shortest_path;
 
+import entity.AttractionData;
+import org.w3c.dom.Attr;
+
 import java.util.ArrayList;
 
 /**
@@ -7,11 +10,11 @@ import java.util.ArrayList;
  */
 public class FindShortestPathOutputData {
 
-    private final ArrayList<String> shortestPath;
+    private final ArrayList<AttractionData> shortestPath;
 
-    public FindShortestPathOutputData(ArrayList<String> shortestPath) {
+    public FindShortestPathOutputData(ArrayList<AttractionData> shortestPath) {
         this.shortestPath = shortestPath;
     }
 
-    public ArrayList<String> getShortestPath() {return shortestPath;}
+    public ArrayList<AttractionData> getShortestPath() {return shortestPath;}
 }

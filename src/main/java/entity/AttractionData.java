@@ -8,7 +8,9 @@ public class AttractionData extends CommonLocationData {
     private Double rating; // From 0.0 to 10.0
     private int price; // From 1-4, 0 means unknown
     private String photoUrl;
-    /* TODO: add type and time spent at location */
+    private List<Double> hoursOfOperation;
+    private int travelTime;
+    private String visitTime;
 
     public String getName() {
         return name;
@@ -49,4 +51,13 @@ public class AttractionData extends CommonLocationData {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
+
+    public void setTravelTime(int travelTime) {this.travelTime = travelTime;}
+
+    public int getTravelTime() {return travelTime;}
+
+    public void setVisitTime(String time) {this.visitTime = time;}
+
+    public String getVisitTime() {return visitTime;}
+
 }

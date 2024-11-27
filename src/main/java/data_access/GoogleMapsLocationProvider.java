@@ -2,7 +2,6 @@ package data_access;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import entity.CommonLocationData;
 import entity.LocationData;
@@ -12,6 +11,8 @@ import org.json.JSONObject;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static java.lang.Integer.parseInt;
 import use_case.choose_options.ChooseOptionsGoogleMapsLocationProviderInterface;
 import use_case.find_shortest_path.FindShortestPathInputData;
 
@@ -74,6 +75,25 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
     }
 
     /**
+     * Constructs a Google Maps Distance Matrix API URL for calculating the distance
+     * between two given addresses.
+     *
+     * @param address1 The origin address, which will be used as the starting point for the distance calculation.
+     * @param address2 The destination address, which will be used as the endpoint for the distance calculation.
+     * @return A properly formatted URL to the Google Maps Distance Matrix API for the given addresses.
+     * @throws IOException If there is an issue with network connectivity or API access during URL construction.
+     */
+    public String createDistanceMatrixUrl(String address1, String address2) throws IOException {
+        final StringBuilder url = new
+                StringBuilder("https://maps.googleapis.com/maps/api/distancematrix/json?destinations=");
+        formatAddress(address1, url);
+        url.append("&origins=");
+
+        formatAddress(address2, url);
+        return url.substring(0, url.length() - 2) + "&key=" + apiKey;
+    }
+
+    /**
      * Retrieves the address for a given longitude and latitude by sending a request
      * to a geocoding API and parsing the JSON response.
      *
@@ -97,6 +117,22 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
         }
     }
 
+    public int calculateTravelTime(String address1, String address2) throws IOException {
+        final String url = createDistanceMatrixUrl(address1, address2);
+        final Request request = new Request.Builder().url(url).build();
+        try (Response response = client.newCall(request).execute()) {
+            final String responseBody = response.body().string();
+            final JSONObject jsonObject = new JSONObject(responseBody);
+            final  String result = jsonObject.getJSONArray("rows")
+                    .getJSONObject(0)
+                    .getJSONArray("elements")
+                    .getJSONObject(0)
+                    .getJSONObject("duration")
+                    .getString("text");
+            return parseInt(result.substring(0,result.length() -5));
+        }
+    }
+
     /**
      * Calculates the distance between two locations using the Google Maps Distance Matrix API.
      *
@@ -106,12 +142,7 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
      * @throws IOException If an error occurs while building the request or processing the response.
      */
     public Float matrixDistance(String address1, String address2) throws IOException {
-        final StringBuilder urlBuilder = new
-                StringBuilder("https://maps.googleapis.com/maps/api/distancematrix/json?destinations=");
-        formatAddress(address1, urlBuilder);
-        urlBuilder.append("&origins=");
-        formatAddress(address2, urlBuilder);
-        String url = urlBuilder.substring(0, urlBuilder.length() - 2) + "&key=" + apiKey;
+        final String url = createDistanceMatrixUrl(address1, address2);
         final Request request = new Request.Builder().url(url).build();
         try (Response response = client.newCall(request).execute()) {
             final String responseBody = response.body().string();

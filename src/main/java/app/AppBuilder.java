@@ -97,6 +97,7 @@ public class AppBuilder {
         application.add(cardPanel);
 
         viewManagerModel.setState(splashScreenView.getViewName());
+//        viewManagerModel.setState(displayOptionsView.getViewName());
         viewManagerModel.firePropertyChanged();
 
         return application;

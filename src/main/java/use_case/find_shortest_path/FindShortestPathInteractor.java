@@ -1,6 +1,7 @@
 package use_case.find_shortest_path;
 
 import data_access.GoogleMapsLocationProvider;
+import entity.AttractionData;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,21 +22,21 @@ public class FindShortestPathInteractor implements FindShortestPathInputBoundary
 
     @Override
     public void findShortestPath(FindShortestPathInputData inputData) throws IOException {
-        ArrayList<String> locations = inputData.getPath();
-        final String origin = locations.get(0);
-        final ArrayList<String> result = new ArrayList<>();
+        ArrayList<AttractionData> locations = inputData.getPath();
+        final AttractionData origin = locations.get(0);
+        final ArrayList<AttractionData> result = new ArrayList<>();
         result.add(origin);
-        HashMap<String, Float> temp = new HashMap<>();
+        HashMap<AttractionData, Float> temp = new HashMap<>();
         final int size = locations.size() - 2;
         int i = 0;
         while (i < size) {
             for (int j = 1; j < locations.size(); j++) {
-                final Float dist = googleMapsDAO.matrixDistance(locations.get(i), locations.get(j));
+                final Float dist = googleMapsDAO.matrixDistance(locations.get(i).getAddress(), locations.get(j).getAddress());
                 temp.put(locations.get(j), dist);
             }
-            String minName = "";
+            AttractionData minName = null;
             Float minValue = Float.MAX_VALUE;
-            for (String location : temp.keySet()) {
+            for (AttractionData location : temp.keySet()) {
                 if (temp.get(location) < minValue) {
                     minName = location;
                     minValue = temp.get(location);
@@ -47,6 +48,11 @@ public class FindShortestPathInteractor implements FindShortestPathInputBoundary
             i += 1;
         }
         result.add(locations.get(1));
+
+        for (int m = 0; m < result.size() -1; m++) {
+            result.get(m).setTravelTime(googleMapsDAO.calculateTravelTime(result.get(m).getAddress(), result.get(m+1).getAddress()));
+        }
+        result.get(result.size()-1).setTravelTime(0);
 
         FindShortestPathOutputData outputData = new FindShortestPathOutputData(result);
         outputBoundary.presentOutput(outputData);

@@ -5,7 +5,8 @@ import java.util.List;
 public class AttractionData extends CommonLocationData{
     private String name;
     private List<Double> hoursOfOperation;
-    /* TODO: add type and time spent at location */
+    private int travelTime;
+    private String vistTime;
 
     public AttractionData() { /* Instantiated as an empty method because  */ }
 
@@ -24,4 +25,13 @@ public class AttractionData extends CommonLocationData{
     public void setHoursOfOperation(List<Double> hoursOfOperation) {
         this.hoursOfOperation = hoursOfOperation;
     }
+
+    public void setTravelTime(int travelTime) {this.travelTime = travelTime;}
+
+    public int getTravelTime() {return travelTime;}
+
+    public void setTime(String time) {this.vistTime = time;}
+
+    public String getTime() {return vistTime;}
+
 }

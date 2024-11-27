@@ -2,14 +2,14 @@ package data_access;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.json.JSONObject;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import use_case.find_shortest_path.FindShortestPathInputData;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * The DAO for google maps data.
@@ -103,6 +103,22 @@ public class GoogleMapsLocationProvider {
         }
     }
 
+    public int calculateTravelTime(String address1, String address2) throws IOException {
+        final String url = createDistanceMatrixUrl(address1, address2);
+        final Request request = new Request.Builder().url(url).build();
+        try (Response response = client.newCall(request).execute()) {
+            final String responseBody = response.body().string();
+            final JSONObject jsonObject = new JSONObject(responseBody);
+            final  String result = jsonObject.getJSONArray("rows")
+                    .getJSONObject(0)
+                    .getJSONArray("elements")
+                    .getJSONObject(0)
+                    .getJSONObject("duration")
+                    .getString("text");
+            return parseInt(result.substring(0,result.length() -5));
+        }
+    }
+
     /**
      * Calculates the distance between two locations using the Google Maps Distance Matrix API.
      *
@@ -126,51 +142,6 @@ public class GoogleMapsLocationProvider {
                     .getString("text");
             return Float.parseFloat(result.substring(0, result.length() - 2));
         }
-    }
-
-    /**
-     * Determines the order of locations from closest to furthest starting from the initial location.
-     * This method calculates pairwise distances between the starting location and remaining locations,
-     * ordering them by the shortest route based on distance.
-     *
-     * @param inputData An FindShortestPathInputData storing an ArrayList of location names or addresses,
-     *                  where the first location is the starting point.
-     * @return An ArrayList of locations ordered from the starting location to the furthest, with each
-     *         subsequent location being the closest unvisited location.
-     * @throws IOException If an error occurs during the distance calculation requests.
-     */
-    public ArrayList<String> findShortestRoute(FindShortestPathInputData inputData) throws IOException {
-        ArrayList<String> locations = inputData.getPath();
-        final String origin = locations.get(0);
-        final ArrayList<String> result = new ArrayList<>();
-        result.add(origin);
-        HashMap<String, Float> temp = new HashMap<>();
-        final int size = locations.size() - 2;
-        int i = 0;
-        while (i < size) {
-            for (int j = 1; j < locations.size(); j++) {
-                final Float dist = matrixDistance(locations.get(i), locations.get(j));
-                temp.put(locations.get(j), dist);
-            }
-            String minName = "";
-            Float minValue = Float.MAX_VALUE;
-            for (String location: temp.keySet()) {
-                if (temp.get(location) < minValue) {
-                    minName = location;
-                    minValue = temp.get(location);
-
-                }
-            }
-            System.out.println(temp);
-            result.add(minName);
-            locations.remove(minName);
-            System.out.println(locations);
-            temp = new HashMap<>();
-            i += 1;
-
-        }
-        result.add(locations.get(1));
-        return result;
     }
 
     /**

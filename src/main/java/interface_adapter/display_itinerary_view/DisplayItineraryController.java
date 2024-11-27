@@ -1,12 +1,12 @@
-package interface_adapter.display_results_view;
+package interface_adapter.display_itinerary_view;
 
 import use_case.choose_options.ChooseOptionsInputBoundary;
 
-public class DisplayResultsController {
+public class DisplayItineraryController {
 
     private final ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor;
 
-    public DisplayResultsController(ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor) {
+    public DisplayItineraryController(ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor) {
         this.chooseOptionsUseCaseInteractor = chooseOptionsUseCaseInteractor;
     }
 

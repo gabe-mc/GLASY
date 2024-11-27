@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.choose_options.ChooseOptionsController;
 import interface_adapter.choose_options.ChooseOptionsState;
 import interface_adapter.choose_options.ChooseOptionsViewModel;
 
@@ -15,25 +16,26 @@ import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Map;
 
 public class ChooseOptionsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "choose options";
+    private final ChooseOptionsViewModel chooseOptionsViewModel;
+    private ChooseOptionsController chooseOptionsController;
 
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
-    private final ChooseOptionsViewModel chooseOptionsViewModel;
 
-    JTextField helpTextField = new JTextField();
-    SpinnerDateModel startModel = new SpinnerDateModel();
-    JSpinner startTime = new JSpinner(startModel);
-    SpinnerDateModel endModel = new SpinnerDateModel();
-    JSpinner endTime = new JSpinner(endModel);
-    JSlider distanceSlider = new JSlider(0, 20, 0);
-    JSlider ratingSlider = new JSlider(0, 10,0);
-    JCheckBox restaurantCheck = new JCheckBox("Restaurant");
-    JCheckBox attractionCheck = new JCheckBox("Attraction");
-    JCheckBox shopCheck = new JCheckBox("Shop");
+    private final JTextField helpTextField = new JTextField();
+    private final SpinnerDateModel startModel = new SpinnerDateModel();
+    private final JSpinner startTime = new JSpinner(startModel);
+    private final SpinnerDateModel endModel = new SpinnerDateModel();
+    private final JSpinner endTime = new JSpinner(endModel);
+    private final JSlider distanceSlider = new JSlider(1, 20, 10);
+    private final JSlider ratingSlider = new JSlider(0, 10,0);
+    private final JCheckBox restaurantCheck = new JCheckBox("Restaurant");
+    private final JCheckBox attractionCheck = new JCheckBox("Attraction");
+    private final JCheckBox shopCheck = new JCheckBox("Shop");
+    private final JLabel errorLabel = new JLabel();
 
     public ChooseOptionsView(ChooseOptionsViewModel chooseOptionsViewModel) {
         this.chooseOptionsViewModel = chooseOptionsViewModel;
@@ -48,20 +50,17 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         titleLabel.setFont(loadFonts.montserratBoldItalicFont);
 
         // add location section
-        JPanel addLocationPanel = new JPanel();
-        addLocationPanel.setOpaque(false);
-        addLocationPanel.setBackground(new Color(0, 0, 0, 0));
-        addLocationPanel.setLayout(new BoxLayout(addLocationPanel, BoxLayout.Y_AXIS));
-        addLocationPanel.setSize(new Dimension(300, 10));
+        JPanel addressPanel = new JPanel();
+        addressPanel.setOpaque(false);
+        addressPanel.setBackground(new Color(0, 0, 0, 0));
+        addressPanel.setLayout(new BoxLayout(addressPanel, BoxLayout.Y_AXIS));
+        addressPanel.setSize(new Dimension(300, 10));
 
-        JLabel addLocationLabel = new JLabel("Please enter your current location:");
-        addLocationLabel.setFont(loadFonts.montserratFontSmall);
+        JLabel addressLabel = new JLabel("Please enter your current location:");
+        addressLabel.setFont(loadFonts.montserratFontSmall);
 
         //creates place to type (JTextField)
         helpTextField.setFont(loadFonts.montserratFontSmall);
-
-        addLocationPanel.add(addLocationLabel);
-        addLocationPanel.add(helpTextField);
 
         helpTextField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
@@ -85,6 +84,31 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
                 documentListenerHelper();
             }
         });
+
+        addressPanel.add(addressLabel);
+        addressPanel.add(helpTextField);
+
+        JPanel currentLocationButtonPanel = new JPanel();
+        currentLocationButtonPanel.setLayout(new BoxLayout(currentLocationButtonPanel, BoxLayout.X_AXIS));
+        currentLocationButtonPanel.setOpaque(false);
+        currentLocationButtonPanel.add(Box.createHorizontalGlue());
+
+        JButton currentLocationButton = new JButton("Use Current Location");
+        currentLocationButton.setFont(loadFonts.montserratFont);
+        currentLocationButton.setForeground(new Color(82, 121, 111));
+        currentLocationButton.setBackground(new Color(202, 210, 197));
+        currentLocationButtonPanel.add(currentLocationButton);
+        addressPanel.add(currentLocationButtonPanel);
+
+        currentLocationButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(currentLocationButton)) {
+//                            chooseOptionsController.useCurrentLocation();
+                        }
+                    }
+                }
+        );
 
         // start time - end time
 
@@ -150,13 +174,22 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         JPanel distancePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         distancePanel.setOpaque(false);
         distancePanel.setBackground(new Color(0, 0, 0, 0));
-        distanceSlider.setMajorTickSpacing(5);
+        distanceSlider.setMajorTickSpacing(1);
         distanceSlider.setMinorTickSpacing(1);
         distanceSlider.setPaintTicks(true);
         distanceSlider.setPaintLabels(true);
         distanceSlider.setFont(loadFonts.montserratFontSmall);
         distanceSlider.setOpaque(false);
         distanceSlider.setBackground(new Color(0, 0, 0, 0));
+
+        Hashtable<Integer, JLabel> distanceTable = new Hashtable<>();
+        for (int i = 1; i <= 20; i = i - i % 5 + 5) {
+            JLabel label = new JLabel(String.valueOf(i));
+            label.setFont(loadFonts.montserratFontSmall);
+            distanceTable.put(i, label);
+        }
+
+        distanceSlider.setLabelTable(distanceTable);
 
         JLabel distanceLabel = new JLabel("Distance (km): " + distanceSlider.getValue());
         distanceLabel.setFont(loadFonts.montserratFontSmall);
@@ -178,10 +211,9 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
 
         //changes the labels below to be 1/2 of the actual value (so it could be .5 stars
         Hashtable<Integer, JLabel> starTable = new Hashtable<>();
-        Font font = loadFonts.montserratFontSmall;
         for (int i = 0; i <= 5; i++) {
             JLabel label = new JLabel(String.valueOf(i));
-            label.setFont(font);
+            label.setFont(loadFonts.montserratFontSmall);
             starTable.put(i * 2, label);
         }
         ratingSlider.setLabelTable(starTable);
@@ -200,13 +232,11 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
                     final ChooseOptionsState currentState = chooseOptionsViewModel.getState();
                     JSlider source = (JSlider) e.getSource();
                     if (source == distanceSlider) {
-                        int distanceRequirement = distanceSlider.getValue();
-                        distanceLabel.setText("Distance: " + distanceRequirement + " km");
+                        distanceLabel.setText("Distance: " + source.getValue() + " km");
                         currentState.setMaxDistance(source.getValue());
                     } else if (source == ratingSlider) {
-                        double ratingRequirement = ratingSlider.getValue();
-                        ratingLabel.setText(ratingRequirement/2 + " Stars");
-                        currentState.setMinStars(ratingRequirement/2);
+                        ratingLabel.setText(((double) source.getValue())/2 + " Stars");
+                        currentState.setMinStars(source.getValue());
                     }
                 }
             });
@@ -243,10 +273,10 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JCheckBox source = (JCheckBox) e.getSource();
-                    currentState.setPossibleLocationTypes(source.getText(), source.isSelected());
+                    currentState.setPossibleLocationType(source.getText(), source.isSelected());
                 }
             });
-            currentState.setPossibleLocationTypes(checkBox.getText(), checkBox.isSelected());
+            currentState.setPossibleLocationType(checkBox.getText(), checkBox.isSelected());
         }
 
         // Starting to add the components to something the user will actually see
@@ -261,7 +291,7 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         optionsPanel.setLayout(new BoxLayout(optionsPanel,BoxLayout.Y_AXIS));
 
         optionsPanel.add(titleLabel);
-        optionsPanel.add(addLocationPanel);
+        optionsPanel.add(addressPanel);
         optionsPanel.add(setTimePanel);
         optionsPanel.add(distancePanel);
         optionsPanel.add(ratingPanel);
@@ -292,17 +322,14 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(startButton)) {
                             final ChooseOptionsState currentState = chooseOptionsViewModel.getState();
-                            System.out.println(currentState.getStartingAddress());
-                            System.out.println(currentState.getStartTime());
-                            System.out.println(currentState.getEndTime());
-                            System.out.println(currentState.getMaxDistance());
-                            System.out.println(currentState.getMinStars());
-                            System.out.println(currentState.getPossibleLocationTypes());
-
-//                            chooseOptionsController.execute(
-//                                    currentState.getUsername(),
-//                                    currentState.getPassword()
-//                            );
+                            chooseOptionsController.execute(
+                                    currentState.getStartingAddress(),
+                                    currentState.getMaxDistance(),
+                                    currentState.getMinStars(),
+                                    currentState.getStartTime(),
+                                    currentState.getEndTime(),
+                                    currentState.getPossibleLocationTypes()
+                            );
                         }
                     }
                 }
@@ -315,6 +342,23 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         backButton.setBackground(new Color(202, 210, 197));
         backButton.setBounds(90, 600, 140, 40);
         this.backgroundLabel.add(backButton);
+
+        backButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(backButton)) {
+                            chooseOptionsController.switchToPreviousView();
+                        }
+                    }
+                }
+        );
+
+        // Add in the error label
+        errorLabel.setFont(loadFonts.montserratFont);
+        errorLabel.setForeground(new Color(82, 121, 111));
+        errorLabel.setBounds(90, 650, this.bkgImage.getIconWidth() - 190, 40);
+        errorLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.backgroundLabel.add(errorLabel);
 
         add(this.backgroundLabel, BorderLayout.CENTER);
         setSize(this.bkgImage.getIconWidth() + 10, this.bkgImage.getIconHeight() + 30);
@@ -332,8 +376,24 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
             final ChooseOptionsState state = (ChooseOptionsState) evt.getNewValue();
-            helpTextField.setText(state.getStartingAddress());
+            setFields(state);
+            errorLabel.setText(state.getErrorText());
         }
+    }
+
+    private void setFields(ChooseOptionsState state) {
+        helpTextField.setText(state.getStartingAddress());
+        startTime.setValue(state.getStartTime());
+        endTime.setValue(state.getEndTime());
+        distanceSlider.setValue(state.getMaxDistance());
+        ratingSlider.setValue(state.getMinStars());
+        restaurantCheck.setSelected(state.getPossibleLocationTypes().get(restaurantCheck.getText()));
+        attractionCheck.setSelected(state.getPossibleLocationTypes().get(attractionCheck.getText()));
+        shopCheck.setSelected(state.getPossibleLocationTypes().get(shopCheck.getText()));
+    }
+
+    public void setChooseOptionsController(ChooseOptionsController chooseOptionsController) {
+        this.chooseOptionsController = chooseOptionsController;
     }
 
     public String getViewName() { return viewName; }

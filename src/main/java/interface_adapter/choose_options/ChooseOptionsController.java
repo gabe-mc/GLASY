@@ -36,4 +36,6 @@ public class ChooseOptionsController {
         final ChooseOptionsInputData chooseOptionsInputData = new ChooseOptionsInputData(settings);
         chooseOptionsUseCaseInteractor.execute(chooseOptionsInputData);
     }
+
+    public void switchToPreviousView() { chooseOptionsUseCaseInteractor.switchToPreviousView(); }
 }

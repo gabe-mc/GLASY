@@ -1,6 +1,8 @@
 package use_case.choose_options;
 
+import entity.AttractionData;
 import entity.LocationData;
+import entity.Settings;
 
 import java.util.List;
 
@@ -13,5 +15,5 @@ public interface ChooseOptionsFoursquareLocationProviderInterface {
      * Returns a list of locations corresponding to the user's query
      * @return a list of locations
      */
-    List<LocationData> getLocations();
+    List<AttractionData> getLocationList(Settings settings);
 }

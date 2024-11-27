@@ -22,7 +22,6 @@ public class StartAppInteractor implements StartAppInputBoundary {
     public void execute() {
         final CommonLocationData currentLocation = currentLocationProvider.getLocation();
         userDataAccessObject.setCurrentLocation(currentLocation);
-        final StartAppOutputData startAppOutputData = new StartAppOutputData(currentLocation);
-        startAppPresenter.prepareView(startAppOutputData);
+        startAppPresenter.prepareView();
     }
 }

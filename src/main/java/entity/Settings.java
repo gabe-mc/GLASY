@@ -6,7 +6,7 @@ import java.util.Map;
 public class Settings {
     private LocationData location;
     private int maxDistance;
-    private double minStars;
+    private double minStars; // From 0.0 to 10.0
     private Date startTime;
     private Date endTime;
     private Map<String, Boolean> possibleLocationTypes;

@@ -23,11 +23,11 @@ import java.io.File;
 
 public class SplashScreenView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "splash screen";
+    private final SplashScreenViewModel splashScreenViewModel;
+    private SplashScreenController splashScreenController;
 
     private Font koulenFont;
     private Font montserratFont;
-    private final SplashScreenViewModel splashScreenViewModel;
-    private SplashScreenController splashScreenController;
 
     public SplashScreenView(SplashScreenViewModel splashScreenViewModel) {
         this.splashScreenViewModel = splashScreenViewModel;

@@ -4,18 +4,18 @@ package entity;
  * A simple implementation of the LocationData interface.
  */
 public class CommonLocationData implements LocationData {
-    private Double longitude;
     private Double latitude;
+    private Double longitude;
     private String address;
     private String locality;
     private String postcode;
     private String region;
     private String country;
 
-    public CommonLocationData(Double longitude, Double latitude, String address, String locality, String postcode,
+    public CommonLocationData(Double latitude, Double longitude, String address, String locality, String postcode,
                               String region, String country) {
-        this.longitude = longitude;
         this.latitude = latitude;
+        this.longitude = longitude;
         this.address = address;
         this.locality = locality;
         this.postcode = postcode;

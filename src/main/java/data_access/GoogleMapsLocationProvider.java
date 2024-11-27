@@ -32,10 +32,13 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
      * representing the address
      */
     public LocationData addressToLocation(String address) {
-        StringBuilder stringBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
-        formatAddress(address, stringBuilder);
-        String url = stringBuilder.substring(0, stringBuilder.length() - 2) + "&key=" + apiKey;
+        StringBuilder urlBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
+        formatAddress(address, urlBuilder);
+        String url = urlBuilder.substring(0, urlBuilder.length() - 2) + "&key=" + apiKey;
         final Request request = new Request.Builder().url(url).build();
+
+        CommonLocationData result = null;
+
         try (Response response = client.newCall(request).execute()) {
             final JSONObject jsonObject = new JSONObject(response.body().string());
             if (jsonObject.getString("status").equals("OK")) {
@@ -57,17 +60,17 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
                         country = longName;
                     }
                 }
-                return new CommonLocationData(
+                result = new CommonLocationData(
                         lonLat.getDouble("lat"),
                         lonLat.getDouble("lng"),
                         results.getString("formatted_address"),
                         locality, postcode, region, country
                 );
             }
-            return null;
         } catch (IOException e) {
-            return null;
+            e.printStackTrace();
         }
+        return result;
     }
 
     /**
@@ -103,12 +106,12 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
      * @throws IOException If an error occurs while building the request or processing the response.
      */
     public Float matrixDistance(String address1, String address2) throws IOException {
-        final StringBuilder stringBuilder = new
+        final StringBuilder urlBuilder = new
                 StringBuilder("https://maps.googleapis.com/maps/api/distancematrix/json?destinations=");
-        formatAddress(address1, stringBuilder);
-        stringBuilder.append("&origins=");
-        formatAddress(address2, stringBuilder);
-        String url = stringBuilder.substring(0, stringBuilder.length() - 2) + "&key=" + apiKey;
+        formatAddress(address1, urlBuilder);
+        urlBuilder.append("&origins=");
+        formatAddress(address2, urlBuilder);
+        String url = urlBuilder.substring(0, urlBuilder.length() - 2) + "&key=" + apiKey;
         final Request request = new Request.Builder().url(url).build();
         try (Response response = client.newCall(request).execute()) {
             final String responseBody = response.body().string();
@@ -131,12 +134,12 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
      * @return A URL string for Google Maps showing a route through the specified destinations.
      */
     public String generateMapsLink(ArrayList<String> destinations) {
-        final StringBuilder url = new StringBuilder("https://www.google.ca/maps/dir/");
+        final StringBuilder urlBuilder = new StringBuilder("https://www.google.ca/maps/dir/");
         for (String destination : destinations) {
-            formatAddress(destination, url);
-            url.append("/");
+            formatAddress(destination, urlBuilder);
+            urlBuilder.append("/");
         }
-        return url.toString();
+        return urlBuilder.toString();
     }
 
     /**
@@ -153,7 +156,7 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
                 url.append(component, 0, component.length() - 1);
             }
             else {
-                url.append(component).append("%20");
+                url.append(component).append("%2C");
             }
         }
     }

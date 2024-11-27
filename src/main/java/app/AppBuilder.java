@@ -18,6 +18,10 @@ import use_case.choose_options.ChooseOptionsOutputBoundary;
 import use_case.start_app.StartAppInputBoundary;
 import use_case.start_app.StartAppInteractor;
 import use_case.start_app.StartAppOutputBoundary;
+import use_case.use_current_location.UseCurrentLocationInputBoundary;
+import use_case.use_current_location.UseCurrentLocationOutputBoundary;
+import use_case.use_current_location.UseCurrentLocationOutputData;
+import use_case.use_current_location.UseCurrentLocationInteractor;
 import view.ChooseOptionsView;
 import view.DisplayOptionsView;
 import view.SplashScreenView;
@@ -79,13 +83,15 @@ public class AppBuilder {
     }
 
     public AppBuilder addChooseOptionsUseCase() {
-        final ChooseOptionsOutputBoundary chooseOptionsPresenter = new ChooseOptionsPresenter(viewManagerModel,
+        final ChooseOptionsPresenter chooseOptionsPresenter = new ChooseOptionsPresenter(viewManagerModel,
                 chooseOptionsViewModel, splashScreenViewModel, displayOptionsViewModel);
         final ChooseOptionsInputBoundary chooseOptionsInteractor = new ChooseOptionsInteractor(
                 foursquareLocationProvider, userDataAccessObject, chooseOptionsPresenter);
+        final UseCurrentLocationInputBoundary useCurrentLocationInteractor = new UseCurrentLocationInteractor(
+                userDataAccessObject, chooseOptionsPresenter);
 
         final ChooseOptionsController controller = new ChooseOptionsController(chooseOptionsInteractor,
-                googleMapsLocationProvider);
+                useCurrentLocationInteractor, googleMapsLocationProvider);
         chooseOptionsView.setChooseOptionsController(controller);
         return this;
     }
@@ -97,7 +103,6 @@ public class AppBuilder {
         application.add(cardPanel);
 
         viewManagerModel.setState(splashScreenView.getViewName());
-//        viewManagerModel.setState(displayOptionsView.getViewName());
         viewManagerModel.firePropertyChanged();
 
         return application;

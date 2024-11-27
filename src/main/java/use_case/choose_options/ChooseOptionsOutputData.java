@@ -1,19 +1,17 @@
 package use_case.choose_options;
 
-import entity.CommonLocationData;
+import entity.AttractionData;
 
-import java.util.List;
+import java.util.Map;
 
 public class ChooseOptionsOutputData {
-    private final List<CommonLocationData> locations;
-    private final boolean useCaseFailed;
+    private final Map<AttractionData, Boolean> checkedLocationList;
 
-    public ChooseOptionsOutputData(List<CommonLocationData> locations, boolean useCaseFailed) {
-        this.locations = locations;
-        this.useCaseFailed = useCaseFailed;
+    public ChooseOptionsOutputData(Map<AttractionData, Boolean> checkedLocationList) {
+        this.checkedLocationList = checkedLocationList;
     }
 
-    public List<CommonLocationData> getLocations() {
-        return locations;
+    public Map<AttractionData, Boolean> getCheckedLocationList() {
+        return checkedLocationList;
     }
 }

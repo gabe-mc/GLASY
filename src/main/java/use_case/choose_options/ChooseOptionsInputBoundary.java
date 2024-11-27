@@ -11,4 +11,9 @@ public interface ChooseOptionsInputBoundary {
      * Executes the choose options use case.
      */
     void execute(ChooseOptionsInputData chooseOptionsInputData);
+
+    /**
+     * Executes the switch to previous view use case.
+     */
+    void switchToPreviousView();
 }

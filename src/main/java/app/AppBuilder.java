@@ -1,14 +1,20 @@
 package app;
 
 import data_access.CurrentLocationProvider;
+import data_access.FoursquareLocationProvider;
 import data_access.GoogleMapsLocationProvider;
 import data_access.UserDataAccessObject;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.choose_options.ChooseOptionsController;
+import interface_adapter.choose_options.ChooseOptionsPresenter;
 import interface_adapter.choose_options.ChooseOptionsViewModel;
 import interface_adapter.display_options.DisplayOptionsViewModel;
 import interface_adapter.splash_screen_view.SplashScreenController;
 import interface_adapter.splash_screen_view.SplashScreenPresenter;
 import interface_adapter.splash_screen_view.SplashScreenViewModel;
+import use_case.choose_options.ChooseOptionsInputBoundary;
+import use_case.choose_options.ChooseOptionsInteractor;
+import use_case.choose_options.ChooseOptionsOutputBoundary;
 import use_case.start_app.StartAppInputBoundary;
 import use_case.start_app.StartAppInteractor;
 import use_case.start_app.StartAppOutputBoundary;
@@ -27,9 +33,9 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
-    private final CurrentLocationProvider currentLocationProvider =
-            new CurrentLocationProvider();
+    private final CurrentLocationProvider currentLocationProvider = new CurrentLocationProvider();
     private final GoogleMapsLocationProvider googleMapsLocationProvider = new GoogleMapsLocationProvider();
+    private final FoursquareLocationProvider foursquareLocationProvider = new FoursquareLocationProvider();
 
     private SplashScreenView splashScreenView;
     private SplashScreenViewModel splashScreenViewModel = new SplashScreenViewModel();
@@ -69,6 +75,18 @@ public class AppBuilder {
 
         final SplashScreenController controller = new SplashScreenController(startAppInteractor);
         splashScreenView.setSplashScreenController(controller);
+        return this;
+    }
+
+    public AppBuilder addChooseOptionsUseCase() {
+        final ChooseOptionsOutputBoundary chooseOptionsPresenter = new ChooseOptionsPresenter(viewManagerModel,
+                chooseOptionsViewModel, splashScreenViewModel, displayOptionsViewModel);
+        final ChooseOptionsInputBoundary chooseOptionsInteractor = new ChooseOptionsInteractor(
+                foursquareLocationProvider, userDataAccessObject, chooseOptionsPresenter);
+
+        final ChooseOptionsController controller = new ChooseOptionsController(chooseOptionsInteractor,
+                googleMapsLocationProvider);
+        chooseOptionsView.setChooseOptionsController(controller);
         return this;
     }
 

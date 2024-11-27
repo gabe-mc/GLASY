@@ -1,16 +1,16 @@
 package interface_adapter.display_results_view;
 
-import use_case.add_location.AddLocationInputBoundary;
+import use_case.choose_options.ChooseOptionsInputBoundary;
 
 public class DisplayResultsController {
 
-    private final AddLocationInputBoundary addLocationUseCaseInteractor;
+    private final ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor;
 
-    public DisplayResultsController(AddLocationInputBoundary addLocationUseCaseInteractor) {
-        this.addLocationUseCaseInteractor = addLocationUseCaseInteractor;
+    public DisplayResultsController(ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor) {
+        this.chooseOptionsUseCaseInteractor = chooseOptionsUseCaseInteractor;
     }
 
     public void execute(){
-//        addLocationUseCaseInteractor.execute();
+//        chooseOptionsUseCaseInteractor.execute();
     }
 }

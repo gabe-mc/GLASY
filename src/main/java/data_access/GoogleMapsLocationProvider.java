@@ -3,6 +3,9 @@ package data_access;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import entity.CommonLocationData;
+import entity.LocationData;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import okhttp3.OkHttpClient;
@@ -10,26 +13,64 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import static java.lang.Integer.parseInt;
+import use_case.choose_options.ChooseOptionsGoogleMapsLocationProviderInterface;
 
 /**
  * The DAO for google maps data.
  */
-public class GoogleMapsLocationProvider {
+public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocationProviderInterface {
 
     private final OkHttpClient client = new OkHttpClient();
     private final String apiKey = ConfigLoader.getKey("google.api.key");
 
     /**
-     * Constructs a URL for the Google Maps Geocoding API based on the provided address.
+     * Retrieves the latitude and longitude for a given address by sending a request
+     * to a geocoding API and parsing the JSON response.
      *
-     * @param address The address to be converted into a geocoding API request URL.
-     * @return A formatted URL string that can be used to send a geocoding request to the Google Maps API.
-     * @throws IOException If an encoding error occurs while processing the address components.
+     * @param address The address to be geocoded.
+     * @return Null if no address is found, otherwise the LocationData object
+     * representing the address
      */
-    public String createGeocodeUrl(String address) throws IOException {
-        final StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
-        formatAddress(address, url);
-        return url.substring(0, url.length() - 2) + "&key=" + apiKey;
+    public LocationData addressToLocation(String address) {
+        StringBuilder urlBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
+        formatAddress(address, urlBuilder);
+        String url = urlBuilder.substring(0, urlBuilder.length() - 2) + "&key=" + apiKey;
+        final Request request = new Request.Builder().url(url).build();
+
+        CommonLocationData result = null;
+
+        try (Response response = client.newCall(request).execute()) {
+            final JSONObject jsonObject = new JSONObject(response.body().string());
+            if (jsonObject.getString("status").equals("OK")) {
+                final JSONObject results = jsonObject.getJSONArray("results").getJSONObject(0);
+                final JSONObject lonLat = results.getJSONObject("geometry").getJSONObject("location");
+                final JSONArray addressComponents = results.getJSONArray("address_components");
+                String locality = "", postcode = "", region = "", country = "";
+                for (int i = 0; i < addressComponents.length(); i++) {
+                    JSONObject component = addressComponents.getJSONObject(i);
+                    String types = component.getJSONArray("types").toString();
+                    String longName = component.getString("long_name");
+                    if (types.contains("locality") || types.contains("administrative_area_level_2")) {
+                        locality = longName;
+                    } else if (types.contains("postal_code")) {
+                        postcode = longName;
+                    } else if (types.contains("administrative_area_level_1")) {
+                        region = longName;
+                    } else if (types.contains("country")) {
+                        country = longName;
+                    }
+                }
+                result = new CommonLocationData(
+                        lonLat.getDouble("lat"),
+                        lonLat.getDouble("lng"),
+                        results.getString("formatted_address"),
+                        locality, postcode, region, country
+                );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /**
@@ -49,34 +90,6 @@ public class GoogleMapsLocationProvider {
 
         formatAddress(address2, url);
         return url.substring(0, url.length() - 2) + "&key=" + apiKey;
-    }
-
-    /**
-     * Retrieves the latitude and longitude for a given address by sending a request
-     * to a geocoding API and parsing the JSON response.
-     *
-     * @param address The address to be geocoded.
-     * @return An ArrayList containing the latitude and longitude as Double values.
-     *         The first element is the latitude, and the second element is the longitude.
-     * @throws IOException If an input or output exception occurs while sending the request
-     *                     or receiving the response.
-     */
-    public ArrayList<Double> getLonLat(String address) throws IOException {
-        final String url = createGeocodeUrl(address);
-        final Request request = new Request.Builder().url(url).build();
-        try (Response response = client.newCall(request).execute()) {
-            final String responseBody = response.body().string();
-            final JSONObject jsonObject = new JSONObject(responseBody);
-            final JSONObject locationData = jsonObject
-                    .getJSONArray("results")
-                    .getJSONObject(0)
-                    .getJSONObject("geometry")
-                    .getJSONObject("location");
-            final ArrayList<Double> result = new ArrayList<>();
-            result.add(locationData.getDouble("lat"));
-            result.add(locationData.getDouble("lng"));
-            return result;
-        }
     }
 
     /**
@@ -151,12 +164,12 @@ public class GoogleMapsLocationProvider {
      * @return A URL string for Google Maps showing a route through the specified destinations.
      */
     public String generateMapsLink(ArrayList<String> destinations) {
-        final StringBuilder url = new StringBuilder("https://www.google.ca/maps/dir/");
+        final StringBuilder urlBuilder = new StringBuilder("https://www.google.ca/maps/dir/");
         for (String destination : destinations) {
-            formatAddress(destination, url);
-            url.append("/");
+            formatAddress(destination, urlBuilder);
+            urlBuilder.append("/");
         }
-        return url.toString();
+        return urlBuilder.toString();
     }
 
     /**
@@ -173,7 +186,7 @@ public class GoogleMapsLocationProvider {
                 url.append(component, 0, component.length() - 1);
             }
             else {
-                url.append(component).append("%20");
+                url.append(component).append("%2C");
             }
         }
     }

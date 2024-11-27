@@ -24,6 +24,7 @@ public class Main {
                 .addChooseOptionsView()
                 .addDisplayOptionsView()
                 .addStartAppUseCase()
+                .addChooseOptionsUseCase()
                 .build();
         application.pack();
         application.setVisible(true);

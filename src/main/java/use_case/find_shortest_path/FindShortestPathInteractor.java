@@ -58,4 +58,18 @@ public class FindShortestPathInteractor implements FindShortestPathInputBoundary
         outputBoundary.presentOutput(outputData);
 
     }
+
+    public static void main(String[] args) throws IOException {
+        GoogleMapsLocationProvider example = new GoogleMapsLocationProvider();
+//        ArrayList<Double> getResponse = example.getAddress("197 Yonge St, Toronto ON");
+        ArrayList<String> path = new ArrayList<>();
+        path.add("47 Willcocks St, Toronto ON");
+        path.add("197 Yonge St, Toronto ON");
+        path.add("57 St Joseph St, Toronto ON");
+        path.add("4 Hoskin Ave, Toronto ON");
+//        FindShortestPathInputData result = new FindShortestPathInputData(path);
+//        FindShortestPathInteractor interactor = new FindShortestPathInteractor(example, null);
+//        ArrayList<String> getResponse = interactor.findShortestPath(result);
+//        System.out.println(example.generateMapsLink(getResponse));
+    }
 }

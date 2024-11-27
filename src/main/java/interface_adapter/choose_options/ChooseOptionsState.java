@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChooseOptionsState {
-    private String startingAddress;
-    private int maxDistance = 0;
-    private double minStars = 0.0;
+    private String startingAddress = "";
+    private int maxDistance = 10;
+    private int minStars = 0;
     private Date startTime = new Date();
     private Date endTime = new Date();
-    private final Map<String, Boolean> possibleLocationTypes = new HashMap<>();
+    private Map<String, Boolean> possibleLocationTypes = new HashMap<>();
+    private String errorText;
 
     public String getStartingAddress() {
         return startingAddress;
@@ -18,25 +19,30 @@ public class ChooseOptionsState {
     public int getMaxDistance() {
         return maxDistance;
     }
-    public double getMinStars() {
+    public int getMinStars() {
         return minStars;
     }
     public Map<String, Boolean> getPossibleLocationTypes() { return possibleLocationTypes; }
     public Date getStartTime() { return startTime; }
     public Date getEndTime() { return endTime; }
-
+    public String getErrorText() {
+        return errorText;
+    }
     public void setStartingAddress(String startingAddress) {
         this.startingAddress = startingAddress;
     }
     public void setMaxDistance(int maxDistance) {
         this.maxDistance = maxDistance;
     }
-    public void setMinStars(double minStars) {
+    public void setMinStars(int minStars) {
         this.minStars = minStars;
     }
-    public void setPossibleLocationTypes(String possibleLocationType, Boolean checked) {
+    public void setPossibleLocationType(String possibleLocationType, Boolean checked) {
         this.possibleLocationTypes.put(possibleLocationType, checked);
     }
     public void setStartTime(Date startTime) { this.startTime = startTime; }
     public void setEndTime(Date endTime) { this.endTime = endTime; }
+    public void setErrorText(String errorText) {
+        this.errorText = errorText;
+    }
 }

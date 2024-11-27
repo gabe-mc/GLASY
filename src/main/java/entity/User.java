@@ -5,19 +5,22 @@ package entity;
  */
 public class User {
 
-    private double timeAvailable;
-    private CommonLocationData location;
-    private String attractionCategory;
+    private CommonLocationData currentLocation;
+    private Settings settings;
 
-    public Double getTimeAvailable() {return timeAvailable;}
+    public CommonLocationData getCurrentLocation() {
+        return currentLocation;
+    }
 
-    public void setTimeAvailable(double timeAvailable) {this.timeAvailable = timeAvailable;}
+    public void setCurrentLocation(CommonLocationData currentLocation) {
+        this.currentLocation = currentLocation;
+    }
 
-    public CommonLocationData getLocation() {return location;}
+    public Settings getSettings() {
+        return settings;
+    }
 
-    public void setLocation(CommonLocationData location) {this.location = location;}
-
-    public String getAttractionCategory() {return attractionCategory;}
-
-    public void setAttractionCategory(String attractionCategory) {this.attractionCategory = attractionCategory;}
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
 }

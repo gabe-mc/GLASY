@@ -1,17 +1,17 @@
 package interface_adapter.display_options;
 
-import entity.LocationData;
-import java.util.List;
+import entity.AttractionData;
+
+import java.util.Map;
 
 public class DisplayOptionsState {
-    private List<LocationData> locationList;
+    private Map<AttractionData, Boolean> checkedLocationList;
 
-
-    public List<LocationData> getLocationList() {
-        return locationList;
+    public Map<AttractionData, Boolean> getCheckedLocationList() {
+        return checkedLocationList;
     }
 
-    public void setLocationList(List<LocationData> locationList) {
-        this.locationList = locationList;
+    public void setCheckedLocationList(Map<AttractionData, Boolean> checkedLocationList) {
+        this.checkedLocationList = checkedLocationList;
     }
 }

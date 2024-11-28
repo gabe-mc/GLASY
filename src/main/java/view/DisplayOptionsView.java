@@ -1,5 +1,6 @@
 package view;
 
+import entity.AttractionData;
 import interface_adapter.choose_options.ChooseOptionsState;
 import interface_adapter.display_options.DisplayOptionsController;
 import interface_adapter.display_options.DisplayOptionsState;
@@ -16,18 +17,19 @@ import java.util.List;
 
 public class DisplayOptionsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "display options";
-    final DisplayOptionsState displayOptionsState;
+    private final DisplayOptionsViewModel displayOptionsViewModel;
+    private DisplayOptionsController displayOptionsController;
 
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
-    private final DisplayOptionsViewModel displayOptionsViewModel;
-    private DisplayOptionsController displayOptionsController;
+
+    private final JPanel resultsCheckboxes = new JPanel();
+    private final JLabel errorLabel = new JLabel();
+
     public DisplayOptionsView(DisplayOptionsViewModel displayOptionsViewModel) {
         this.displayOptionsViewModel = displayOptionsViewModel;
         this.displayOptionsViewModel.addPropertyChangeListener(this);
         LoadFonts loadFonts = new LoadFonts();
-
-        displayOptionsState = displayOptionsViewModel.getState();
 
         // Initialize the image
         this.bkgImage = new ImageIcon("src/main/java/view/images/BackgroundImage2.png");
@@ -43,18 +45,6 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
         setLocation(x, y);
 
-        // Results Checkboxes
-        JPanel resultsCheckboxes = new JPanel();
-        List<String> possibleLocations = new ArrayList<>();
-        possibleLocations.add("Hello");
-        possibleLocations.add("My name");
-        possibleLocations.add("Please help me");
-//        {"a","b","c","d","e","f","g","h","i","j","k","sdfs"};
-        System.out.println(possibleLocations);
-        for (String possibleLocation : possibleLocations) {
-            JCheckBox checkBox = new JCheckBox(possibleLocation);
-            resultsCheckboxes.add(checkBox);
-        }
         JScrollPane scrollCheckboxes = new JScrollPane(resultsCheckboxes);
         resultsCheckboxes.setFont(loadFonts.montserratFontSmall);
         scrollCheckboxes.setBounds(50, 50, this.bkgImage.getIconWidth() - 100, this.bkgImage.getIconHeight() - 200);
@@ -74,7 +64,8 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(startButton)) {
-                            displayOptionsController.execute();
+                            final DisplayOptionsState currentState = displayOptionsViewModel.getState();
+                            displayOptionsController.execute(currentState.getCheckedLocationList());
                         }
                     }
                 }
@@ -87,6 +78,23 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         backButton.setBackground(new Color(202, 210, 197));
         backButton.setBounds(90, 600, 140, 40);
         this.backgroundLabel.add(backButton);
+
+        backButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(backButton)) {
+                            displayOptionsController.switchToPreviousView();
+                        }
+                    }
+                }
+        );
+
+        // Add in the error label
+        errorLabel.setFont(loadFonts.montserratFont);
+        errorLabel.setForeground(new Color(82, 121, 111));
+        errorLabel.setBounds(90, 650, this.bkgImage.getIconWidth() - 190, 40);
+        errorLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.backgroundLabel.add(errorLabel);
 
 //        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        setVisible(true);
@@ -108,8 +116,30 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
             final DisplayOptionsState state = (DisplayOptionsState) evt.getNewValue();
-        }
 
+            final DisplayOptionsState currentState = displayOptionsViewModel.getState();
+            resultsCheckboxes.removeAll();
+            for (AttractionData possibleLocation : currentState.getCheckedLocationList().keySet()) {
+                JCheckBox checkBox = new JCheckBox(possibleLocation.getName());
+                resultsCheckboxes.add(checkBox);
+
+                // Sample code for checkbox listeners
+                checkBox.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JCheckBox source = (JCheckBox) e.getSource();
+                        currentState.setCheckedLocation(possibleLocation, source.isSelected());
+                    }
+                });
+            }
+
+            errorLabel.setText(state.getErrorText());
+        }
     }
+
+    public void setDisplayOptionsController(DisplayOptionsController displayOptionsController) {
+        this.displayOptionsController = displayOptionsController;
+    }
+
     public String getViewName() { return viewName; }
 }

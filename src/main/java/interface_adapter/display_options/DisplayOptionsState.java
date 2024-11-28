@@ -2,10 +2,12 @@ package interface_adapter.display_options;
 
 import entity.AttractionData;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DisplayOptionsState {
-    private Map<AttractionData, Boolean> checkedLocationList;
+    private Map<AttractionData, Boolean> checkedLocationList = new LinkedHashMap<>();
+    private String errorText;
 
     public Map<AttractionData, Boolean> getCheckedLocationList() {
         return checkedLocationList;
@@ -13,5 +15,17 @@ public class DisplayOptionsState {
 
     public void setCheckedLocationList(Map<AttractionData, Boolean> checkedLocationList) {
         this.checkedLocationList = checkedLocationList;
+    }
+
+    public void setCheckedLocation(AttractionData attractionData, boolean checked) {
+        this.checkedLocationList.put(attractionData, checked);
+    }
+
+    public String getErrorText() {
+        return errorText;
+    }
+
+    public void setErrorText(String errorText) {
+        this.errorText = errorText;
     }
 }

@@ -13,7 +13,7 @@ public interface ChooseOptionsInputBoundary {
     void execute(ChooseOptionsInputData chooseOptionsInputData);
 
     /**
-     * Executes the switch to previous view use case.
+     * Switches the view to the previous page.
      */
     void switchToPreviousView();
 }

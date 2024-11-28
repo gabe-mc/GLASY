@@ -36,38 +36,6 @@ public class ChooseOptionsPresenter implements ChooseOptionsOutputBoundary {
 
         viewManagerModel.setState(displayOptionsViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
-
-        Map<AttractionData, Boolean> checkedLocationList = displayOptionsState.getCheckedLocationList();
-        for (AttractionData location : checkedLocationList.keySet()) {
-            String name = location.getName();
-            List<String> categories = location.getCategories();
-            Integer price = location.getPrice();
-            Double rating = location.getRating();
-            String photoUrl = location.getPhotoUrl();
-            Double latitude = location.getLatitude();
-            Double longitude = location.getLongitude();
-            String address = location.getAddress();
-            String locality = location.getLocality();
-            String postcode = location.getPostcode();
-            String region = location.getRegion();
-            String country = location.getCountry();
-            System.out.println("Location Info:");
-            System.out.println("Name: " + name);
-            System.out.println("Categories: " + categories);
-            System.out.println("Price: " + price);
-            System.out.println("Rating: " + rating);
-            System.out.println("PhotoUrl: " + photoUrl);
-            System.out.println("Latitude: " + latitude);
-            System.out.println("Longitude: " + longitude);
-            System.out.println("Address: " + address);
-            System.out.println("Locality: " + locality);
-            System.out.println("Postcode: " + postcode);
-            System.out.println("Region: " + region);
-            System.out.println("Country: " + country);
-            System.out.println();
-        }
-        System.out.println(checkedLocationList.size());
-
     }
 
     @Override

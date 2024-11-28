@@ -28,6 +28,8 @@ import use_case.find_shortest_path.FindShortestPathOutputBoundary;
 import use_case.start_app.StartAppInputBoundary;
 import use_case.start_app.StartAppInteractor;
 import use_case.start_app.StartAppOutputBoundary;
+import use_case.use_current_location.UseCurrentLocationInputBoundary;
+import use_case.use_current_location.UseCurrentLocationInteractor;
 import view.*;
 
 

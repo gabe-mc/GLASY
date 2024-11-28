@@ -20,7 +20,7 @@ import java.util.Hashtable;
 public class ChooseOptionsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "choose options";
     private final ChooseOptionsViewModel chooseOptionsViewModel;
-    private ChooseOptionsController chooseOptionsController;
+    private ChooseOptionsController chooseOptionsController = new ChooseOptionsController();
 
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
@@ -392,8 +392,8 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
         shopCheck.setSelected(state.getPossibleLocationTypes().get(shopCheck.getText()));
     }
 
-    public void setChooseOptionsController(ChooseOptionsController chooseOptionsController) {
-        this.chooseOptionsController = chooseOptionsController;
+    public ChooseOptionsController getChooseOptionsController() {
+        return chooseOptionsController;
     }
 
     public String getViewName() { return viewName; }

@@ -36,6 +36,10 @@ public class ChooseOptionsPresenter implements ChooseOptionsOutputBoundary, UseC
         displayOptionsViewModel.setState(displayOptionsState);
         displayOptionsViewModel.firePropertyChanged();
 
+        final ChooseOptionsState chooseOptionsState = chooseOptionsViewModel.getState();
+        chooseOptionsState.setErrorText("");
+        chooseOptionsViewModel.firePropertyChanged();
+
         viewManagerModel.setState(displayOptionsViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }

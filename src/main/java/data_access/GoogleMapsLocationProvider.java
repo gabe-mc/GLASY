@@ -119,6 +119,7 @@ public class GoogleMapsLocationProvider implements
         }
     }
 
+    @Override
     public Integer calculateTravelTime(String address1, String address2) {
         Integer result = null;
         final String url = createDistanceMatrixUrl(address1, address2);
@@ -147,6 +148,7 @@ public class GoogleMapsLocationProvider implements
      * @return A string representing the distance between the two locations in KM, rounded to one decimal place.
      * @throws IOException If an error occurs while building the request or processing the response.
      */
+    @Override
     public Float matrixDistance(String address1, String address2) {
         Float result = null;
         final String url = createDistanceMatrixUrl(address1, address2);

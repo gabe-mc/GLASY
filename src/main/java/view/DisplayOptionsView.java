@@ -14,11 +14,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DisplayOptionsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "display options";
     private final DisplayOptionsViewModel displayOptionsViewModel;
-    private DisplayOptionsController displayOptionsController;
+    private DisplayOptionsController displayOptionsController = new DisplayOptionsController();
 
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
@@ -119,8 +120,9 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
 
             final DisplayOptionsState currentState = displayOptionsViewModel.getState();
             resultsCheckboxes.removeAll();
-            for (AttractionData possibleLocation : currentState.getCheckedLocationList().keySet()) {
-                JCheckBox checkBox = new JCheckBox(possibleLocation.getName());
+            for (Map.Entry<AttractionData, Boolean> entry: currentState.getCheckedLocationList().entrySet()) {
+                AttractionData possibleLocation = entry.getKey();
+                JCheckBox checkBox = new JCheckBox(possibleLocation.getName(), entry.getValue());
                 resultsCheckboxes.add(checkBox);
 
                 // Sample code for checkbox listeners
@@ -137,8 +139,8 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         }
     }
 
-    public void setDisplayOptionsController(DisplayOptionsController displayOptionsController) {
-        this.displayOptionsController = displayOptionsController;
+    public DisplayOptionsController getDisplayOptionsController() {
+        return displayOptionsController;
     }
 
     public String getViewName() { return viewName; }

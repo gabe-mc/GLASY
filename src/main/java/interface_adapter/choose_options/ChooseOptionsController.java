@@ -12,17 +12,9 @@ import java.util.Map;
 
 public class ChooseOptionsController {
 
-    private final ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor;
-    private final ChooseOptionsGoogleMapsLocationProviderInterface googleMapsLocationProvider;
-    private final UseCurrentLocationInputBoundary currentLocationUseCaseInteractor;
-
-    public ChooseOptionsController(ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor,
-                                   UseCurrentLocationInputBoundary currentLocationUseCaseInteractor,
-                                   ChooseOptionsGoogleMapsLocationProviderInterface googleMapsLocationProvider) {
-        this.chooseOptionsUseCaseInteractor = chooseOptionsUseCaseInteractor;
-        this.currentLocationUseCaseInteractor = currentLocationUseCaseInteractor;
-        this.googleMapsLocationProvider = googleMapsLocationProvider;
-    }
+    private ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor;
+    private ChooseOptionsGoogleMapsLocationProviderInterface googleMapsLocationProvider;
+    private UseCurrentLocationInputBoundary currentLocationUseCaseInteractor;
 
     public void execute(String startingAddress,
                         int maxDistance,
@@ -44,4 +36,16 @@ public class ChooseOptionsController {
     public void switchToPreviousView() { chooseOptionsUseCaseInteractor.switchToPreviousView(); }
 
     public void useCurrentLocation() { currentLocationUseCaseInteractor.useCurrentLocation(); }
+
+    public void setCurrentLocationUseCaseInteractor(UseCurrentLocationInputBoundary currentLocationUseCaseInteractor) {
+        this.currentLocationUseCaseInteractor = currentLocationUseCaseInteractor;
+    }
+
+    public void setGoogleMapsLocationProvider(ChooseOptionsGoogleMapsLocationProviderInterface googleMapsLocationProvider) {
+        this.googleMapsLocationProvider = googleMapsLocationProvider;
+    }
+
+    public void setChooseOptionsUseCaseInteractor(ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor) {
+        this.chooseOptionsUseCaseInteractor = chooseOptionsUseCaseInteractor;
+    }
 }

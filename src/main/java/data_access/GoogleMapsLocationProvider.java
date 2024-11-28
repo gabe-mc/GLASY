@@ -102,7 +102,7 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
      * @throws IOException If an input or output exception occurs while sending the request
      *                     or receiving the response.
      */
-    public String getAddress(Double longitude, Double latitude) throws IOException {
+    public String getAddress(Double latitude, Double longitude) throws IOException {
         final String url = String.format(
                 "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&key=%s",
                 latitude, longitude, apiKey);

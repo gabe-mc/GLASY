@@ -8,19 +8,19 @@ import entity.AttractionData;
  * It calculates travel times and visit times for a sequence of attractions based on user input.
  */
 public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
-    private final ComputeTimeDataAccessInterface computeTimeDataAccessInterface;
-    private final ComputeTimeOutputBoundary outputBoundary;
+    private final ComputeTimeUserDataAccessInterface userDataAccessObject;
+    private final ComputeTimeOutputBoundary computeTimePresenter;
 
     /**
      * Constructs a ComputeTimeInteractor with the specified data access and output boundary.
      *
-     * @param computeTimeDataAccessInterface The data access interface for travel time data.
-     * @param outputBoundary                 The output boundary for presenting results.
+     * @param userDataAccessInterface The data access interface for travel time data.
+     * @param computeTimePresenter                 The output boundary for presenting results.
      */
-    public ComputeTimeInteractor(ComputeTimeDataAccessInterface computeTimeDataAccessInterface,
-                                 ComputeTimeOutputBoundary outputBoundary) {
-        this.computeTimeDataAccessInterface = computeTimeDataAccessInterface;
-        this.outputBoundary = outputBoundary;
+    public ComputeTimeInteractor(ComputeTimeUserDataAccessInterface userDataAccessInterface,
+                                 ComputeTimeOutputBoundary computeTimePresenter) {
+        this.userDataAccessObject = userDataAccessInterface;
+        this.computeTimePresenter = computeTimePresenter;
     }
 
     /**
@@ -86,11 +86,11 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
     @Override
     public void execute(ComputeTimeInputData computeTimeInputData) {
         List<AttractionData> newSequentialLocations = fillSequentialLocations(
-                computeTimeInputData.getStartTime(),
-                computeTimeInputData.getEndTime(),
+                userDataAccessObject.getStartTime(),
+                userDataAccessObject.getEndTime(),
                 computeTimeInputData.getSequentialLocations());
         final ComputeTimeOutputData outputData = new ComputeTimeOutputData(newSequentialLocations, false);
-        outputBoundary.prepareSuccessView(outputData);
+        computeTimePresenter.prepareSuccessView(outputData);
     }
 
 }

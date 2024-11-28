@@ -8,24 +8,28 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_options.ChooseOptionsController;
 import interface_adapter.choose_options.ChooseOptionsPresenter;
 import interface_adapter.choose_options.ChooseOptionsViewModel;
+import interface_adapter.display_options.DisplayOptionsController;
+import interface_adapter.display_options.DisplayOptionsPresenter;
 import interface_adapter.display_options.DisplayOptionsViewModel;
+import interface_adapter.display_results_view.DisplayResultsPresenter;
+import interface_adapter.display_results_view.DisplayResultsViewModel;
 import interface_adapter.splash_screen_view.SplashScreenController;
 import interface_adapter.splash_screen_view.SplashScreenPresenter;
 import interface_adapter.splash_screen_view.SplashScreenViewModel;
 import use_case.choose_options.ChooseOptionsInputBoundary;
 import use_case.choose_options.ChooseOptionsInteractor;
 import use_case.choose_options.ChooseOptionsOutputBoundary;
+import use_case.compute_time.ComputeTimeInputBoundary;
+import use_case.compute_time.ComputeTimeInteractor;
+import use_case.compute_time.ComputeTimeOutputBoundary;
+import use_case.find_shortest_path.FindShortestPathInputBoundary;
+import use_case.find_shortest_path.FindShortestPathInteractor;
+import use_case.find_shortest_path.FindShortestPathOutputBoundary;
 import use_case.start_app.StartAppInputBoundary;
 import use_case.start_app.StartAppInteractor;
 import use_case.start_app.StartAppOutputBoundary;
-import use_case.use_current_location.UseCurrentLocationInputBoundary;
-import use_case.use_current_location.UseCurrentLocationOutputBoundary;
-import use_case.use_current_location.UseCurrentLocationOutputData;
-import use_case.use_current_location.UseCurrentLocationInteractor;
-import view.ChooseOptionsView;
-import view.DisplayOptionsView;
-import view.SplashScreenView;
-import view.ViewManager;
+import view.*;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +51,8 @@ public class AppBuilder {
     private ChooseOptionsViewModel chooseOptionsViewModel = new ChooseOptionsViewModel();
     private DisplayOptionsView displayOptionsView;
     private DisplayOptionsViewModel displayOptionsViewModel = new DisplayOptionsViewModel();
+    private DisplayResultsView displayResultsView;
+    private DisplayResultsViewModel displayResultsViewModel = new DisplayResultsViewModel();
 
     public AppBuilder() { cardPanel.setLayout(cardLayout); }
 
@@ -68,6 +74,13 @@ public class AppBuilder {
         displayOptionsViewModel = new DisplayOptionsViewModel();
         displayOptionsView = new DisplayOptionsView(displayOptionsViewModel);
         cardPanel.add(displayOptionsView, displayOptionsView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addDisplayResultsView() {
+        displayResultsViewModel = new DisplayResultsViewModel();
+        displayResultsView = new DisplayResultsView(displayResultsViewModel);
+        cardPanel.add(displayResultsView, displayResultsView.getViewName());
         return this;
     }
 
@@ -93,6 +106,22 @@ public class AppBuilder {
         final ChooseOptionsController controller = new ChooseOptionsController(chooseOptionsInteractor,
                 useCurrentLocationInteractor, googleMapsLocationProvider);
         chooseOptionsView.setChooseOptionsController(controller);
+        return this;
+    }
+
+    public AppBuilder addFindShortestPathUseCase() {
+        final DisplayOptionsPresenter displayOptionsPresenter = new DisplayOptionsPresenter(
+                viewManagerModel, displayOptionsViewModel, chooseOptionsViewModel, displayResultsViewModel);
+        final FindShortestPathInputBoundary findShortestPathInteractor = new FindShortestPathInteractor(
+                googleMapsLocationProvider, displayOptionsPresenter);
+
+        final ComputeTimeInputBoundary computeTimeInteractor = new ComputeTimeInteractor(userDataAccessObject,
+                displayOptionsPresenter);
+
+
+        final DisplayOptionsController controller = new DisplayOptionsController(findShortestPathInteractor,
+                computeTimeInteractor);
+        displayOptionsView.setDisplayOptionsController(controller);
         return this;
     }
 

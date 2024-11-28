@@ -23,8 +23,10 @@ public class Main {
                 .addSplashScreenView()
                 .addChooseOptionsView()
                 .addDisplayOptionsView()
+                .addDisplayResultsView()
                 .addStartAppUseCase()
                 .addChooseOptionsUseCase()
+                .addFindShortestPathUseCase()
                 .build();
         application.pack();
         application.setVisible(true);

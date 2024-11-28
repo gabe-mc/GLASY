@@ -104,7 +104,7 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(currentLocationButton)) {
-//                            chooseOptionsController.useCurrentLocation();
+                            chooseOptionsController.useCurrentLocation();
                         }
                     }
                 }

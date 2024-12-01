@@ -3,6 +3,7 @@ package data_access;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import entity.AttractionData;
 import org.json.JSONObject;
 
 import okhttp3.OkHttpClient;
@@ -26,9 +27,12 @@ public class GoogleMapsLocationProvider {
      * @return A formatted URL string that can be used to send a geocoding request to the Google Maps API.
      * @throws IOException If an encoding error occurs while processing the address components.
      */
-    public String createGeocodeUrl(String address) throws IOException {
+    public String createGeocodeUrl(ArrayList<AttractionData> address) throws IOException {
         final StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
-        formatAddress(address, url);
+        for (AttractionData data : address) {
+            formatAddress(data.getAddress(), url);
+            url.append("/");
+        }
         return url.substring(0, url.length() - 2) + "&key=" + apiKey;
     }
 
@@ -49,34 +53,6 @@ public class GoogleMapsLocationProvider {
 
         formatAddress(address2, url);
         return url.substring(0, url.length() - 2) + "&key=" + apiKey;
-    }
-
-    /**
-     * Retrieves the latitude and longitude for a given address by sending a request
-     * to a geocoding API and parsing the JSON response.
-     *
-     * @param address The address to be geocoded.
-     * @return An ArrayList containing the latitude and longitude as Double values.
-     *         The first element is the latitude, and the second element is the longitude.
-     * @throws IOException If an input or output exception occurs while sending the request
-     *                     or receiving the response.
-     */
-    public ArrayList<Double> getLonLat(String address) throws IOException {
-        final String url = createGeocodeUrl(address);
-        final Request request = new Request.Builder().url(url).build();
-        try (Response response = client.newCall(request).execute()) {
-            final String responseBody = response.body().string();
-            final JSONObject jsonObject = new JSONObject(responseBody);
-            final JSONObject locationData = jsonObject
-                    .getJSONArray("results")
-                    .getJSONObject(0)
-                    .getJSONObject("geometry")
-                    .getJSONObject("location");
-            final ArrayList<Double> result = new ArrayList<>();
-            result.add(locationData.getDouble("lat"));
-            result.add(locationData.getDouble("lng"));
-            return result;
-        }
     }
 
     /**

@@ -8,6 +8,7 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_options.ChooseOptionsController;
 import interface_adapter.choose_options.ChooseOptionsPresenter;
 import interface_adapter.choose_options.ChooseOptionsViewModel;
+import interface_adapter.display_itinerary_view.DisplayItineraryController;
 import interface_adapter.display_itinerary_view.DisplayItineraryViewModel;
 import interface_adapter.display_options.DisplayOptionsController;
 import interface_adapter.display_options.DisplayOptionsPresenter;
@@ -25,11 +26,15 @@ import use_case.compute_time.ComputeTimeOutputBoundary;
 import use_case.find_shortest_path.FindShortestPathInputBoundary;
 import use_case.find_shortest_path.FindShortestPathInteractor;
 import use_case.find_shortest_path.FindShortestPathOutputBoundary;
+import use_case.save_itinerary.SaveItineraryInputBoundary;
+import use_case.save_itinerary.SaveItineraryInteractor;
+import use_case.save_itinerary.SaveItineraryOutputBoundary;
 import use_case.start_app.StartAppInputBoundary;
 import use_case.start_app.StartAppInteractor;
 import use_case.start_app.StartAppOutputBoundary;
 import use_case.use_current_location.UseCurrentLocationInputBoundary;
 import use_case.use_current_location.UseCurrentLocationInteractor;
+import use_case.use_current_location.UseCurrentLocationOutputBoundary;
 import view.*;
 
 
@@ -98,32 +103,54 @@ public class AppBuilder {
     }
 
     public AppBuilder addChooseOptionsUseCase() {
-        final ChooseOptionsPresenter chooseOptionsPresenter = new ChooseOptionsPresenter(viewManagerModel,
+        final ChooseOptionsOutputBoundary chooseOptionsOutputBoundary = new ChooseOptionsPresenter(viewManagerModel,
                 chooseOptionsViewModel, splashScreenViewModel, displayOptionsViewModel);
         final ChooseOptionsInputBoundary chooseOptionsInteractor = new ChooseOptionsInteractor(
-                foursquareLocationProvider, userDataAccessObject, chooseOptionsPresenter);
+                foursquareLocationProvider, userDataAccessObject, chooseOptionsOutputBoundary);
+        final ChooseOptionsController controller = chooseOptionsView.getChooseOptionsController();
+        controller.setChooseOptionsUseCaseInteractor(chooseOptionsInteractor);
+        controller.setGoogleMapsLocationProvider(googleMapsLocationProvider);
+        return this;
+    }
+    public AppBuilder addUseCurrentLocationUseCase() {
+        final UseCurrentLocationOutputBoundary useCurrentLocationOutputBoundary = new ChooseOptionsPresenter(
+                viewManagerModel, chooseOptionsViewModel, splashScreenViewModel, displayOptionsViewModel);
         final UseCurrentLocationInputBoundary useCurrentLocationInteractor = new UseCurrentLocationInteractor(
-                userDataAccessObject, chooseOptionsPresenter);
+            userDataAccessObject, useCurrentLocationOutputBoundary);
 
-        final ChooseOptionsController controller = new ChooseOptionsController(chooseOptionsInteractor,
-                useCurrentLocationInteractor, googleMapsLocationProvider);
-        chooseOptionsView.setChooseOptionsController(controller);
+        final ChooseOptionsController controller = chooseOptionsView.getChooseOptionsController();
+        controller.setCurrentLocationUseCaseInteractor(useCurrentLocationInteractor);
         return this;
     }
 
     public AppBuilder addFindShortestPathUseCase() {
-        final DisplayOptionsPresenter displayOptionsPresenter = new DisplayOptionsPresenter(
+        final FindShortestPathOutputBoundary findShortestPathOutputBoundary = new DisplayOptionsPresenter(
                 viewManagerModel, displayOptionsViewModel, chooseOptionsViewModel, displayItineraryViewModel);
         final FindShortestPathInputBoundary findShortestPathInteractor = new FindShortestPathInteractor(
-                googleMapsLocationProvider, displayOptionsPresenter);
+                googleMapsLocationProvider, findShortestPathOutputBoundary);
+        final DisplayOptionsController controller = displayOptionsView.getDisplayOptionsController();
+        controller.setFindShortestPathUseCaseInteractor(findShortestPathInteractor);
+        return this;
+    }
 
+    public AppBuilder addComputeTimeUseCase() {
+        final ComputeTimeOutputBoundary computeTimeOutputBoundary = new DisplayOptionsPresenter(
+                viewManagerModel, displayOptionsViewModel, chooseOptionsViewModel, displayItineraryViewModel);
         final ComputeTimeInputBoundary computeTimeInteractor = new ComputeTimeInteractor(userDataAccessObject,
-                displayOptionsPresenter);
+                computeTimeOutputBoundary);
+        final DisplayOptionsController controller = displayOptionsView.getDisplayOptionsController();
+        controller.setComputeTimeInputUseCaseInteractor(computeTimeInteractor);
+        return this;
+    }
 
+    public AppBuilder addSaveItineraryUseCase() {
+        final SaveItineraryOutputBoundary saveItineraryOutputBoundary = new DisplayItineraryPresenter(
+                viewManagerModel, displayItineraryViewModel, displayOptionsViewModel);
+        final SaveItineraryInputBoundary saveItineraryInteractor = new SaveItineraryInteractor(
+                saveItineraryOutputBoundary);
 
-        final DisplayOptionsController controller = new DisplayOptionsController(findShortestPathInteractor,
-                computeTimeInteractor);
-        displayOptionsView.setDisplayOptionsController(controller);
+        final DisplayItineraryController controller = new DisplayItineraryController(saveItineraryInteractor);
+        displayItineraryView.setDisplayItineraryController(controller);
         return this;
     }
 

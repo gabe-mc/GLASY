@@ -13,14 +13,8 @@ import java.util.Map;
 
 public class DisplayOptionsController {
 
-    private final FindShortestPathInputBoundary findShortestPathUseCaseInteractor;
-    private final ComputeTimeInputBoundary computeTimeInputUseCaseInteractor;
-
-    public DisplayOptionsController(FindShortestPathInputBoundary findShortestPathUseCaseInteractor,
-                                    ComputeTimeInputBoundary computeTimeInputUseCaseInteractor) {
-        this.findShortestPathUseCaseInteractor = findShortestPathUseCaseInteractor;
-        this.computeTimeInputUseCaseInteractor = computeTimeInputUseCaseInteractor;
-    }
+    private FindShortestPathInputBoundary findShortestPathUseCaseInteractor;
+    private ComputeTimeInputBoundary computeTimeInputUseCaseInteractor;
 
     public void execute(Map<AttractionData, Boolean> checkedLocationList) {
         List<AttractionData> path = new ArrayList<>();
@@ -41,4 +35,12 @@ public class DisplayOptionsController {
     }
 
     public void switchToPreviousView() { findShortestPathUseCaseInteractor.switchToPreviousView(); }
+
+    public void setFindShortestPathUseCaseInteractor(FindShortestPathInputBoundary findShortestPathUseCaseInteractor) {
+        this.findShortestPathUseCaseInteractor = findShortestPathUseCaseInteractor;
+    }
+
+    public void setComputeTimeInputUseCaseInteractor(ComputeTimeInputBoundary computeTimeInputUseCaseInteractor) {
+        this.computeTimeInputUseCaseInteractor = computeTimeInputUseCaseInteractor;
+    }
 }

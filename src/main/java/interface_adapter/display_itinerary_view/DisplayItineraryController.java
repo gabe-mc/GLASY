@@ -14,6 +14,8 @@ public class DisplayItineraryController {
         this.saveItineraryUseCaseInteractor = saveItineraryUseCaseInteractor;
     }
 
+    public void switchToPreviousView() { chooseOptionsUseCaseInteractor.switchToPreviousView(); }
+
     public void execute(){
 //        chooseOptionsUseCaseInteractor.execute();
     }

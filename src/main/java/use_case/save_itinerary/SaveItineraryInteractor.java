@@ -1,21 +1,18 @@
 package use_case.save_itinerary;
 
-import use_case.find_shortest_path.FindShortestPathOutputData;
-import use_case.save_itinerary.SaveItineraryOutputBoundary;
-
 import java.io.FileWriter;
 import java.io.IOException;
 
 
 public class SaveItineraryInteractor implements SaveItineraryInputBoundary {
-    private final SaveItineraryOutputBoundary outputBoundary;
+    private final SaveItineraryOutputBoundary saveItineraryPresenter;
 
-    public SaveItineraryInteractor(SaveItineraryOutputBoundary outputBoundary) {
-        this.outputBoundary = outputBoundary;
+    public SaveItineraryInteractor(SaveItineraryOutputBoundary saveItineraryOutputBoundary) {
+        this.saveItineraryPresenter = saveItineraryOutputBoundary;
     }
 
     @Override
-    public void saveText(SaveItineraryInputData inputData) {
+    public void execute(SaveItineraryInputData inputData) {
         String filePath = inputData.getFilePath() + "/" + inputData.getFileName() + ".txt";
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(inputData.getContent());
@@ -24,6 +21,11 @@ public class SaveItineraryInteractor implements SaveItineraryInputBoundary {
         }
 
         SaveItineraryOutputData outputData = new SaveItineraryOutputData(filePath);
-        outputBoundary.presentOutput(outputData);
+        saveItineraryPresenter.presentOutput(outputData);
+    }
+
+    @Override
+    public void switchToPreviousView() {
+        saveItineraryPresenter.switchToPreviousView();
     }
 }

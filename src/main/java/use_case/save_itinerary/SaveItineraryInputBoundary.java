@@ -7,5 +7,10 @@ public interface SaveItineraryInputBoundary {
      /**
      * Executes the save itinerary use case.
      */
-     void saveText(SaveItineraryInputData inputData);
+     void execute(SaveItineraryInputData inputData);
+
+     /**
+      * Switches the view to the previous page.
+      */
+     void switchToPreviousView();
 }

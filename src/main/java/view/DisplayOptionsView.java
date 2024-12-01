@@ -18,7 +18,7 @@ import java.util.List;
 public class DisplayOptionsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "display options";
     private final DisplayOptionsViewModel displayOptionsViewModel;
-    private DisplayOptionsController displayOptionsController;
+    private DisplayOptionsController displayOptionsController = new DisplayOptionsController();
 
     private ImageIcon bkgImage;
     private JLabel backgroundLabel;
@@ -117,9 +117,8 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         if (evt.getPropertyName().equals("state")) {
             final DisplayOptionsState state = (DisplayOptionsState) evt.getNewValue();
 
-            final DisplayOptionsState currentState = displayOptionsViewModel.getState();
             resultsCheckboxes.removeAll();
-            for (AttractionData possibleLocation : currentState.getCheckedLocationList().keySet()) {
+            for (AttractionData possibleLocation : state.getCheckedLocationList().keySet()) {
                 JCheckBox checkBox = new JCheckBox(possibleLocation.getName());
                 resultsCheckboxes.add(checkBox);
 
@@ -128,7 +127,7 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         JCheckBox source = (JCheckBox) e.getSource();
-                        currentState.setCheckedLocation(possibleLocation, source.isSelected());
+                        state.setCheckedLocation(possibleLocation, source.isSelected());
                     }
                 });
             }
@@ -137,8 +136,8 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         }
     }
 
-    public void setDisplayOptionsController(DisplayOptionsController displayOptionsController) {
-        this.displayOptionsController = displayOptionsController;
+    public DisplayOptionsController getDisplayOptionsController() {
+        return displayOptionsController;
     }
 
     public String getViewName() { return viewName; }

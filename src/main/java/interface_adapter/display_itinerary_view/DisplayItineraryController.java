@@ -5,18 +5,15 @@ import use_case.save_itinerary.SaveItineraryInputBoundary;
 
 public class DisplayItineraryController {
 
-    private final ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor;
     private final SaveItineraryInputBoundary saveItineraryUseCaseInteractor;
 
-    public DisplayItineraryController(ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor,
-                                      SaveItineraryInputBoundary saveItineraryUseCaseInteractor) {
-        this.chooseOptionsUseCaseInteractor = chooseOptionsUseCaseInteractor;
+    public DisplayItineraryController(SaveItineraryInputBoundary saveItineraryUseCaseInteractor) {
         this.saveItineraryUseCaseInteractor = saveItineraryUseCaseInteractor;
     }
-
-    public void switchToPreviousView() { chooseOptionsUseCaseInteractor.switchToPreviousView(); }
 
     public void execute(){
 //        chooseOptionsUseCaseInteractor.execute();
     }
+
+    public void switchToPreviousView() { saveItineraryUseCaseInteractor.switchToPreviousView(); }
 }

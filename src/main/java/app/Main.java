@@ -13,7 +13,10 @@ public class Main {
                 .addDisplayItineraryView()
                 .addStartAppUseCase()
                 .addChooseOptionsUseCase()
+                .addUseCurrentLocationUseCase()
                 .addFindShortestPathUseCase()
+                .addComputeTimeUseCase()
+                .addSaveItineraryUseCase()
                 .build();
         application.pack();
         application.setVisible(true);

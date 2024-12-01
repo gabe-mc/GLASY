@@ -167,27 +167,6 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                         possibleLocation.getPhotoUrl()
                 ));
 
-//                JPanel container = new JPanel();
-//                container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
-//                JPanel panelOne = new JPanel();
-//                JPanel panelTwo = new JPanel();
-//
-//                panelTwo.setLayout(new BorderLayout()); // Set layout for the panel
-//
-//                String html = "<html>" + "<img src='" + possibleLocation.getPhotoUrl() + "' width='150' height='150'/>" + "</html>";
-//
-//                // Add the HTML to a JLabel
-//                JLabel htmlLabel = new JLabel(html);
-//                htmlLabel.setHorizontalAlignment(SwingConstants.CENTER);
-//
-//                panelOne.add(htmlLabel);
-//                panelTwo.add(checkBox);
-//
-//
-//                container.setLayout(new GridLayout(1,2));
-//                container.add(panelOne, BorderLayout.WEST);
-//                container.add(panelTwo, BorderLayout.CENTER);
-
                 resultsCheckboxes.add(checkBox);
 
                 // Sample code for checkbox listeners

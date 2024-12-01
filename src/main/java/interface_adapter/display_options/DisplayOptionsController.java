@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * Controller for the Display Options View.
+ */
 public class DisplayOptionsController {
 
     private FindShortestPathInputBoundary findShortestPathUseCaseInteractor;

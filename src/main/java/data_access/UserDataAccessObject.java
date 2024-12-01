@@ -8,9 +8,11 @@ import use_case.start_app.StartAppUserDataAccessInterface;
 import use_case.use_current_location.UseCurrentLocationUserDataAccessInterface;
 
 import java.awt.*;
-import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Implementation of DAO for storing user data.
+ */
 public class UserDataAccessObject implements
         StartAppUserDataAccessInterface,
         ChooseOptionsUserDataAccessInterface,

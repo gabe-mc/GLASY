@@ -4,6 +4,9 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_options.ChooseOptionsViewModel;
 import use_case.start_app.StartAppOutputBoundary;
 
+/**
+ * The Presenter for the Splash Screen View.
+ */
 public class SplashScreenPresenter implements StartAppOutputBoundary {
     private final ChooseOptionsViewModel chooseOptionsViewModel;
     private final ViewManagerModel viewManagerModel;

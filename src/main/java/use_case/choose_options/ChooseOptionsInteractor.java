@@ -1,6 +1,5 @@
 package use_case.choose_options;
 
-import data_access.FoursquareLocationProvider;
 import entity.AttractionData;
 import entity.Settings;
 
@@ -9,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The interactor data for the Set User Info Use Case.
+ * The Choose Options Interactor.
  */
 public class ChooseOptionsInteractor implements ChooseOptionsInputBoundary {
     private final ChooseOptionsFoursquareLocationProviderInterface foursquareLocationProvider;

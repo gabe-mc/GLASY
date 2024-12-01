@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * The interactor data for the Find Shortest Path Use Case.
+ * The Find Shortest Path Interactor.
  */
 public class FindShortestPathInteractor implements FindShortestPathInputBoundary{
     private final FindShortestPathGoogleMapsLocationProviderInterface googleMapsLocationProvider;

@@ -2,6 +2,9 @@ package use_case.save_itinerary;
 
 import java.util.List;
 
+/**
+ * The Input Data for the Save Itinerary Use Case.
+ */
 public class SaveItineraryInputData {
     private List<String[]> content;
     private String filePath;

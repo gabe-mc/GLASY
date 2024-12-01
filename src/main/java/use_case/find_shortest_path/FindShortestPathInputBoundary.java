@@ -8,8 +8,8 @@ package use_case.find_shortest_path;
 public interface FindShortestPathInputBoundary {
 
     /**
-     * Execute the findShortestRoute Use Case.
-     * @param inputData is the input data for this use case
+     * Execute the findShortestRoute use case.
+     * @param inputData is the a class representing a list of locations
      */
     FindShortestPathOutputData execute(FindShortestPathInputData inputData);
 

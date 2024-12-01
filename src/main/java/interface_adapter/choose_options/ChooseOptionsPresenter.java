@@ -1,6 +1,5 @@
 package interface_adapter.choose_options;
 
-import entity.AttractionData;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.display_options.DisplayOptionsState;
 import interface_adapter.display_options.DisplayOptionsViewModel;
@@ -10,9 +9,9 @@ import use_case.choose_options.ChooseOptionsOutputData;
 import use_case.use_current_location.UseCurrentLocationOutputBoundary;
 import use_case.use_current_location.UseCurrentLocationOutputData;
 
-import java.util.List;
-import java.util.Map;
-
+/**
+ * The Presenter for the Choose Options View.
+ */
 public class ChooseOptionsPresenter implements ChooseOptionsOutputBoundary, UseCurrentLocationOutputBoundary {
 
     private final ChooseOptionsViewModel chooseOptionsViewModel;

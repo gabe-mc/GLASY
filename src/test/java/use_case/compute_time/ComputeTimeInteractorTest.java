@@ -2,17 +2,19 @@ package use_case.compute_time;
 
 import entity.AttractionData;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 public class ComputeTimeInteractorTest {
 
     @Test
-    public void SuccessTest() {
+    public void successTest() {
         ArrayList<AttractionData> attractionsList = new ArrayList<>();
         AttractionData attraction1 = new AttractionData();
         attraction1.setAddress("197 Yonge Street");
@@ -41,18 +43,17 @@ public class ComputeTimeInteractorTest {
         ComputeTimeOutputBoundary outputBoundary = new ComputeTimeOutputBoundary() {
             @Override
             public void prepareSuccessView(ComputeTimeOutputData outputData) {
-
-                Assertions.assertEquals("1900", "1900");
-//                Assertions.assertEquals(attraction1.getVisitTime(), "1900");
+                assertEquals(attraction1.getVisitTime(), "12:12 - 13:35");
             }
 
             @Override
             public void prepareFailView(String errorMessage) {
-                // nothing here to see
+                fail("Use case failure is unexpected.");
             }
         };
         ComputeTimeInputData inputData = new ComputeTimeInputData(attractionsList);
-        ComputeTimeUserDataAccessInterface imm = new ComputeTimeUserDataAccessInterface() {
+        ComputeTimeUserDataAccessInterface computeTimeUserDataAccessInterface =
+                new ComputeTimeUserDataAccessInterface() {
             @Override
             public Date getStartTime() {
                 Calendar calendar = Calendar.getInstance();
@@ -79,9 +80,8 @@ public class ComputeTimeInteractorTest {
             }
         };
 
-        ComputeTimeInputBoundary interactor = new ComputeTimeInteractor(imm, outputBoundary);
+        ComputeTimeInputBoundary interactor = new ComputeTimeInteractor(computeTimeUserDataAccessInterface,
+                outputBoundary);
         interactor.execute(inputData);
-        System.out.println (attractionsList.get(1).getVisitTime());
-
     }
 }

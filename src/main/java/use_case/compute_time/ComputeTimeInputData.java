@@ -5,8 +5,7 @@ import entity.AttractionData;
 import java.util.List;
 
 /**
- * The ComputeTimeInputData class represents the input data required for the "Compute Time" use case.
- * It contains the sequence of attractions to be visited, as well as the start and end times for the visit.
+ * The Input Data for the Compute Time Use Case.
  */
 public class ComputeTimeInputData {
     private final List<AttractionData> sequentialLocations;

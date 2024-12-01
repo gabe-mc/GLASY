@@ -10,7 +10,6 @@ public class AttractionEntityTest {
 
     @Test
     void SuccessTest() {
-
         AttractionData testAttraction = new AttractionData();
 
         testAttraction.setLatitude(1.0);
@@ -23,7 +22,6 @@ public class AttractionEntityTest {
         ArrayList<Double> hours = new ArrayList<>();
         hours.add(0.700);
         hours.add(0.2300);
-//        testAttraction.setHoursOfOperation(hours);
         testAttraction.setName("County Pool");
 
         Assertions.assertEquals(testAttraction.getLatitude(), 1.0);
@@ -33,7 +31,6 @@ public class AttractionEntityTest {
         Assertions.assertEquals(testAttraction.getLocality(), "ON");
         Assertions.assertEquals(testAttraction.getPostcode(), "M5S 1K9");
         Assertions.assertEquals(testAttraction.getRegion(), "Northwest");
-//        Assertions.assertEquals(testAttraction.getHoursOfOperation(), hours);
         Assertions.assertEquals(testAttraction.getName(), "County Pool");
 
     }

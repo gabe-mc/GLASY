@@ -17,15 +17,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation for interacting with the Foursquare API.
+ */
 public class FoursquareLocationProvider implements ChooseOptionsFoursquareLocationProviderInterface {
-    /**
-     * Retrieves location data from the Foursquare Places API based on the provided geographic coordinates
-     * and optional query parameters.
-     *
-     * @param settings A class representing of optional query parameters to refine the search.
-     * @return A JSON string representing the locations returned by the Foursquare API. The string is formatted with an
-     *         indent factor of 4 for readability.
-     */
     @Override
     public List<AttractionData> getLocationList(Settings settings) {
         final Map<String, String> params = getParams(settings);
@@ -96,6 +91,11 @@ public class FoursquareLocationProvider implements ChooseOptionsFoursquareLocati
         return locationList;
     }
 
+    /**
+     * Returns a map representing the parameters from the user's settings.
+     * @param settings The settings from the user
+     * @return A map linking the parameter to its value
+     */
     private static Map<String, String> getParams(Settings settings) {
         Map<String, String> params = new HashMap<>();
         LocationData location =  settings.getLocation();
@@ -113,6 +113,11 @@ public class FoursquareLocationProvider implements ChooseOptionsFoursquareLocati
         return params;
     }
 
+    /**
+     * Returns a string for the Foursquare url to filter categories.
+     * @param settings The settings including the categories to filter for
+     * @return A string to add to the url to filter categories
+     */
     private static String getCategories(Settings settings) {
         Map<String, Boolean> possibleLocationTypes = settings.getPossibleLocationTypes();
         Map<String, String> categoryMap = Map.of(

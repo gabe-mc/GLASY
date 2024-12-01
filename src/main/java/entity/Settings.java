@@ -3,6 +3,9 @@ package entity;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * A class representing the user's selected settings.
+ */
 public class Settings {
     private AttractionData location;
     private int maxDistance;

@@ -6,9 +6,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Represents the output data of the "Compute Time" use case.
- * This class encapsulates a list of sequentially ordered locations and a flag indicating
- * whether the use case failed.
+ * The Output Data for the Choose Options Use Case.
  */
 public class ComputeTimeOutputData {
     private final List<AttractionData> sequentialLocations;

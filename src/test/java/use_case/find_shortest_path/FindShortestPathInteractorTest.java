@@ -6,14 +6,13 @@ import entity.AttractionData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FindShortestPathInteractorTest {
 
     @Test
-    void SuccessTest() throws IOException {
+    public void successTest() {
         AttractionData attraction1 = new AttractionData();
         attraction1.setAddress("15 Church St, Toronto ON");
         AttractionData attraction2 = new AttractionData();

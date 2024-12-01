@@ -2,6 +2,9 @@ package entity;
 
 import java.util.List;
 
+/**
+ * An extension of the CommonLocationData class to include attraction information.
+ */
 public class AttractionData extends CommonLocationData {
     private String name;
     private List<String> categories;

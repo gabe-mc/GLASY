@@ -5,6 +5,9 @@ import entity.AttractionData;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * The state for the Display Itinerary View Model.
+ */
 public class DisplayItineraryState {
     private List<AttractionData> shortestPath;
     private Image mapImage;

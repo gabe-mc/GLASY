@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The input data for the Find Shortest Path Use Case.
+ * The Input Data for the Find Shortest Path Use Case.
  */
 public class FindShortestPathInputData {
     private final List<AttractionData> path;

@@ -1,7 +1,6 @@
 package use_case.start_app;
 
 import entity.AttractionData;
-import entity.CommonLocationData;
 
 /**
  * The Start App Interactor.

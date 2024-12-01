@@ -1,9 +1,7 @@
 package use_case.choose_options;
 
-import entity.CommonLocationData;
-
 /**
- * Input Boundary for setting a user's information.
+ * Input Boundary for saving a user's settings.
  */
 public interface ChooseOptionsInputBoundary {
 

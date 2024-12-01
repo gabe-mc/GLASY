@@ -1,5 +1,8 @@
 package entity;
 
+/**
+ * The representation of locations in our program.
+ */
 public interface LocationData {
     Double getLongitude();
 

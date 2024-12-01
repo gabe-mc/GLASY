@@ -85,7 +85,7 @@ public class FindShortestPathInteractor implements FindShortestPathInputBoundary
         return findShortestPathOutputData;
     }
 
-    static int totalCost(int mask, int curr, int n,
+    private static int totalCost(int mask, int curr, int n,
                          int[][] cost, int[][] memo, int[][] parent) {
         // Dynamic programming implementation of modified  travelling salesman problem
         if (mask == (1 << n) - 1) {

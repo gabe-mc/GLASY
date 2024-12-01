@@ -5,12 +5,24 @@ import java.awt.*;
 import java.util.Date;
 
 /**
- * DAO for the Compute Time Use Case.
+ * The User DAO for the Compute Time Use Case.
  */
 public interface ComputeTimeUserDataAccessInterface {
+    /**
+     * Returns the start time of the user
+     * @return the start time
+     */
     Date getStartTime();
 
-    Image getMapImage();
-
+    /**
+     * Returns the end time of the user
+     * @return the end time
+     */
     Date getEndTime();
+
+    /**
+     * Returns the image of the generated map
+     * @return the image of the map
+     */
+    Image getMapImage();
 }

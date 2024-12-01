@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * Loader for app configurations.
+ * Loader for app configurations that stores api keys.
  */
 public class ConfigLoader {
     private static Properties properties = new Properties();

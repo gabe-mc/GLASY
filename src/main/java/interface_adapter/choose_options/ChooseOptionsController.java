@@ -11,12 +11,24 @@ import use_case.use_current_location.UseCurrentLocationInputBoundary;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * Controller for the Choose Options View.
+ */
 public class ChooseOptionsController {
 
     private ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor;
     private ChooseOptionsGoogleMapsLocationProviderInterface googleMapsLocationProvider;
     private UseCurrentLocationInputBoundary currentLocationUseCaseInteractor;
 
+    /**
+     * Executes the Choose Options Use Case.
+     * @param startingAddress the address the user begins at
+     * @param maxDistance the maximum distance attractions should be searched for
+     * @param minStars the minimum rating the attractions should have
+     * @param startTime the starting time
+     * @param endTime the ending time
+     * @param possibleLocationTypes the possible types of locations to search for
+     */
     public void execute(String startingAddress,
                         int maxDistance,
                         double minStars,
@@ -34,8 +46,14 @@ public class ChooseOptionsController {
         chooseOptionsUseCaseInteractor.execute(chooseOptionsInputData);
     }
 
+    /**
+     * Switches the view to the previous view.
+     */
     public void switchToPreviousView() { chooseOptionsUseCaseInteractor.switchToPreviousView(); }
 
+    /**
+     * Executes the Use Current Location Use Case.
+     */
     public void useCurrentLocation() { currentLocationUseCaseInteractor.useCurrentLocation(); }
 
     public void setChooseOptionsUseCaseInteractor(ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor) {

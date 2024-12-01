@@ -12,17 +12,6 @@ public class CommonLocationData implements LocationData {
     private String region;
     private String country;
 
-    public CommonLocationData(Double latitude, Double longitude, String address, String locality, String postcode,
-                              String region, String country) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.address = address;
-        this.locality = locality;
-        this.postcode = postcode;
-        this.region = region;
-        this.country = country;
-    }
-
     public CommonLocationData() {
     }
 

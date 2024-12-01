@@ -4,12 +4,13 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_options.ChooseOptionsViewModel;
 import interface_adapter.display_itinerary_view.DisplayItineraryViewModel;
 import interface_adapter.display_itinerary_view.DisplayItineraryState;
-import interface_adapter.display_itinerary_view.DisplayItineraryViewModel;
 import use_case.compute_time.ComputeTimeOutputBoundary;
 import use_case.compute_time.ComputeTimeOutputData;
 import use_case.find_shortest_path.FindShortestPathOutputBoundary;
-import use_case.find_shortest_path.FindShortestPathOutputData;
 
+/**
+ * The Presenter for the Display Options View.
+ */
 public class DisplayOptionsPresenter implements FindShortestPathOutputBoundary, ComputeTimeOutputBoundary {
 
     private final DisplayOptionsViewModel displayOptionsViewModel;

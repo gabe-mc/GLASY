@@ -6,8 +6,8 @@ package use_case.compute_time;
 public interface ComputeTimeInputBoundary {
 
     /**
-     * Executes the Compute Time Use Case.
-     * @param computeTimeInputData the input data
+     * Executes the compute time use case.
+     * @param computeTimeInputData the input data containing the list of locations
      */
     void execute(ComputeTimeInputData computeTimeInputData);
 }

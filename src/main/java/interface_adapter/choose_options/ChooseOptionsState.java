@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The state for the Choose Options View Model.
+ */
 public class ChooseOptionsState {
     private String startingAddress = "";
     private int maxDistance = 10;

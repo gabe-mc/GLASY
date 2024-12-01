@@ -1,16 +1,16 @@
 package entity;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.time.LocalDateTime; // Import the LocalDateTime class
 
+/**
+ * A class representing the itinerary in our program.
+ */
 public class Itinerary {
     private List<LocationData> events;
     private List<LocalDateTime> travelTimeBetween;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-
-    public Itinerary () {}
 
     public List<LocationData> getEvents() {
         return events;

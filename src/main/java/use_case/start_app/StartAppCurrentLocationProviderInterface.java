@@ -3,7 +3,7 @@ package use_case.start_app;
 import entity.AttractionData;
 
 /**
- * Location Provider for the Start App Use Case.
+ * The Current Location Provider for the Start App Use Case.
  */
 public interface StartAppCurrentLocationProviderInterface {
 

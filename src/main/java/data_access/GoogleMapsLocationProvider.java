@@ -1,14 +1,11 @@
 package data_access;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import entity.AttractionData;
-import entity.CommonLocationData;
-import entity.LocationData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,12 +13,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static java.lang.Integer.parseInt;
 import use_case.choose_options.ChooseOptionsGoogleMapsLocationProviderInterface;
 import use_case.find_shortest_path.FindShortestPathGoogleMapsLocationProviderInterface;
 
 /**
- * The DAO for google maps data.
+ * Implementation for interacting with the Google Maps API.
  */
 public class GoogleMapsLocationProvider implements
         ChooseOptionsGoogleMapsLocationProviderInterface,
@@ -32,7 +28,6 @@ public class GoogleMapsLocationProvider implements
 
     /**
      * Creates a Google Maps link to the users route
-     *
      * @param address The addresses to be put into the route.
      * @return a String with the link to the map
      */
@@ -45,14 +40,7 @@ public class GoogleMapsLocationProvider implements
         return url.substring(0, url.length() - 2) + "&key=" + apiKey;
     }
 
-    /**
-     * Retrieves the latitude and longitude for a given address by sending a request
-     * to a geocoding API and parsing the JSON response.
-     *
-     * @param address The address to be geocoded.
-     * @return Null if no address is found, otherwise the LocationData object
-     * representing the address
-     */
+    @Override
     public AttractionData addressToLocation(String address) {
         StringBuilder urlBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
         formatAddress(address, urlBuilder);
@@ -101,11 +89,9 @@ public class GoogleMapsLocationProvider implements
     /**
      * Constructs a Google Maps Distance Matrix API URL for calculating the distance
      * between two given addresses.
-     *
      * @param address1 The origin address, which will be used as the starting point for the distance calculation.
      * @param address2 The destination address, which will be used as the endpoint for the distance calculation.
      * @return A properly formatted URL to the Google Maps Distance Matrix API for the given addresses.
-     * @throws IOException If there is an issue with network connectivity or API access during URL construction.
      */
     public String createDistanceMatrixUrl(String address1, String address2) {
         final StringBuilder url = new
@@ -120,7 +106,6 @@ public class GoogleMapsLocationProvider implements
     /**
      * Retrieves the address for a given longitude and latitude by sending a request
      * to a geocoding API and parsing the JSON response.
-     *
      * @param longitude The longitude of the address to be geocoded.
      * @param latitude The latitude of the address to be geocoded.
      * @return The address of the location.
@@ -141,13 +126,6 @@ public class GoogleMapsLocationProvider implements
         }
     }
 
-    /**
-     * Calculates the distance between two locations using the Google Maps Distance Matrix API.
-     *
-     * @param locations The list of locations for the distance calculation.
-     * @return A pair of 2d integer arrays representing the distance and durations between the two locations in
-     * meters and seconds, rounded to one decimal place.
-     */
     @Override
     public int[][][] getDistanceMatrix(List<AttractionData> locations) {
         int[][] distanceMatrix = new int[locations.size()][locations.size()];
@@ -202,7 +180,6 @@ public class GoogleMapsLocationProvider implements
 
     /**
      * Generates a Google Maps link for a route with multiple destinations.
-     *
      * @param destinations An ArrayList of destination addresses.
      * @return A URL string for Google Maps showing a route through the specified destinations.
      */
@@ -218,7 +195,6 @@ public class GoogleMapsLocationProvider implements
     /**
      * Formats an address string into a URL-friendly format and appends it to a given StringBuilder.
      * Spaces are replaced with "%20", and commas are removed.
-     *
      * @param address the raw address string to be formatted
      * @param url the StringBuilder to which the formatted address will be appended
      */
@@ -234,6 +210,11 @@ public class GoogleMapsLocationProvider implements
         }
     }
 
+    /**
+     * Generates a string representing the route through the list of coordinates.
+     * @param coordinates the list of coordinates to generate the route through
+     * @return A string representing the points on the polyline
+     */
     private static String getPolylines(List<String> coordinates) {
         String origin = coordinates.get(0); // First coordinate is the origin
         String destination = coordinates.get(coordinates.size() - 1); // Last coordinate is the destination
@@ -274,17 +255,12 @@ public class GoogleMapsLocationProvider implements
     @Override
     public String generateStaticMapUrl(List<AttractionData> path) {
         List<String> coordinates = new ArrayList<>();
-        List<String> names = new ArrayList<>();
 
         for (AttractionData attraction : path) {
             double latitude = attraction.getLatitude();
             double longitude = attraction.getLongitude();
-            String name = attraction.getName();
-
             String coordinate = String.format("%.6f,%.6f", latitude, longitude);  // Ensures 6 decimal places
             coordinates.add(coordinate);
-
-            names.add(name);
         }
 
         String polyline = getPolylines(coordinates);
@@ -304,7 +280,7 @@ public class GoogleMapsLocationProvider implements
 
             // Build the Static Map URL
             return String.format(
-                    "https://maps.googleapis.com/maps/api/staticmap?size=600x400&%s&path=enc:%s&key=%s",
+                    "https://maps.googleapis.com/maps/api/staticmap?size=600x600&%s&path=enc:%s&key=%s",
                     markers.toString(),
                     polyline,
                     apiKey
@@ -315,7 +291,12 @@ public class GoogleMapsLocationProvider implements
         return null;
     }
 
-    public static String getColorFromValue(double value) {
+    /**
+     * Gets the 24-bit representation of the a double from 0 to 1 from red to blue.
+     * @param value A decimal value from 0 to 1.
+     * @return A string representation of the color, from red to blue.
+     */
+    private static String getColorFromValue(double value) {
         value = Math.max(0.0, Math.min(value, 1.0));
         int red = (int) ((1 - value) * 255);
         int blue = (int) (value * 255);

@@ -7,8 +7,7 @@ import java.util.List;
 import entity.AttractionData;
 
 /**
- * The ComputeTimeInteractor class implements the business logic for the "Compute Time" use case.
- * It calculates travel times and visit times for a sequence of attractions based on user input.
+ * The Compute Time Interactor.
  */
 public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
     private final ComputeTimeUserDataAccessInterface userDataAccessObject;

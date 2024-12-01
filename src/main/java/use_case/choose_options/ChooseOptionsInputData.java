@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The input data for the Find Shortest Path Use Case.
+ * The Input Data for the Choose Options Use Case.
  */
 public class ChooseOptionsInputData {
     private final Settings settings;

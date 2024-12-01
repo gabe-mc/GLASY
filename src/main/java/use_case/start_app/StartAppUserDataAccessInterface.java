@@ -1,8 +1,10 @@
 package use_case.start_app;
 
 import entity.AttractionData;
-import entity.CommonLocationData;
 
+/**
+ * The User DAO for the Start App Use Case.
+ */
 public interface StartAppUserDataAccessInterface {
     /**
      * Sets the current location of the user who is using the application.

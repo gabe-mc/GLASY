@@ -1,10 +1,11 @@
 package use_case.save_itinerary;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
-
+/**
+ * The Save Itinerary Interactor.
+ */
 public class SaveItineraryInteractor implements SaveItineraryInputBoundary {
     private final SaveItineraryOutputBoundary saveItineraryPresenter;
 
@@ -24,9 +25,6 @@ public class SaveItineraryInteractor implements SaveItineraryInputBoundary {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        SaveItineraryOutputData outputData = new SaveItineraryOutputData(filePath);
-        saveItineraryPresenter.presentOutput(outputData);
     }
 
     @Override

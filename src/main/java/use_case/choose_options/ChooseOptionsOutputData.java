@@ -4,6 +4,9 @@ import entity.AttractionData;
 
 import java.util.Map;
 
+/**
+ * The Output Data for the Choose Options Use Case.
+ */
 public class ChooseOptionsOutputData {
     private final Map<AttractionData, Boolean> checkedLocationList;
 

@@ -6,6 +6,9 @@ import use_case.save_itinerary.SaveItineraryInputData;
 
 import java.util.List;
 
+/**
+ * Controller for the Display Itinerary View.
+ */
 public class DisplayItineraryController {
 
     private final SaveItineraryInputBoundary saveItineraryUseCaseInteractor;
@@ -14,6 +17,11 @@ public class DisplayItineraryController {
         this.saveItineraryUseCaseInteractor = saveItineraryUseCaseInteractor;
     }
 
+    /**
+     * Executes the Save Itinerary Use Case.
+     * @param info The information to be saved
+     * @param filePath The filepath to save the itinerary at
+     */
     public void execute(List<String[]> info, String filePath) {
 
         SaveItineraryInputData inputData = new SaveItineraryInputData();
@@ -24,5 +32,8 @@ public class DisplayItineraryController {
         saveItineraryUseCaseInteractor.execute(inputData);
     }
 
+    /**
+     * Switches the view to the previous view.
+     */
     public void switchToPreviousView() { saveItineraryUseCaseInteractor.switchToPreviousView(); }
 }

@@ -7,13 +7,17 @@ import entity.Settings;
 import java.util.List;
 
 /**
- * Foursquare Location Provider for the Choose Options Use Case.
+ * The Foursquare Location Provider for the Choose Options Use Case.
  */
 public interface ChooseOptionsFoursquareLocationProviderInterface {
 
     /**
-     * Returns a list of locations corresponding to the user's query
-     * @return a list of locations
+     * Retrieves location data from the Foursquare Places API based on the provided geographic coordinates
+     * and optional query parameters.
+     *
+     * @param settings A class representing of optional query parameters to refine the search.
+     * @return A JSON string representing the locations returned by the Foursquare API. The string is formatted with an
+     *         indent factor of 4 for readability.
      */
     List<AttractionData> getLocationList(Settings settings);
 }

@@ -1,7 +1,7 @@
 package use_case.choose_options;
 
 /**
- * The output boundary for the Start App Use Case.
+ * The output boundary for the Start Choose Options Case.
  */
 public interface ChooseOptionsOutputBoundary {
     /**

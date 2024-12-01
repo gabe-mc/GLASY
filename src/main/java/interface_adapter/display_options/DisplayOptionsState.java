@@ -5,6 +5,9 @@ import entity.AttractionData;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The state for the Display Options View Model.
+ */
 public class DisplayOptionsState {
     private Map<AttractionData, Boolean> checkedLocationList = new LinkedHashMap<>();
     private String errorText;

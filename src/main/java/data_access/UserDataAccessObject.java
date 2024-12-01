@@ -44,6 +44,11 @@ public class UserDataAccessObject implements
         return convertTimeToDouble(user.getSettings().getEndTime());
     }
 
+    @Override
+    public Settings getSettings() {
+        return null;
+    }
+
     public static double convertTimeToDouble(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

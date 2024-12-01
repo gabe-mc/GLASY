@@ -4,6 +4,7 @@ import entity.AttractionData;
 import interface_adapter.display_itinerary_view.DisplayItineraryController;
 import interface_adapter.display_itinerary_view.DisplayItineraryState;
 import interface_adapter.display_itinerary_view.DisplayItineraryViewModel;
+import interface_adapter.display_options.DisplayOptionsState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +15,9 @@ import java.beans.PropertyChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JFileChooser;
+import java.io.File;
 
 public class DisplayItineraryView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "display results";
@@ -68,7 +72,35 @@ public class DisplayItineraryView extends JPanel implements ActionListener, Prop
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(saveButton)) {
-                            displayItineraryController.execute();
+                            JFileChooser folderChooser = new JFileChooser();
+                            folderChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                            folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                            folderChooser.setDialogTitle("Select a folder to save");
+
+                            int result = folderChooser.showSaveDialog(null);
+                            String filePath = "";
+
+                            if (result == JFileChooser.APPROVE_OPTION) {
+                                File selectedFolder = folderChooser.getSelectedFile();
+                                filePath = selectedFolder.getAbsolutePath();
+                                System.out.println("Selected folder path: " + filePath);
+                            } else {
+                                System.out.println("No folder selected");
+                            }
+
+
+                            final DisplayItineraryState currentState = displayItineraryViewModel.getState();
+                            List<String[]> items = new ArrayList<String[]>();
+
+                            for (AttractionData info : currentState.getShortestPath()) {
+                                items.add(new String[]{info.getVisitTime(), info.getName(), info.getAddress()});
+                            }
+
+                            if (filePath != null) {
+                                displayItineraryController.execute(items, filePath);
+                            } else {
+                                System.out.println("No folder selected");
+                            }
                         }
                     }
                 }
@@ -114,11 +146,11 @@ public class DisplayItineraryView extends JPanel implements ActionListener, Prop
             html.append("<link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap' rel='stylesheet'>");
             html.append("<style>");
             html.append("body { font-family: 'Montserrat', sans-serif; padding: 20px; }");
-            html.append("h1 { color: #2F3E46; }");
+            html.append("h1 { color: #52796F; }");
             html.append("h2 { margin-top: 0; margin-bottom: 5px; }");
             html.append("h3 { color: #52796F; margin-bottom: 5px; }");
             html.append("p { color: #52796F; margin-top: 0; }");
-            html.append(".item { margin-bottom: 20px; border-left: 4px solid #3498db; padding-left: 10px; }");
+            html.append(".item { margin-bottom: 20px; border-left: 4px solid #52796F; padding-left: 10px; }");
             html.append("</style>");
             html.append("</head><body>");
             html.append("<h1>Your Itinerary</h1>");

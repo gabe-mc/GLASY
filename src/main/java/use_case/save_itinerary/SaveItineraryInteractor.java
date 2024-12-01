@@ -2,6 +2,7 @@ package use_case.save_itinerary;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 
 public class SaveItineraryInteractor implements SaveItineraryInputBoundary {
@@ -15,7 +16,11 @@ public class SaveItineraryInteractor implements SaveItineraryInputBoundary {
     public void execute(SaveItineraryInputData inputData) {
         String filePath = inputData.getFilePath() + "/" + inputData.getFileName() + ".txt";
         try (FileWriter writer = new FileWriter(filePath)) {
-            writer.write(inputData.getContent());
+            writer.write("Itinerary Planner\n");
+            List<String[]> itinerary = inputData.getContent();
+            for (String[] info : itinerary) {
+                writer.write(info[0] + " - " + info[1] + "(" + info[2] + ")\n");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

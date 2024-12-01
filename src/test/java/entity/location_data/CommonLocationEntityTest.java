@@ -15,7 +15,7 @@ public class CommonLocationEntityTest {
         testLocation.setLatitude(1.0);
         testLocation.setLongitude(2.0);
         testLocation.setAddress("197 Yonge Street");
-        testLocation.setCountry("United States");
+        testLocation.setCountry("Canada");
         testLocation.setLocality("ON");
         testLocation.setPostcode("M5S 1K9");
         testLocation.setRegion("Northwest");
@@ -23,7 +23,7 @@ public class CommonLocationEntityTest {
         Assertions.assertEquals(testLocation.getLatitude(), 1.0);
         Assertions.assertEquals(testLocation.getLongitude(), 2.0);
         Assertions.assertEquals(testLocation.getAddress(), "197 Yonge Street");
-        Assertions.assertEquals(testLocation.getCountry(), "United States");
+        Assertions.assertEquals(testLocation.getCountry(), "Canada");
         Assertions.assertEquals(testLocation.getLocality(), "ON");
         Assertions.assertEquals(testLocation.getPostcode(), "M5S 1K9");
         Assertions.assertEquals(testLocation.getRegion(), "Northwest");

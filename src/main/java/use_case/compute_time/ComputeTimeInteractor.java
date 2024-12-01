@@ -67,14 +67,16 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
         // Calculate total available time in minutes
         long availableTimeMillis = endTime.getTime() - startTime.getTime();
         long availableTimeMinutes = availableTimeMillis / (60 * 1000);
-        long timeAtEachLocationMinutes = (availableTimeMinutes - (long) totalTravelTime) / (sequentialLocations.size() - 1);
+        long timeAtEachLocationMinutes = (availableTimeMinutes - (long) totalTravelTime) / (sequentialLocations.size());
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startTime);
 
         double lastTravelTime = sequentialLocations.get(0).getTravelTime();
+        sequentialLocations.get(0).setVisitTime(timeConvert(startTime));
+        System.out.println(sequentialLocations.get(0).getName());
 //        System.out.println("Last Travel Time: " + lastTravelTime + ", " + "Total Travel Time:" + totalTravelTime + ", " + "Time at Each Location:" + timeAtEachLocationMinutes);
-        for (int i = 1; i < sequentialLocations.size() - 1; i++) {
+        for (int i = 0; i < sequentialLocations.size() - 1; i++) {
             AttractionData node = sequentialLocations.get(i);
 
             calendar.add(Calendar.MINUTE, (int) lastTravelTime);

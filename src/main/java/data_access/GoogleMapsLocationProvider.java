@@ -3,6 +3,7 @@ package data_access;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import entity.AttractionData;
 import entity.CommonLocationData;
 import entity.LocationData;
 import org.json.JSONArray;
@@ -25,6 +26,21 @@ public class GoogleMapsLocationProvider implements
 
     private final OkHttpClient client = new OkHttpClient();
     private final String apiKey = ConfigLoader.getKey("google.api.key");
+
+    /**
+     * Creates a Google Maps link to the users route
+     *
+     * @param address The addresses to be put into the route.
+     * @return a String with the link to the map
+     */
+    public String createGeocodeUrl(ArrayList<AttractionData> address) throws IOException {
+        final StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
+        for (AttractionData data : address) {
+            formatAddress(data.getAddress(), url);
+            url.append("/");
+        }
+        return url.substring(0, url.length() - 2) + "&key=" + apiKey;
+    }
 
     /**
      * Retrieves the latitude and longitude for a given address by sending a request

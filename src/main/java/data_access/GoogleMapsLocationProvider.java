@@ -1,5 +1,6 @@
 package data_access;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -153,7 +154,7 @@ public class GoogleMapsLocationProvider implements
                     .getJSONObject(0)
                     .getJSONObject("duration")
                     .getString("text");
-            result = parseInt(travelTime.substring(0,travelTime.length() -5));
+            result = parseInt(travelTime.substring(0,travelTime.indexOf(' ')));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -228,7 +229,6 @@ public class GoogleMapsLocationProvider implements
         String destination = coordinates.get(coordinates.size() - 1); // Last coordinate is the destination
         StringBuilder waypoints = new StringBuilder();
 
-        // Add waypoints (if any)
         for (int i = 1; i < coordinates.size() - 1; i++) {
             if (i > 1) waypoints.append("|");
             waypoints.append(coordinates.get(i));
@@ -242,7 +242,6 @@ public class GoogleMapsLocationProvider implements
                     URLEncoder.encode(waypoints.toString(), "UTF-8"),
                     apiKey
             );
-            // Make HTTP request using OkHttp
             Request request = new Request.Builder()
                     .url(urlStr)
                     .build();
@@ -265,13 +264,17 @@ public class GoogleMapsLocationProvider implements
     @Override
     public String generateStaticMapUrl(List<AttractionData> path) {
         List<String> coordinates = new ArrayList<>();
+        List<String> names = new ArrayList<>();
 
-        for (LocationData attraction : path) {
+        for (AttractionData attraction : path) {
             double latitude = attraction.getLatitude();
             double longitude = attraction.getLongitude();
+            String name = attraction.getName();
 
             String coordinate = String.format("%.6f,%.6f", latitude, longitude);  // Ensures 6 decimal places
             coordinates.add(coordinate);
+
+            names.add(name);
         }
 
         String polyline = getPolylines(coordinates);
@@ -281,9 +284,12 @@ public class GoogleMapsLocationProvider implements
 
         try {
             StringBuilder markers = new StringBuilder();
-            for (String coord : coordinates) {
+            for (int i = 0; i < coordinates.size(); i++) {
+                String coord = coordinates.get(i);
+                String label = i == 0 ? "S" : String.valueOf(i);
+                String color = getColorFromValue((double) i / (coordinates.size() - 1));
                 if (markers.length() > 0) markers.append("&");
-                markers.append("markers=").append(URLEncoder.encode("color:red|" + coord, "UTF-8"));
+                markers.append("markers=").append(URLEncoder.encode("color:" + color + "||label:" + label + "|" + coord, "UTF-8"));
             }
 
             // Build the Static Map URL
@@ -297,5 +303,14 @@ public class GoogleMapsLocationProvider implements
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getColorFromValue(double value) {
+        value = Math.max(0.0, Math.min(value, 1.0));
+        int red = (int) ((1 - value) * 255);
+        int blue = (int) (value * 255);
+        int green = 0;
+        int color = (red << 16) | (green << 8) | blue;
+        return String.format("0x%06X", color);
     }
 }

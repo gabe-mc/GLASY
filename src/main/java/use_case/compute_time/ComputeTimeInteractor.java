@@ -1,5 +1,8 @@
 package use_case.compute_time;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import entity.AttractionData;
 
@@ -30,11 +33,9 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
      * @return A string representing the time in HH:mm format.
      * If hours or minutes is single digit, 0 will appear in front of it.
      */
-    private String timeConvert(double time) {
-        Double minutes = Math.floor((time - Math.floor(time)) * 60);
-        Double hours = Math.floor(time);
-
-        return String.format("%02d:%02d", hours.intValue(), minutes.intValue());
+    private String timeConvert(Date time) {
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+        return formatter.format(time);
     }
 
     /**
@@ -44,11 +45,9 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
      * @return The total travel time in minutes.
      */
     private Double getTotalTravelTime(List<AttractionData> sequentialLocations) {
-//        Double result = startingLocation.getTravelTime() * 60.0;
         double result = 0.0;
-
         for (AttractionData node : sequentialLocations) {
-            result += node.getTravelTime() * 60.0;
+            result += node.getTravelTime();
         }
         return result;
     }
@@ -61,20 +60,42 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
      * @param sequentialLocations A list of {@link AttractionData} objects to be updated.
      * @return A list of {@link AttractionData} objects with updated visit times.
      */
-    private List<AttractionData> fillSequentialLocations(double startTime, double endTime, List<AttractionData> sequentialLocations) {
+    private List<AttractionData> fillSequentialLocations(Date startTime, Date endTime, List<AttractionData> sequentialLocations) {
         // subtract one assuming that the starting location is also included, and we are not spending time there.
-        double timeAtEachLocation = Math.floor((endTime - startTime - getTotalTravelTime(sequentialLocations)) / sequentialLocations.size() - 1);
-        double lastTravelTime = sequentialLocations.get(0).getTravelTime() * 60.0;
-        double currentTime = startTime;
+        double totalTravelTime = getTotalTravelTime(sequentialLocations);
 
+        // Calculate total available time in minutes
+        long availableTimeMillis = endTime.getTime() - startTime.getTime();
+        long availableTimeMinutes = availableTimeMillis / (60 * 1000);
+        long timeAtEachLocationMinutes = (availableTimeMinutes - (long) totalTravelTime) / (sequentialLocations.size() - 1);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startTime);
+
+        double lastTravelTime = sequentialLocations.get(0).getTravelTime();
+//        System.out.println("Last Travel Time: " + lastTravelTime + ", " + "Total Travel Time:" + totalTravelTime + ", " + "Time at Each Location:" + timeAtEachLocationMinutes);
         for (int i = 1; i < sequentialLocations.size() - 1; i++) {
             AttractionData node = sequentialLocations.get(i);
-            String visitTime = timeConvert(currentTime + lastTravelTime) + timeConvert(currentTime + lastTravelTime + timeAtEachLocation);
-            currentTime += lastTravelTime + timeAtEachLocation;
+
+            calendar.add(Calendar.MINUTE, (int) lastTravelTime);
+
+            Date visitStartTime = calendar.getTime();
+
+            calendar.add(Calendar.MINUTE, (int) timeAtEachLocationMinutes);
+
+            Date visitEndTime = calendar.getTime();
+
+            String visitTime = timeConvert(visitStartTime) + " - " + timeConvert(visitEndTime);
             node.setVisitTime(visitTime);
+
+            lastTravelTime = node.getTravelTime();
         }
-        String visitTime = timeConvert(currentTime + lastTravelTime) + timeConvert(endTime);
+
+        calendar.add(Calendar.MINUTE, (int) lastTravelTime);
+        Date visitStartTime = calendar.getTime();
+        String visitTime = timeConvert(visitStartTime) + " - " + timeConvert(endTime);
         sequentialLocations.get(sequentialLocations.size() - 1).setVisitTime(visitTime);
+
         return sequentialLocations;
     }
 
@@ -89,7 +110,7 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
                 userDataAccessObject.getStartTime(),
                 userDataAccessObject.getEndTime(),
                 computeTimeInputData.getSequentialLocations());
-        final ComputeTimeOutputData outputData = new ComputeTimeOutputData(newSequentialLocations, false);
+        final ComputeTimeOutputData outputData = new ComputeTimeOutputData(newSequentialLocations);
         computeTimePresenter.prepareSuccessView(outputData);
     }
 

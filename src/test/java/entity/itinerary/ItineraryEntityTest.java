@@ -1,6 +1,5 @@
 package entity.itinerary;
 
-import com.glasy.entity.Location;
 import entity.CommonLocationData;
 import entity.Itinerary;
 import entity.LocationData;

@@ -1,6 +1,7 @@
 package use_case.find_shortest_path;
 
 import data_access.GoogleMapsLocationProvider;
+import data_access.UserDataAccessObject;
 import entity.AttractionData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,8 @@ public class FindShortestPathInteractorTest {
         };
         FindShortestPathInputData inputData = new FindShortestPathInputData(addresses);
         GoogleMapsLocationProvider googleObj = new GoogleMapsLocationProvider();
-        FindShortestPathInputBoundary interactor = new FindShortestPathInteractor(googleObj, outputBoundary);
+        UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
+        FindShortestPathInputBoundary interactor = new FindShortestPathInteractor(googleObj, userDataAccessObject, outputBoundary);
         interactor.execute(inputData);
     }
 }

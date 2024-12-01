@@ -1,6 +1,8 @@
 package use_case.compute_time;
 
 import entity.AttractionData;
+
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -10,17 +12,16 @@ import java.util.List;
  */
 public class ComputeTimeOutputData {
     private final List<AttractionData> sequentialLocations;
-    private final boolean useCaseFailed;
+    private final Image mapImage;
 
     /**
      * Constructs a ComputeTimeOutputData object with the provided list of locations and failure status.
      *
      * @param sequentialLocations A list of sequentially ordered {@link AttractionData} objects.
-     * @param useCaseFailed       A boolean indicating whether the use case failed.
      */
-    public ComputeTimeOutputData(List<AttractionData> sequentialLocations, boolean useCaseFailed) {
+    public ComputeTimeOutputData(List<AttractionData> sequentialLocations, Image mapImage) {
         this.sequentialLocations = sequentialLocations;
-        this.useCaseFailed = useCaseFailed;
+        this.mapImage = mapImage;
     }
 
     /**
@@ -32,12 +33,7 @@ public class ComputeTimeOutputData {
         return sequentialLocations;
     }
 
-    /**
-     * Checks whether the use case failed.
-     *
-     * @return true if the use case failed; false otherwise.
-     */
-    public boolean isUseCaseFailed() {
-        return useCaseFailed;
+    public Image getMapImage() {
+        return this.mapImage;
     }
 }

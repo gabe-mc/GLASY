@@ -1,18 +1,23 @@
 package view;
 
+import data_access.UserDataAccessObject;
 import entity.AttractionData;
 import interface_adapter.display_itinerary_view.DisplayItineraryController;
 import interface_adapter.display_itinerary_view.DisplayItineraryState;
 import interface_adapter.display_itinerary_view.DisplayItineraryViewModel;
 import interface_adapter.display_options.DisplayOptionsState;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +33,7 @@ public class DisplayItineraryView extends JPanel implements ActionListener, Prop
     private JLabel backgroundLabel;
 
     private final JEditorPane itineraryPane = new JEditorPane();
+    private final JLabel mapLabel = new JLabel();
 
     public DisplayItineraryView(DisplayItineraryViewModel displayItineraryViewModel) {
         this.displayItineraryViewModel = displayItineraryViewModel;
@@ -49,8 +55,25 @@ public class DisplayItineraryView extends JPanel implements ActionListener, Prop
         setLocation(x, y);
 
         JScrollPane scrollPane = new JScrollPane(itineraryPane);
-        scrollPane.setBounds(50, 50, this.bkgImage.getIconWidth() - 100, this.bkgImage.getIconHeight() - 200);
-        this.backgroundLabel.add(scrollPane);
+//        scrollPane.setBounds(50, 50, this.bkgImage.getIconWidth() - 100, this.bkgImage.getIconHeight() - 200);
+//        this.backgroundLabel.add(scrollPane);
+
+//        ImageIcon imageIcon = new ImageIcon(mapImage);
+//        mapLabel.setIcon(imageIcon);
+
+//        mapLabel.setPreferredSize(new Dimension(100, 500));
+//
+        JPanel itineraryPanel = new JPanel();
+
+        itineraryPanel.setLayout(new BorderLayout());
+        itineraryPanel.add(scrollPane, BorderLayout.CENTER);
+        itineraryPanel.add(mapLabel, BorderLayout.EAST);
+
+        itineraryPanel.setBounds(50, 50, this.bkgImage.getIconWidth() - 100, this.bkgImage.getIconHeight() - 200);
+
+        this.backgroundLabel.setLayout(null);
+
+        this.backgroundLabel.add(itineraryPanel);
 
         // Add in the back button
         JButton backButton = new JButton("Back");
@@ -167,6 +190,9 @@ public class DisplayItineraryView extends JPanel implements ActionListener, Prop
 
             // Set the HTML content to the editor pane
             itineraryPane.setText(html.toString());
+
+            ImageIcon imageIcon = new ImageIcon(state.getMapImage());
+            mapLabel.setIcon(imageIcon);
         }
     }
     public String getViewName() {

@@ -1,31 +1,31 @@
 package entity;
 
- public interface LocationData {
-     Double getLongitude();
+public interface LocationData {
+    Double getLongitude();
 
-     void setLongitude(Double longitude);
+    void setLongitude(Double longitude);
 
-     Double getLatitude();
+    Double getLatitude();
 
-     void setLatitude(Double latitude);
+    void setLatitude(Double latitude);
 
-     String getAddress();
+    String getAddress();
 
-     void setAddress(String address);
+    void setAddress(String address);
 
-     String getLocality();
+    String getLocality();
 
-     void setLocality(String locality);
+    void setLocality(String locality);
 
-     String getPostcode();
+    String getPostcode();
 
-     void setPostcode(String postcode);
+    void setPostcode(String postcode);
 
-     String getRegion();
+    String getRegion();
 
-     void setRegion(String region);
+    void setRegion(String region);
 
-     String getCountry();
+    String getCountry();
 
-     void setCountry(String country);
+    void setCountry(String country);
 }

@@ -2,6 +2,7 @@ package data_access;
 
 import java.io.IOException;
 
+import entity.AttractionData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +16,7 @@ import use_case.start_app.StartAppCurrentLocationProviderInterface;
  * Implementation of api call that determines the user's current location based on their ip address.
  */
 public class CurrentLocationProvider implements StartAppCurrentLocationProviderInterface {
-    private CommonLocationData commonLocationData;
+    private AttractionData currentLocationData;
 
     public CurrentLocationProvider() {
         final OkHttpClient client = new OkHttpClient();
@@ -32,13 +33,14 @@ public class CurrentLocationProvider implements StartAppCurrentLocationProviderI
                 final Double latitude = jsonObject.getDouble("lat");
                 GoogleMapsLocationProvider googleMapsLocationProvider = new GoogleMapsLocationProvider();
                 final String address = googleMapsLocationProvider.getAddress(latitude, longitude);
-                commonLocationData = new CommonLocationData(
-                        longitude, latitude, address,
-                        jsonObject.getString("city"),
-                        jsonObject.getString("zip"),
-                        jsonObject.getString("regionName"),
-                        jsonObject.getString("country")
-                        );
+                currentLocationData = new AttractionData();
+                currentLocationData.setLatitude(latitude);
+                currentLocationData.setLongitude(longitude);
+                currentLocationData.setAddress(address);
+                currentLocationData.setLocality(jsonObject.getString("city"));
+                currentLocationData.setPostcode(jsonObject.getString("zip"));
+                currentLocationData.setRegion(jsonObject.getString("regionName"));
+                currentLocationData.setCountry(jsonObject.getString("country"));
             }
         } catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
@@ -47,7 +49,7 @@ public class CurrentLocationProvider implements StartAppCurrentLocationProviderI
     }
 
     @Override
-    public CommonLocationData getLocation() {
-        return commonLocationData;
+    public AttractionData getLocation() {
+        return currentLocationData;
     }
 }

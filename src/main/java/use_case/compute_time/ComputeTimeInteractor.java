@@ -89,7 +89,8 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
                 userDataAccessObject.getStartTime(),
                 userDataAccessObject.getEndTime(),
                 computeTimeInputData.getSequentialLocations());
-        final ComputeTimeOutputData outputData = new ComputeTimeOutputData(newSequentialLocations, false);
+        final ComputeTimeOutputData outputData = new ComputeTimeOutputData(newSequentialLocations,
+                userDataAccessObject.getMapImage());
         computeTimePresenter.prepareSuccessView(outputData);
     }
 

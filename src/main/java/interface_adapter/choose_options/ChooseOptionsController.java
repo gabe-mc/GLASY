@@ -1,5 +1,6 @@
 package interface_adapter.choose_options;
 
+import entity.AttractionData;
 import entity.LocationData;
 import entity.Settings;
 import use_case.choose_options.ChooseOptionsGoogleMapsLocationProviderInterface;
@@ -22,7 +23,7 @@ public class ChooseOptionsController {
                         Date startTime,
                         Date endTime,
                         Map<String, Boolean> possibleLocationTypes) {
-        final LocationData location = googleMapsLocationProvider.addressToLocation(startingAddress);
+        final AttractionData location = googleMapsLocationProvider.addressToLocation(startingAddress);
         final Settings settings = new Settings(location,
                 maxDistance,
                 minStars,

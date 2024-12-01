@@ -1,7 +1,9 @@
 package data_access;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import entity.AttractionData;
 import entity.CommonLocationData;
@@ -24,8 +26,8 @@ public class GoogleMapsLocationProvider implements
         ChooseOptionsGoogleMapsLocationProviderInterface,
         FindShortestPathGoogleMapsLocationProviderInterface {
 
-    private final OkHttpClient client = new OkHttpClient();
-    private final String apiKey = ConfigLoader.getKey("google.api.key");
+    private static final OkHttpClient client = new OkHttpClient();
+    private static final String apiKey = ConfigLoader.getKey("google.api.key");
 
     /**
      * Creates a Google Maps link to the users route
@@ -50,13 +52,13 @@ public class GoogleMapsLocationProvider implements
      * @return Null if no address is found, otherwise the LocationData object
      * representing the address
      */
-    public LocationData addressToLocation(String address) {
+    public AttractionData addressToLocation(String address) {
         StringBuilder urlBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
         formatAddress(address, urlBuilder);
         String url = urlBuilder.substring(0, urlBuilder.length() - 2) + "&key=" + apiKey;
         final Request request = new Request.Builder().url(url).build();
 
-        CommonLocationData result = null;
+        AttractionData result = null;
 
         try (Response response = client.newCall(request).execute()) {
             final JSONObject jsonObject = new JSONObject(response.body().string());
@@ -79,14 +81,17 @@ public class GoogleMapsLocationProvider implements
                         country = longName;
                     }
                 }
-                result = new CommonLocationData(
-                        lonLat.getDouble("lat"),
-                        lonLat.getDouble("lng"),
-                        results.getString("formatted_address"),
-                        locality, postcode, region, country
-                );
+                result = new AttractionData();
+                result.setName(address);
+                result.setLatitude(lonLat.getDouble("lat"));
+                result.setLongitude(lonLat.getDouble("lng"));
+                result.setAddress(results.getString("formatted_address"));
+                result.setLocality(locality);
+                result.setPostcode(postcode);
+                result.setRegion(region);
+                result.setCountry(country);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
@@ -216,5 +221,81 @@ public class GoogleMapsLocationProvider implements
                 url.append(component).append("%2C");
             }
         }
+    }
+
+    private static String getPolylines(List<String> coordinates) {
+        String origin = coordinates.get(0); // First coordinate is the origin
+        String destination = coordinates.get(coordinates.size() - 1); // Last coordinate is the destination
+        StringBuilder waypoints = new StringBuilder();
+
+        // Add waypoints (if any)
+        for (int i = 1; i < coordinates.size() - 1; i++) {
+            if (i > 1) waypoints.append("|");
+            waypoints.append(coordinates.get(i));
+        }
+
+        try {
+            String urlStr = String.format(
+                    "https://maps.googleapis.com/maps/api/directions/json?origin=%s&destination=%s&waypoints=%s&key=%s",
+                    URLEncoder.encode(origin, "UTF-8"),
+                    URLEncoder.encode(destination, "UTF-8"),
+                    URLEncoder.encode(waypoints.toString(), "UTF-8"),
+                    apiKey
+            );
+            // Make HTTP request using OkHttp
+            Request request = new Request.Builder()
+                    .url(urlStr)
+                    .build();
+            Response response = client.newCall(request).execute();
+            String responseBody = response.body().string();
+            JSONObject jsonResponse = new JSONObject(responseBody);
+            JSONArray routes = jsonResponse.getJSONArray("routes");
+
+            if (!routes.isEmpty()) {
+                JSONObject route = routes.getJSONObject(0);
+                JSONObject polyline = route.getJSONObject("overview_polyline");
+                return polyline.getString("points");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String generateStaticMapUrl(List<AttractionData> path) {
+        List<String> coordinates = new ArrayList<>();
+
+        for (LocationData attraction : path) {
+            double latitude = attraction.getLatitude();
+            double longitude = attraction.getLongitude();
+
+            String coordinate = String.format("%.6f,%.6f", latitude, longitude);  // Ensures 6 decimal places
+            coordinates.add(coordinate);
+        }
+
+        String polyline = getPolylines(coordinates);
+        if (polyline == null) {
+            return null;
+        }
+
+        try {
+            StringBuilder markers = new StringBuilder();
+            for (String coord : coordinates) {
+                if (markers.length() > 0) markers.append("&");
+                markers.append("markers=").append(URLEncoder.encode("color:red|" + coord, "UTF-8"));
+            }
+
+            // Build the Static Map URL
+            return String.format(
+                    "https://maps.googleapis.com/maps/api/staticmap?size=600x400&%s&path=enc:%s&key=%s",
+                    markers.toString(),
+                    polyline,
+                    apiKey
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

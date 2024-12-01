@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import use_case.find_shortest_path.FindShortestPathOutputBoundary;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class ComputeTimeInteractorTest {
@@ -54,6 +55,11 @@ public class ComputeTimeInteractorTest {
             @Override
             public double getEndTime() {
                 return 1800;
+            }
+
+            @Override
+            public Image getMapImage() {
+                return null;
             }
         };
 

@@ -5,23 +5,19 @@ import entity.AttractionData;
 import interface_adapter.display_itinerary_view.DisplayItineraryController;
 import interface_adapter.display_itinerary_view.DisplayItineraryState;
 import interface_adapter.display_itinerary_view.DisplayItineraryViewModel;
-import interface_adapter.display_options.DisplayOptionsState;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFileChooser;
+import javax.swing.text.DefaultCaret;
 import java.io.File;
 
 public class DisplayItineraryView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -54,15 +50,14 @@ public class DisplayItineraryView extends JPanel implements ActionListener, Prop
         int y = (screenSize.height - bkgImage.getIconHeight()) / 2;
         setLocation(x, y);
 
+        itineraryPane.setCaretPosition(0); // Move the caret to the start
+        itineraryPane.setCaret(new DefaultCaret() {
+            public void paint(Graphics g) {
+                // Do nothing to avoid painting the caret
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(itineraryPane);
-//        scrollPane.setBounds(50, 50, this.bkgImage.getIconWidth() - 100, this.bkgImage.getIconHeight() - 200);
-//        this.backgroundLabel.add(scrollPane);
-
-//        ImageIcon imageIcon = new ImageIcon(mapImage);
-//        mapLabel.setIcon(imageIcon);
-
-//        mapLabel.setPreferredSize(new Dimension(100, 500));
-//
         JPanel itineraryPanel = new JPanel();
 
         itineraryPanel.setLayout(new BorderLayout());

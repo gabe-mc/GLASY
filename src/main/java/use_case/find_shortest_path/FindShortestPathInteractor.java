@@ -44,16 +44,22 @@ public class FindShortestPathInteractor implements FindShortestPathInputBoundary
                 visited.add(origin); // Mark the origin as visited
                 HashMap<AttractionData, Float> temp = new HashMap<>();
                 int i = 0;
-                while (i < locations.size() - 1) {
+                while (visited.size() < locations.size()) {
                     temp.clear();
+                    System.out.println("Current Location: " + locations.get(i).getName());
+
+                    // Find the nearest unvisited location
                     for (int j = 1; j < locations.size(); j++) {
                         AttractionData currentLocation = locations.get(j);
                         if (!visited.contains(currentLocation)) {
                             final Float dist = googleMapsLocationProvider.matrixDistance(locations.get(i).getAddress(),
                                     currentLocation.getAddress());
                             temp.put(currentLocation, dist);
+                            System.out.println(currentLocation.getName() + ": " + dist);
                         }
                     }
+
+                    // Find the closest unvisited location
                     AttractionData minLocation = null;
                     Float minValue = Float.MAX_VALUE;
                     for (Map.Entry<AttractionData, Float> entry : temp.entrySet()) {
@@ -62,11 +68,17 @@ public class FindShortestPathInteractor implements FindShortestPathInputBoundary
                             minValue = entry.getValue();
                         }
                     }
+
+                    System.out.println("Visiting: " + minLocation.getName());
+                    System.out.println("----");
+
+                    // Mark the chosen location as visited
                     if (minLocation != null) {
                         result.add(minLocation);
                         visited.add(minLocation);
+                        // Update i to the index of the newly visited location
+                        i = locations.indexOf(minLocation);
                     }
-                    i++;
                 }
 
                 for (int m = 0; m < result.size() - 1; m++) {

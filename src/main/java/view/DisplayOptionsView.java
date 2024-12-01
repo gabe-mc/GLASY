@@ -112,6 +112,35 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         System.out.println("Click " + evt.getActionCommand());
     }
 
+    public String checkBoxBuilder(String h1, String h2, String h3, String imageUrl) {
+        final StringBuilder cssStyle = new StringBuilder();
+        cssStyle.append("<html>");
+        cssStyle.append("<link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap' rel='stylesheet'>");
+        cssStyle.append("<style>");
+        cssStyle.append("img { float: left; margin-right: 10px; }");
+        cssStyle.append("body { font-family: 'Montserrat', sans-serif; padding: 20px; }");
+        cssStyle.append("h1 { color: #52796F; font-size: 14px; }");
+        cssStyle.append("h2 { margin-top: 0; margin-bottom: 5px; font-size: 10px; }");
+        cssStyle.append("h3 { color: #52796F; margin-bottom: 5px; }");
+        cssStyle.append("p { color: #52796F; margin-top: 0; }");
+        cssStyle.append(".item { margin-bottom: 20px; border-left: 4px solid #52796F; padding-left: 10px; }");
+        cssStyle.append("</style>");
+
+        return  cssStyle +
+                "<div style='border-left: 4px solid #52796F; padding-left: 10px;'>" +
+                "<div class='parent'>" +
+                    "<div class='child'>" +
+                    "<img src='" + imageUrl + "' width='120' height='120' style='margin-left: 10px;'/>" +
+                    "</div>" +
+                    "<div class='child'>" +
+                        "<h1>" + h1 + "</h1>" +
+                        "<h2>" + h2 + "</h2>" +
+                        "<p>" + h3 + "</p>" +
+                    "</div>" +
+                "</div>" +
+                "</html>";
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
@@ -119,7 +148,34 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
 
             resultsCheckboxes.removeAll();
             for (AttractionData possibleLocation : state.getCheckedLocationList().keySet()) {
-                JCheckBox checkBox = new JCheckBox(possibleLocation.getName());
+                JCheckBox checkBox = new JCheckBox(checkBoxBuilder(
+                        possibleLocation.getName(),
+                        possibleLocation.getCategories().get(0),
+                        possibleLocation.getAddress(),
+                        possibleLocation.getPhotoUrl()
+                ));
+
+//                JPanel container = new JPanel();
+//                container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+//                JPanel panelOne = new JPanel();
+//                JPanel panelTwo = new JPanel();
+//
+//                panelTwo.setLayout(new BorderLayout()); // Set layout for the panel
+//
+//                String html = "<html>" + "<img src='" + possibleLocation.getPhotoUrl() + "' width='150' height='150'/>" + "</html>";
+//
+//                // Add the HTML to a JLabel
+//                JLabel htmlLabel = new JLabel(html);
+//                htmlLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//
+//                panelOne.add(htmlLabel);
+//                panelTwo.add(checkBox);
+//
+//
+//                container.setLayout(new GridLayout(1,2));
+//                container.add(panelOne, BorderLayout.WEST);
+//                container.add(panelTwo, BorderLayout.CENTER);
+
                 resultsCheckboxes.add(checkBox);
 
                 // Sample code for checkbox listeners

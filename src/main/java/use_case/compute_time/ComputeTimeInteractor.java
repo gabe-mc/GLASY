@@ -93,7 +93,14 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
 
         calendar.add(Calendar.MINUTE, (int) lastTravelTime);
         Date visitStartTime = calendar.getTime();
+        calendar.add(Calendar.MINUTE, (int) timeAtEachLocationMinutes);
+        Date visitEndTime = calendar.getTime();
+
         String visitTime = timeConvert(visitStartTime) + " - " + timeConvert(endTime);
+        if (visitEndTime.getTime() > endTime.getTime()) {
+            visitTime = timeConvert(visitStartTime) + " - " + timeConvert(visitEndTime);
+        }
+
         sequentialLocations.get(sequentialLocations.size() - 1).setVisitTime(visitTime);
 
         return sequentialLocations;

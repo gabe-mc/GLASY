@@ -26,9 +26,9 @@ public class SaveItineraryInteractor implements SaveItineraryInputBoundary {
             List<String[]> itinerary = inputData.getContent();
             for (String[] info : itinerary) {
                 writer.write("### " + info[0] + "\n");
-                writer.write(info[1] + "\n");
+                writer.write("- " + info[1] + "\n");
                 writer.write("");
-                writer.write("*" + info[2] + "*\n\n");
+                writer.write("  - *" + info[2] + "*\n\n");
             }
         } catch (Exception e) {
             e.printStackTrace();

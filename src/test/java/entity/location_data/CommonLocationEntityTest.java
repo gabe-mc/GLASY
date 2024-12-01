@@ -9,7 +9,6 @@ public class CommonLocationEntityTest {
 
     @Test
     void SuccessTest() {
-
         LocationData testLocation = new CommonLocationData();
 
         testLocation.setLatitude(1.0);

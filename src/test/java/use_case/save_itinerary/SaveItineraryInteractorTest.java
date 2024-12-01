@@ -7,7 +7,7 @@ public class SaveItineraryInteractorTest {
     String filePath = "C:\\Users\\Lily";
 
     @Test
-    public void SuccessTest(){
+    public void successTest(){
         SaveItineraryOutputBoundary outputBoundary = new SaveItineraryOutputBoundary() {
             @Override
             public void switchToPreviousView() {

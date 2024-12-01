@@ -6,5 +6,10 @@ package use_case.save_itinerary;
  */
 public interface SaveItineraryOutputBoundary {
     public void presentOutput(SaveItineraryOutputData outputData);
+
+    /**
+     * Switches to the Display Options View.
+     */
+    void switchToPreviousView();
 }
 

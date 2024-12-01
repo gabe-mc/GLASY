@@ -1,19 +1,31 @@
 package entity;
 
+import java.awt.*;
+
 /**
  * The representation of a user in our program, mostly containing user's preferences.
  */
 public class User {
 
-    private CommonLocationData currentLocation;
+    private AttractionData currentLocation;
+    private AttractionData startingLocation;
     private Settings settings;
+    private Image mapImage;
 
-    public CommonLocationData getCurrentLocation() {
+    public AttractionData getCurrentLocation() {
         return currentLocation;
     }
 
-    public void setCurrentLocation(CommonLocationData currentLocation) {
+    public void setCurrentLocation(AttractionData currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public AttractionData getStartingLocation() {
+        return startingLocation;
+    }
+
+    public void setStartingLocation(AttractionData startingLocation) {
+        this.startingLocation = startingLocation;
     }
 
     public Settings getSettings() {
@@ -22,5 +34,13 @@ public class User {
 
     public void setSettings(Settings settings) {
         this.settings = settings;
+    }
+
+    public Image getMapImage() {
+        return mapImage;
+    }
+
+    public void setMapImage(Image mapImage) {
+        this.mapImage = mapImage;
     }
 }

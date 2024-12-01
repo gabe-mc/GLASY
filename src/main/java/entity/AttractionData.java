@@ -8,7 +8,6 @@ public class AttractionData extends CommonLocationData {
     private Double rating; // From 0.0 to 10.0
     private int price; // From 1-4, 0 means unknown
     private String photoUrl;
-    private List<Double> hoursOfOperation;
     private int travelTime;
     private String visitTime;
 

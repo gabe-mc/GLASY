@@ -1,5 +1,6 @@
 package use_case.choose_options;
 
+import entity.AttractionData;
 import entity.Settings;
 
 /**
@@ -8,4 +9,6 @@ import entity.Settings;
 public interface ChooseOptionsUserDataAccessInterface {
 
     void setSettings(Settings settings);
+
+    void setStartingLocation(AttractionData startingLocation);
 }

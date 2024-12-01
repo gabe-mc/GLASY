@@ -38,6 +38,7 @@ public class ChooseOptionsInteractor implements ChooseOptionsInputBoundary {
         }
         else {
             userDataAccessObject.setSettings(settings);
+            userDataAccessObject.setStartingLocation(settings.getLocation());
             final List<AttractionData> locationList = foursquareLocationProvider.getLocationList(settings);
 
             if (locationList.size() < 2) {

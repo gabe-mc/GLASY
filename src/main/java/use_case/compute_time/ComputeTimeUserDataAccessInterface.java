@@ -1,5 +1,7 @@
 package use_case.compute_time;
 
+import java.awt.*;
+
 import java.util.Date;
 
 /**
@@ -7,6 +9,8 @@ import java.util.Date;
  */
 public interface ComputeTimeUserDataAccessInterface {
     Date getStartTime();
+
+    Image getMapImage();
 
     Date getEndTime();
 }

@@ -4,6 +4,7 @@ import entity.AttractionData;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -70,6 +71,11 @@ public class ComputeTimeInteractorTest {
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
                 return calendar.getTime();
+            }
+
+            @Override
+            public Image getMapImage() {
+                return null;
             }
         };
 

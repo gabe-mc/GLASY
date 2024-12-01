@@ -30,6 +30,7 @@ public class DisplayOptionsPresenter implements FindShortestPathOutputBoundary, 
     public void prepareSuccessView(ComputeTimeOutputData outputData) {
         final DisplayItineraryState displayItineraryState = displayItineraryViewModel.getState();
         displayItineraryState.setShortestPath(outputData.getSequentialLocations());
+        displayItineraryState.setMapImage(outputData.getMapImage());
         displayItineraryViewModel.setState(displayItineraryState);
         displayItineraryViewModel.firePropertyChanged();
 

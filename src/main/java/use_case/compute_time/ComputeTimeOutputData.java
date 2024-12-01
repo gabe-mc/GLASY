@@ -1,6 +1,8 @@
 package use_case.compute_time;
 
 import entity.AttractionData;
+
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -10,14 +12,16 @@ import java.util.List;
  */
 public class ComputeTimeOutputData {
     private final List<AttractionData> sequentialLocations;
+    private final Image mapImage;
 
     /**
      * Constructs a ComputeTimeOutputData object with the provided list of locations and failure status.
      *
      * @param sequentialLocations A list of sequentially ordered {@link AttractionData} objects.
      */
-    public ComputeTimeOutputData(List<AttractionData> sequentialLocations) {
+    public ComputeTimeOutputData(List<AttractionData> sequentialLocations, Image mapImage) {
         this.sequentialLocations = sequentialLocations;
+        this.mapImage = mapImage;
     }
 
     /**
@@ -27,5 +31,9 @@ public class ComputeTimeOutputData {
      */
     public List<AttractionData> getSequentialLocations() {
         return sequentialLocations;
+    }
+
+    public Image getMapImage() {
+        return this.mapImage;
     }
 }

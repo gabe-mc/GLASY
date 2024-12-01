@@ -31,7 +31,7 @@ public class CurrentLocationProvider implements StartAppCurrentLocationProviderI
                 final Double longitude = jsonObject.getDouble("lon");
                 final Double latitude = jsonObject.getDouble("lat");
                 GoogleMapsLocationProvider googleMapsLocationProvider = new GoogleMapsLocationProvider();
-                final String address = googleMapsLocationProvider.getAddress(longitude, latitude);
+                final String address = googleMapsLocationProvider.getAddress(latitude, longitude);
                 commonLocationData = new CommonLocationData(
                         longitude, latitude, address,
                         jsonObject.getString("city"),

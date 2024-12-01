@@ -5,6 +5,7 @@ import entity.Settings;
 import use_case.choose_options.ChooseOptionsGoogleMapsLocationProviderInterface;
 import use_case.choose_options.ChooseOptionsInputBoundary;
 import use_case.choose_options.ChooseOptionsInputData;
+import use_case.use_current_location.UseCurrentLocationInputBoundary;
 
 import java.util.Date;
 import java.util.Map;
@@ -13,10 +14,13 @@ public class ChooseOptionsController {
 
     private final ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor;
     private final ChooseOptionsGoogleMapsLocationProviderInterface googleMapsLocationProvider;
+    private final UseCurrentLocationInputBoundary currentLocationUseCaseInteractor;
 
     public ChooseOptionsController(ChooseOptionsInputBoundary chooseOptionsUseCaseInteractor,
+                                   UseCurrentLocationInputBoundary currentLocationUseCaseInteractor,
                                    ChooseOptionsGoogleMapsLocationProviderInterface googleMapsLocationProvider) {
         this.chooseOptionsUseCaseInteractor = chooseOptionsUseCaseInteractor;
+        this.currentLocationUseCaseInteractor = currentLocationUseCaseInteractor;
         this.googleMapsLocationProvider = googleMapsLocationProvider;
     }
 
@@ -38,4 +42,6 @@ public class ChooseOptionsController {
     }
 
     public void switchToPreviousView() { chooseOptionsUseCaseInteractor.switchToPreviousView(); }
+
+    public void useCurrentLocation() { currentLocationUseCaseInteractor.useCurrentLocation(); }
 }

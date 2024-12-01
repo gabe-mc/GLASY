@@ -3,6 +3,7 @@ package data_access;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import entity.AttractionData;
 import entity.CommonLocationData;
 import entity.LocationData;
 import org.json.JSONArray;
@@ -14,14 +15,32 @@ import okhttp3.Response;
 
 import static java.lang.Integer.parseInt;
 import use_case.choose_options.ChooseOptionsGoogleMapsLocationProviderInterface;
+import use_case.find_shortest_path.FindShortestPathGoogleMapsLocationProviderInterface;
 
 /**
  * The DAO for google maps data.
  */
-public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocationProviderInterface {
+public class GoogleMapsLocationProvider implements
+        ChooseOptionsGoogleMapsLocationProviderInterface,
+        FindShortestPathGoogleMapsLocationProviderInterface {
 
     private final OkHttpClient client = new OkHttpClient();
     private final String apiKey = ConfigLoader.getKey("google.api.key");
+
+    /**
+     * Creates a Google Maps link to the users route
+     *
+     * @param address The addresses to be put into the route.
+     * @return a String with the link to the map
+     */
+    public String createGeocodeUrl(ArrayList<AttractionData> address) throws IOException {
+        final StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/geocode/json?address=");
+        for (AttractionData data : address) {
+            formatAddress(data.getAddress(), url);
+            url.append("/");
+        }
+        return url.substring(0, url.length() - 2) + "&key=" + apiKey;
+    }
 
     /**
      * Retrieves the latitude and longitude for a given address by sending a request
@@ -82,7 +101,7 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
      * @return A properly formatted URL to the Google Maps Distance Matrix API for the given addresses.
      * @throws IOException If there is an issue with network connectivity or API access during URL construction.
      */
-    public String createDistanceMatrixUrl(String address1, String address2) throws IOException {
+    public String createDistanceMatrixUrl(String address1, String address2) {
         final StringBuilder url = new
                 StringBuilder("https://maps.googleapis.com/maps/api/distancematrix/json?destinations=");
         formatAddress(address1, url);
@@ -102,7 +121,7 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
      * @throws IOException If an input or output exception occurs while sending the request
      *                     or receiving the response.
      */
-    public String getAddress(Double longitude, Double latitude) throws IOException {
+    public String getAddress(Double latitude, Double longitude) throws IOException {
         final String url = String.format(
                 "https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&key=%s",
                 latitude, longitude, apiKey);
@@ -116,20 +135,24 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
         }
     }
 
-    public int calculateTravelTime(String address1, String address2) throws IOException {
+    public Integer calculateTravelTime(String address1, String address2) {
+        Integer result = null;
         final String url = createDistanceMatrixUrl(address1, address2);
         final Request request = new Request.Builder().url(url).build();
         try (Response response = client.newCall(request).execute()) {
             final String responseBody = response.body().string();
             final JSONObject jsonObject = new JSONObject(responseBody);
-            final  String result = jsonObject.getJSONArray("rows")
+            final  String travelTime = jsonObject.getJSONArray("rows")
                     .getJSONObject(0)
                     .getJSONArray("elements")
                     .getJSONObject(0)
                     .getJSONObject("duration")
                     .getString("text");
-            return parseInt(result.substring(0,result.length() -5));
+            result = parseInt(travelTime.substring(0,travelTime.length() -5));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return result;
     }
 
     /**
@@ -140,21 +163,25 @@ public class GoogleMapsLocationProvider implements ChooseOptionsGoogleMapsLocati
      * @return A string representing the distance between the two locations in KM, rounded to one decimal place.
      * @throws IOException If an error occurs while building the request or processing the response.
      */
-    public Float matrixDistance(String address1, String address2) throws IOException {
+    public Float matrixDistance(String address1, String address2) {
+        Float result = null;
         final String url = createDistanceMatrixUrl(address1, address2);
         final Request request = new Request.Builder().url(url).build();
         try (Response response = client.newCall(request).execute()) {
             final String responseBody = response.body().string();
             final JSONObject jsonObject = new JSONObject(responseBody);
-            final String result = jsonObject
+            final String distance = jsonObject
                     .getJSONArray("rows")
                     .getJSONObject(0)
                     .getJSONArray("elements")
                     .getJSONObject(0)
                     .getJSONObject("distance")
                     .getString("text");
-            return Float.parseFloat(result.substring(0, result.length() - 2));
+            result = Float.parseFloat(distance.substring(0, distance.length() - 2));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return result;
     }
 
     /**

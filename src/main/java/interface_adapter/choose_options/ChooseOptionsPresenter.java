@@ -7,11 +7,13 @@ import interface_adapter.display_options.DisplayOptionsViewModel;
 import interface_adapter.splash_screen_view.SplashScreenViewModel;
 import use_case.choose_options.ChooseOptionsOutputBoundary;
 import use_case.choose_options.ChooseOptionsOutputData;
+import use_case.use_current_location.UseCurrentLocationOutputBoundary;
+import use_case.use_current_location.UseCurrentLocationOutputData;
 
 import java.util.List;
 import java.util.Map;
 
-public class ChooseOptionsPresenter implements ChooseOptionsOutputBoundary {
+public class ChooseOptionsPresenter implements ChooseOptionsOutputBoundary, UseCurrentLocationOutputBoundary {
 
     private final ChooseOptionsViewModel chooseOptionsViewModel;
     private final SplashScreenViewModel splashScreenViewModel;
@@ -36,38 +38,6 @@ public class ChooseOptionsPresenter implements ChooseOptionsOutputBoundary {
 
         viewManagerModel.setState(displayOptionsViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
-
-        Map<AttractionData, Boolean> checkedLocationList = displayOptionsState.getCheckedLocationList();
-        for (AttractionData location : checkedLocationList.keySet()) {
-            String name = location.getName();
-            List<String> categories = location.getCategories();
-            Integer price = location.getPrice();
-            Double rating = location.getRating();
-            String photoUrl = location.getPhotoUrl();
-            Double latitude = location.getLatitude();
-            Double longitude = location.getLongitude();
-            String address = location.getAddress();
-            String locality = location.getLocality();
-            String postcode = location.getPostcode();
-            String region = location.getRegion();
-            String country = location.getCountry();
-            System.out.println("Location Info:");
-            System.out.println("Name: " + name);
-            System.out.println("Categories: " + categories);
-            System.out.println("Price: " + price);
-            System.out.println("Rating: " + rating);
-            System.out.println("PhotoUrl: " + photoUrl);
-            System.out.println("Latitude: " + latitude);
-            System.out.println("Longitude: " + longitude);
-            System.out.println("Address: " + address);
-            System.out.println("Locality: " + locality);
-            System.out.println("Postcode: " + postcode);
-            System.out.println("Region: " + region);
-            System.out.println("Country: " + country);
-            System.out.println();
-        }
-        System.out.println(checkedLocationList.size());
-
     }
 
     @Override
@@ -81,5 +51,12 @@ public class ChooseOptionsPresenter implements ChooseOptionsOutputBoundary {
     public void switchToPreviousView() {
         viewManagerModel.setState(splashScreenViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void updateCurrentLocation(UseCurrentLocationOutputData outputData) {
+        final ChooseOptionsState chooseOptionsState = chooseOptionsViewModel.getState();
+        chooseOptionsState.setStartingAddress(outputData.getCurrentLocation());
+        chooseOptionsViewModel.firePropertyChanged();
     }
 }

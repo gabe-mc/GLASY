@@ -104,7 +104,7 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(currentLocationButton)) {
-//                            chooseOptionsController.useCurrentLocation();
+                            chooseOptionsController.useCurrentLocation();
                         }
                     }
                 }
@@ -160,10 +160,10 @@ public class ChooseOptionsView extends JPanel implements ActionListener, Propert
                     final ChooseOptionsState currentState = chooseOptionsViewModel.getState();
                     JSpinner source = (JSpinner) e.getSource();
                     if (source == startTime) {
-                        startTimeLabel.setText("Start time: " + dateFormat.format(startTime.getValue()));
+                        startTimeLabel.setText("Start Time: " + dateFormat.format(startTime.getValue()));
                         currentState.setStartTime((Date) source.getValue());
                     } else if (source == endTime) {
-                        endTimeLabel.setText("End time: " + dateFormat.format(endTime.getValue()));
+                        endTimeLabel.setText("End Time: " + dateFormat.format(endTime.getValue()));
                         currentState.setEndTime((Date) source.getValue());
                     }
                 }

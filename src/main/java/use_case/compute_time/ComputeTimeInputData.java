@@ -10,20 +10,14 @@ import java.util.List;
  */
 public class ComputeTimeInputData {
     private final List<AttractionData> sequentialLocations;
-    private final double startTime;
-    private final double endTime;
 
     /**
      * Constructs a ComputeTimeInputData object with the specified locations, start time, and end time.
      *
      * @param sequentialLocations A list of {@link AttractionData} objects representing the locations to visit.
-     * @param startTime           The start time for the visit in decimal hours.
-     * @param endTime             The end time for the visit in decimal hours.
      */
-    public ComputeTimeInputData(List<AttractionData> sequentialLocations, double startTime, double endTime) {
+    public ComputeTimeInputData(List<AttractionData> sequentialLocations) {
         this.sequentialLocations = sequentialLocations;
-        this.startTime = startTime;
-        this.endTime = endTime;
     }
 
     /**
@@ -33,23 +27,5 @@ public class ComputeTimeInputData {
      */
     public List<AttractionData> getSequentialLocations() {
         return sequentialLocations;
-    }
-
-    /**
-     * Retrieves the start time for the visit.
-     *
-     * @return The start time in decimal hours.
-     */
-    public double getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * Retrieves the end time for the visit.
-     *
-     * @return The end time in decimal hours.
-     */
-    public double getEndTime() {
-        return endTime;
     }
 }

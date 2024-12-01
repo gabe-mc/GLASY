@@ -14,4 +14,5 @@ public interface ComputeTimeOutputBoundary {
      /** Prepares the failure view for the Compute Time Use Case.
       *  @param errorMessage the explanation of the failure
      */
-    void prepareFailView(String errorMessage);}
+    void prepareFailView(String errorMessage);
+}

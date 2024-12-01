@@ -55,22 +55,12 @@ public class UserDataAccessObject implements
     }
 
     @Override
-    public double getStartTime() {
-        return convertTimeToDouble(user.getSettings().getStartTime());
+    public Date getStartTime() {
+        return user.getSettings().getStartTime();
     }
 
     @Override
-    public double getEndTime() {
-        return convertTimeToDouble(user.getSettings().getEndTime());
+    public Date getEndTime() {
+        return user.getSettings().getEndTime();
     }
-
-    public static double convertTimeToDouble(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int hours = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutes = calendar.get(Calendar.MINUTE);
-        double fractionalHours = minutes / 60.0;
-        return hours + fractionalHours;
-    }
-
 }

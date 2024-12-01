@@ -1,5 +1,6 @@
 package use_case.start_app;
 
+import entity.AttractionData;
 import entity.CommonLocationData;
 
 /**
@@ -20,7 +21,7 @@ public class StartAppInteractor implements StartAppInputBoundary {
 
     @Override
     public void execute() {
-        final CommonLocationData currentLocation = currentLocationProvider.getLocation();
+        final AttractionData currentLocation = currentLocationProvider.getLocation();
         userDataAccessObject.setCurrentLocation(currentLocation);
         startAppPresenter.prepareView();
     }

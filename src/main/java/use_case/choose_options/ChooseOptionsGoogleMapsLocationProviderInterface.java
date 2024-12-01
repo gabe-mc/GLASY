@@ -1,5 +1,6 @@
 package use_case.choose_options;
 
+import entity.AttractionData;
 import entity.LocationData;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface ChooseOptionsGoogleMapsLocationProviderInterface {
      * @param address The address the location is at
      * @return The LocationData object representing the location
      */
-    LocationData addressToLocation(String address);
+    AttractionData addressToLocation(String address);
 }

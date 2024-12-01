@@ -4,14 +4,14 @@ import java.util.Date;
 import java.util.Map;
 
 public class Settings {
-    private LocationData location;
+    private AttractionData location;
     private int maxDistance;
     private double minStars; // From 0.0 to 10.0
     private Date startTime;
     private Date endTime;
     private Map<String, Boolean> possibleLocationTypes;
 
-    public Settings(LocationData location, int maxDistance, double minStars, Date startTime,
+    public Settings(AttractionData location, int maxDistance, double minStars, Date startTime,
                                   Date endTime, Map<String, Boolean> possibleLocationTypes) {
         this.location = location;
         this.maxDistance = maxDistance;
@@ -21,7 +21,7 @@ public class Settings {
         this.possibleLocationTypes = possibleLocationTypes;
     }
 
-    public LocationData getLocation() {
+    public AttractionData getLocation() {
         return location;
     }
 

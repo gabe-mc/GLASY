@@ -127,7 +127,7 @@ public class AppBuilder {
         final FindShortestPathOutputBoundary findShortestPathOutputBoundary = new DisplayOptionsPresenter(
                 viewManagerModel, displayOptionsViewModel, chooseOptionsViewModel, displayItineraryViewModel);
         final FindShortestPathInputBoundary findShortestPathInteractor = new FindShortestPathInteractor(
-                googleMapsLocationProvider, findShortestPathOutputBoundary);
+                googleMapsLocationProvider, userDataAccessObject, findShortestPathOutputBoundary);
         final DisplayOptionsController controller = displayOptionsView.getDisplayOptionsController();
         controller.setFindShortestPathUseCaseInteractor(findShortestPathInteractor);
         return this;

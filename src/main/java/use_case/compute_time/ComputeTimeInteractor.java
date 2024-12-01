@@ -74,8 +74,6 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
 
         double lastTravelTime = sequentialLocations.get(0).getTravelTime();
         sequentialLocations.get(0).setVisitTime(timeConvert(startTime));
-        System.out.println(sequentialLocations.get(0).getName());
-//        System.out.println("Last Travel Time: " + lastTravelTime + ", " + "Total Travel Time:" + totalTravelTime + ", " + "Time at Each Location:" + timeAtEachLocationMinutes);
         for (int i = 0; i < sequentialLocations.size() - 1; i++) {
             AttractionData node = sequentialLocations.get(i);
 
@@ -112,7 +110,8 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
                 userDataAccessObject.getStartTime(),
                 userDataAccessObject.getEndTime(),
                 computeTimeInputData.getSequentialLocations());
-        final ComputeTimeOutputData outputData = new ComputeTimeOutputData(newSequentialLocations);
+        final ComputeTimeOutputData outputData = new ComputeTimeOutputData(newSequentialLocations,
+                userDataAccessObject.getMapImage());
         computeTimePresenter.prepareSuccessView(outputData);
     }
 

@@ -2,10 +2,12 @@ package interface_adapter.display_itinerary_view;
 
 import entity.AttractionData;
 
+import java.awt.*;
 import java.util.List;
 
 public class DisplayItineraryState {
     private List<AttractionData> shortestPath;
+    private Image mapImage;
 
     public List<AttractionData> getShortestPath() {
         return shortestPath;
@@ -15,7 +17,11 @@ public class DisplayItineraryState {
         this.shortestPath = shortestPath;
     }
 
-    public DisplayItineraryState() {
+    public Image getMapImage() {
+        return mapImage;
+    }
 
+    public void setMapImage(Image mapImage) {
+        this.mapImage = mapImage;
     }
 }

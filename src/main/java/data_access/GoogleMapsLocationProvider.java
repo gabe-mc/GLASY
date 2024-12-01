@@ -190,6 +190,58 @@ public class GoogleMapsLocationProvider implements
         return result;
     }
 
+    @Override
+    public int[][][] getDistanceMatrix(List<AttractionData> locations) {
+        int[][] distanceMatrix = new int[locations.size()][locations.size()];
+        int[][] durationMatrix = new int[locations.size()][locations.size()];
+
+        List<String> coordinates = new ArrayList<>();
+
+        for (AttractionData attraction : locations) {
+            double latitude = attraction.getLatitude();
+            double longitude = attraction.getLongitude();
+            String coordinate = String.format("%.6f,%.6f", latitude, longitude);  // Ensures 6 decimal places
+            coordinates.add(coordinate);
+        }
+        String originsParam = String.join("|", coordinates);
+        String destinationsParam = String.join("|", coordinates);
+
+        String requestUrl = String.format("%s?origins=%s&destinations=%s&key=%s",
+                "https://maps.googleapis.com/maps/api/distancematrix/json", originsParam, destinationsParam, apiKey);
+
+        Request request = new Request.Builder()
+                .url(requestUrl)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            String responseBody = response.body().string();
+            JSONObject jsonResponse = new JSONObject(responseBody);
+
+            JSONArray rows = jsonResponse.getJSONArray("rows");
+            for (int i = 0; i < rows.length(); i++) {
+                JSONArray elements = rows.getJSONObject(i).getJSONArray("elements");
+                for (int j = 0; j < elements.length(); j++) {
+                    JSONObject element = elements.getJSONObject(j);
+                    if (element.getString("status").equals("OK")) {
+                        // Get the distance
+                        JSONObject distance = element.getJSONObject("distance");
+                        JSONObject duration = element.getJSONObject("duration");
+                        distanceMatrix[i][j] = distance.getInt("value");
+                        durationMatrix[i][j] = duration.getInt("value");
+                    } else {
+                        distanceMatrix[i][j] = Integer.MAX_VALUE;
+                        durationMatrix[i][j] = Integer.MAX_VALUE;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new int[][][]{distanceMatrix, durationMatrix};
+    }
+
     /**
      * Generates a Google Maps link for a route with multiple destinations.
      *

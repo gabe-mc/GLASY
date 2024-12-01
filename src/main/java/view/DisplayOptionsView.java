@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DisplayOptionsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "display options";
@@ -46,6 +47,7 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         setLocation(x, y);
 
         JScrollPane scrollCheckboxes = new JScrollPane(resultsCheckboxes);
+        scrollCheckboxes.getVerticalScrollBar().setUnitIncrement(16);
         resultsCheckboxes.setFont(loadFonts.montserratFontSmall);
         scrollCheckboxes.setBounds(50, 50, this.bkgImage.getIconWidth() - 100, this.bkgImage.getIconHeight() - 200);
         resultsCheckboxes.setLayout(new BoxLayout(resultsCheckboxes, BoxLayout.Y_AXIS));
@@ -112,7 +114,15 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         System.out.println("Click " + evt.getActionCommand());
     }
 
-    public String checkBoxBuilder(String h1, String h2, String h3, String imageUrl) {
+    public String checkBoxBuilder(String name, String type, String address, String price, String rating, String imageUrl) {
+        if (Objects.equals(price, "0")){
+            price = "";
+        } else {
+            price = "$".repeat(Integer.parseInt(price)) + " - ";
+        }
+
+        rating = rating + "/10 stars";
+
         final StringBuilder cssStyle = new StringBuilder();
         cssStyle.append("<html>");
         cssStyle.append("<link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap' rel='stylesheet'>");
@@ -133,9 +143,9 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                     "<img src='" + imageUrl + "' width='120' height='120' style='margin-left: 10px;'/>" +
                     "</div>" +
                     "<div class='child'>" +
-                        "<h1>" + h1 + "</h1>" +
-                        "<h2>" + h2 + "</h2>" +
-                        "<p>" + h3 + "</p>" +
+                        "<h1>" + name + "</h1>" +
+                        "<h2>" + type + " - " + price + rating + "</h2>" +
+                        "<p>" + address + "</p>" +
                     "</div>" +
                 "</div>" +
                 "</html>";
@@ -152,6 +162,8 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                         possibleLocation.getName(),
                         possibleLocation.getCategories().get(0),
                         possibleLocation.getAddress(),
+                        String.valueOf(possibleLocation.getPrice()),
+                        String.valueOf(possibleLocation.getRating()),
                         possibleLocation.getPhotoUrl()
                 ));
 

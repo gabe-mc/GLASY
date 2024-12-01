@@ -146,11 +146,11 @@ public class DisplayItineraryView extends JPanel implements ActionListener, Prop
             html.append("<link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap' rel='stylesheet'>");
             html.append("<style>");
             html.append("body { font-family: 'Montserrat', sans-serif; padding: 20px; }");
-            html.append("h1 { color: #2F3E46; }");
+            html.append("h1 { color: #52796F; }");
             html.append("h2 { margin-top: 0; margin-bottom: 5px; }");
             html.append("h3 { color: #52796F; margin-bottom: 5px; }");
             html.append("p { color: #52796F; margin-top: 0; }");
-            html.append(".item { margin-bottom: 20px; border-left: 4px solid #3498db; padding-left: 10px; }");
+            html.append(".item { margin-bottom: 20px; border-left: 4px solid #52796F; padding-left: 10px; }");
             html.append("</style>");
             html.append("</head><body>");
             html.append("<h1>Your Itinerary</h1>");

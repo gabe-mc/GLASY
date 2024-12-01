@@ -13,15 +13,18 @@ GLASY is at its core an itinerary planner application, where we help plan the pe
 
 ## Software Specification
 
-The user will choose a location and select a radius, and the program returns a list of
-the most popular spots around. Based on this list, the program will plan an itinerary 
+The user will choose a location, select a radius, start and end time, type of locations
+they want to visit, and the program will return a list of
+the most popular spots around based on your filters. The user may choose which locations specifically
+they'd like to visit, which gets returned to the program. Based on this list, the program will plan an itinerary 
 for the user’s day around visiting these spots, and will include times and routes to 
 take. The program will plan the route based on whichever path is the most efficient 
 (meaning which paths require the least amount of travel or are conveniently close to 
-each other). To expand the program, the machine can also show the hours of operation 
-for each location and take that into consideration, as well as the genre of the 
-attraction. Another potential expansion is allowing the user to choose how many or
-specifically which locations they want to go to. 
+each other). This program also allows the user to save their itinerary as a markdown file to open
+at a later time.
+
+Note that this program is best run on a device with screen size 13" x 9". This entire program was
+built using Java 17.
 
 ## Features
 This program will:
@@ -33,8 +36,8 @@ This program will:
   - Start location (if different from the default)
   - Types of attractions you'd like to see
 - After you customize your information, it will take you to a list of recommended places, and you choose which ones to go through
-- Finally, an itinerary is returned in the format of location: time of arrival
-  - The user has the option to save the itinerary as a .txt file to their device
+- Finally, an itinerary is returned in the format of time of arrival : location : address. 
+  - The user has the option to save the itinerary as a .md file to their device
 
 ## Run Instructions
 1. Clone the repository
@@ -42,7 +45,8 @@ This program will:
 git clone https://github.com/gabe-mc/GLASY.git
 cd GLASY
 ```
-2. Build and run the application
+2. Get the API keys from Google Maps, Foursquare and IPAPI and put them into a `resources` folder in `main`.
+3. Build and run the application
 ```angular2html
 cd src/main/java/app
 javac Main.java
@@ -69,7 +73,7 @@ checkbox list, and you should select all the locations you wish to visit.
 When you are finished, press the "Continue" button.
 
 Finally, you will have your itinerary displayed. You can view it or screenshot it, but 
-you also have the option to save it as a .txt file  using the "save" button.
+you also have the option to save it as a .md file  using the "save" button.
 
 ## License
 Feel free to use this program as you see fit, but please credit us if you use our code.

@@ -35,14 +35,15 @@ public class UserDataAccessObject implements
     }
 
     @Override
-    public double getStartTime() {
-        return convertTimeToDouble(user.getSettings().getStartTime());
+    public Date getStartTime() {
+        return user.getSettings().getStartTime();
     }
 
     @Override
-    public double getEndTime() {
-        return convertTimeToDouble(user.getSettings().getEndTime());
+    public Date getEndTime() {
+        return user.getSettings().getEndTime();
     }
+
 
     public static double convertTimeToDouble(Date date) {
         Calendar calendar = Calendar.getInstance();

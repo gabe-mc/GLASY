@@ -10,17 +10,14 @@ import java.util.List;
  */
 public class ComputeTimeOutputData {
     private final List<AttractionData> sequentialLocations;
-    private final boolean useCaseFailed;
 
     /**
      * Constructs a ComputeTimeOutputData object with the provided list of locations and failure status.
      *
      * @param sequentialLocations A list of sequentially ordered {@link AttractionData} objects.
-     * @param useCaseFailed       A boolean indicating whether the use case failed.
      */
-    public ComputeTimeOutputData(List<AttractionData> sequentialLocations, boolean useCaseFailed) {
+    public ComputeTimeOutputData(List<AttractionData> sequentialLocations) {
         this.sequentialLocations = sequentialLocations;
-        this.useCaseFailed = useCaseFailed;
     }
 
     /**
@@ -30,14 +27,5 @@ public class ComputeTimeOutputData {
      */
     public List<AttractionData> getSequentialLocations() {
         return sequentialLocations;
-    }
-
-    /**
-     * Checks whether the use case failed.
-     *
-     * @return true if the use case failed; false otherwise.
-     */
-    public boolean isUseCaseFailed() {
-        return useCaseFailed;
     }
 }

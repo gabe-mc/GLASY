@@ -141,55 +141,13 @@ public class GoogleMapsLocationProvider implements
         }
     }
 
-    public Integer calculateTravelTime(String address1, String address2) {
-        Integer result = null;
-        final String url = createDistanceMatrixUrl(address1, address2);
-        final Request request = new Request.Builder().url(url).build();
-        try (Response response = client.newCall(request).execute()) {
-            final String responseBody = response.body().string();
-            final JSONObject jsonObject = new JSONObject(responseBody);
-            final  String travelTime = jsonObject.getJSONArray("rows")
-                    .getJSONObject(0)
-                    .getJSONArray("elements")
-                    .getJSONObject(0)
-                    .getJSONObject("duration")
-                    .getString("text");
-            result = parseInt(travelTime.substring(0,travelTime.indexOf(' ')));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     /**
      * Calculates the distance between two locations using the Google Maps Distance Matrix API.
      *
-     * @param address1 The starting address for the distance calculation.
-     * @param address2 The destination address for the distance calculation.
-     * @return A string representing the distance between the two locations in KM, rounded to one decimal place.
-     * @throws IOException If an error occurs while building the request or processing the response.
+     * @param locations The list of locations for the distance calculation.
+     * @return A pair of 2d integer arrays representing the distance and durations between the two locations in
+     * meters and seconds, rounded to one decimal place.
      */
-    public Float matrixDistance(String address1, String address2) {
-        Float result = null;
-        final String url = createDistanceMatrixUrl(address1, address2);
-        final Request request = new Request.Builder().url(url).build();
-        try (Response response = client.newCall(request).execute()) {
-            final String responseBody = response.body().string();
-            final JSONObject jsonObject = new JSONObject(responseBody);
-            final String distance = jsonObject
-                    .getJSONArray("rows")
-                    .getJSONObject(0)
-                    .getJSONArray("elements")
-                    .getJSONObject(0)
-                    .getJSONObject("distance")
-                    .getString("text");
-            result = Float.parseFloat(distance.substring(0, distance.length() - 2));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     @Override
     public int[][][] getDistanceMatrix(List<AttractionData> locations) {
         int[][] distanceMatrix = new int[locations.size()][locations.size()];

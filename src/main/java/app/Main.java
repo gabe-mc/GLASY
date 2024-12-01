@@ -10,7 +10,7 @@ public class Main {
                 .addSplashScreenView()
                 .addChooseOptionsView()
                 .addDisplayOptionsView()
-                .addDisplayResultsView()
+                .addDisplayItineraryView()
                 .addStartAppUseCase()
                 .addChooseOptionsUseCase()
                 .addFindShortestPathUseCase()

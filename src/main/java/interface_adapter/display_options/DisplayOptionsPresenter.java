@@ -2,8 +2,9 @@ package interface_adapter.display_options;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_options.ChooseOptionsViewModel;
-import interface_adapter.display_results_view.DisplayResultsState;
-import interface_adapter.display_results_view.DisplayResultsViewModel;
+import interface_adapter.display_itinerary_view.DisplayItineraryViewModel;
+import interface_adapter.display_itinerary_view.DisplayItineraryState;
+import interface_adapter.display_itinerary_view.DisplayItineraryViewModel;
 import use_case.compute_time.ComputeTimeOutputBoundary;
 import use_case.compute_time.ComputeTimeOutputData;
 import use_case.find_shortest_path.FindShortestPathOutputBoundary;
@@ -13,26 +14,26 @@ public class DisplayOptionsPresenter implements FindShortestPathOutputBoundary, 
 
     private final DisplayOptionsViewModel displayOptionsViewModel;
     private final ChooseOptionsViewModel chooseOptionsViewModel;
-    private final DisplayResultsViewModel displayResultsViewModel;
+    private final DisplayItineraryViewModel displayItineraryViewModel;
     private final ViewManagerModel viewManagerModel;
     public DisplayOptionsPresenter(ViewManagerModel viewManagerModel,
                                    DisplayOptionsViewModel displayOptionsViewModel,
                                    ChooseOptionsViewModel chooseOptionsViewModel,
-                                   DisplayResultsViewModel displayResultsViewModel) {
+                                   DisplayItineraryViewModel displayItineraryViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.displayOptionsViewModel = displayOptionsViewModel;
         this.chooseOptionsViewModel = chooseOptionsViewModel;
-        this.displayResultsViewModel = displayResultsViewModel;
+        this.displayItineraryViewModel = displayItineraryViewModel;
     }
 
     @Override
     public void prepareSuccessView(ComputeTimeOutputData outputData) {
-        final DisplayResultsState displayResultsState = displayResultsViewModel.getState();
-        displayResultsState.setShortestPath(outputData.getSequentialLocations());
-        displayResultsViewModel.setState(displayResultsState);
-        displayResultsViewModel.firePropertyChanged();
+        final DisplayItineraryState displayItineraryState = displayItineraryViewModel.getState();
+        displayItineraryState.setShortestPath(outputData.getSequentialLocations());
+        displayItineraryViewModel.setState(displayItineraryState);
+        displayItineraryViewModel.firePropertyChanged();
 
-        viewManagerModel.setState(displayResultsViewModel.getViewName());
+        viewManagerModel.setState(displayItineraryViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 

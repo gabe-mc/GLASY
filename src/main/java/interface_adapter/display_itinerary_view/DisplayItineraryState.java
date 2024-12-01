@@ -1,10 +1,10 @@
-package interface_adapter.display_results_view;
+package interface_adapter.display_itinerary_view;
 
 import entity.AttractionData;
 
 import java.util.List;
 
-public class DisplayResultsState {
+public class DisplayItineraryState {
     private List<AttractionData> shortestPath;
 
     public List<AttractionData> getShortestPath() {
@@ -13,5 +13,9 @@ public class DisplayResultsState {
 
     public void setShortestPath(List<AttractionData> shortestPath) {
         this.shortestPath = shortestPath;
+    }
+
+    public DisplayItineraryState() {
+
     }
 }

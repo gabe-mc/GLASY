@@ -8,11 +8,11 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_options.ChooseOptionsController;
 import interface_adapter.choose_options.ChooseOptionsPresenter;
 import interface_adapter.choose_options.ChooseOptionsViewModel;
+import interface_adapter.display_itinerary_view.DisplayItineraryViewModel;
 import interface_adapter.display_options.DisplayOptionsController;
 import interface_adapter.display_options.DisplayOptionsPresenter;
 import interface_adapter.display_options.DisplayOptionsViewModel;
-import interface_adapter.display_results_view.DisplayResultsPresenter;
-import interface_adapter.display_results_view.DisplayResultsViewModel;
+import interface_adapter.display_itinerary_view.DisplayItineraryPresenter;
 import interface_adapter.splash_screen_view.SplashScreenController;
 import interface_adapter.splash_screen_view.SplashScreenPresenter;
 import interface_adapter.splash_screen_view.SplashScreenViewModel;
@@ -53,8 +53,8 @@ public class AppBuilder {
     private ChooseOptionsViewModel chooseOptionsViewModel = new ChooseOptionsViewModel();
     private DisplayOptionsView displayOptionsView;
     private DisplayOptionsViewModel displayOptionsViewModel = new DisplayOptionsViewModel();
-    private DisplayResultsView displayResultsView;
-    private DisplayResultsViewModel displayResultsViewModel = new DisplayResultsViewModel();
+    private DisplayItineraryView displayItineraryView;
+    private DisplayItineraryViewModel displayItineraryViewModel = new DisplayItineraryViewModel();
 
     public AppBuilder() { cardPanel.setLayout(cardLayout); }
 
@@ -79,10 +79,10 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addDisplayResultsView() {
-        displayResultsViewModel = new DisplayResultsViewModel();
-        displayResultsView = new DisplayResultsView(displayResultsViewModel);
-        cardPanel.add(displayResultsView, displayResultsView.getViewName());
+    public AppBuilder addDisplayItineraryView() {
+        displayItineraryViewModel = new DisplayItineraryViewModel();
+        displayItineraryView = new DisplayItineraryView(displayItineraryViewModel);
+        cardPanel.add(displayItineraryView, displayItineraryView.getViewName());
         return this;
     }
 
@@ -113,7 +113,7 @@ public class AppBuilder {
 
     public AppBuilder addFindShortestPathUseCase() {
         final DisplayOptionsPresenter displayOptionsPresenter = new DisplayOptionsPresenter(
-                viewManagerModel, displayOptionsViewModel, chooseOptionsViewModel, displayResultsViewModel);
+                viewManagerModel, displayOptionsViewModel, chooseOptionsViewModel, displayItineraryViewModel);
         final FindShortestPathInputBoundary findShortestPathInteractor = new FindShortestPathInteractor(
                 googleMapsLocationProvider, displayOptionsPresenter);
 

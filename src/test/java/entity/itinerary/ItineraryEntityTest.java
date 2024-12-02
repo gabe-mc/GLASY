@@ -3,17 +3,16 @@ package entity.itinerary;
 import entity.CommonLocationData;
 import entity.Itinerary;
 import entity.LocationData;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class ItineraryEntityTest {
+class ItineraryEntityTest {
 
     @Test
-    void SuccessTest() {
+    void successTest() {
 
         Itinerary itinerary = new Itinerary();
 
@@ -31,10 +30,10 @@ public class ItineraryEntityTest {
         dateTimeList.add(dateTime.plusDays(1));
         itinerary.setTravelTimeBetween(dateTimeList);
 
-        Assertions.assertEquals(itinerary.getEndTime(), dateTime);
-        Assertions.assertEquals(itinerary.getStartTime(), dateTime.minusDays(1));
-        Assertions.assertEquals(itinerary.getTravelTimeBetween(), dateTimeList);
-        Assertions.assertEquals(itinerary.getEvents(), locationDataList);
+        assertEquals(dateTime, itinerary.getEndTime());
+        assertEquals(dateTime.minusDays(1), itinerary.getStartTime());
+        assertEquals(dateTimeList, itinerary.getTravelTimeBetween());
+        assertEquals(locationDataList, itinerary.getEvents());
 
     }
 

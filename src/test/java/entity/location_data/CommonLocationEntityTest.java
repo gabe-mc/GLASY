@@ -2,13 +2,13 @@ package entity.location_data;
 
 import entity.CommonLocationData;
 import entity.LocationData;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class CommonLocationEntityTest {
+class CommonLocationEntityTest {
 
     @Test
-    void SuccessTest() {
+    void successTest() {
         LocationData testLocation = new CommonLocationData();
 
         testLocation.setLatitude(1.0);
@@ -19,13 +19,13 @@ public class CommonLocationEntityTest {
         testLocation.setPostcode("M5S 1K9");
         testLocation.setRegion("Northwest");
 
-        Assertions.assertEquals(testLocation.getLatitude(), 1.0);
-        Assertions.assertEquals(testLocation.getLongitude(), 2.0);
-        Assertions.assertEquals(testLocation.getAddress(), "197 Yonge Street");
-        Assertions.assertEquals(testLocation.getCountry(), "Canada");
-        Assertions.assertEquals(testLocation.getLocality(), "ON");
-        Assertions.assertEquals(testLocation.getPostcode(), "M5S 1K9");
-        Assertions.assertEquals(testLocation.getRegion(), "Northwest");
+        assertEquals(1.0, testLocation.getLatitude());
+        assertEquals(2.0, testLocation.getLongitude());
+        assertEquals("197 Yonge Street", testLocation.getAddress());
+        assertEquals("Canada", testLocation.getCountry());
+        assertEquals("ON", testLocation.getLocality());
+        assertEquals("M5S 1K9", testLocation.getPostcode());
+        assertEquals("Northwest", testLocation.getRegion());
 
     }
 }

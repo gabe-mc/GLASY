@@ -1,15 +1,15 @@
 package entity.location_data;
 
 import entity.AttractionData;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 
 public class AttractionEntityTest {
 
     @Test
-    void SuccessTest() {
+    void successTest() {
         AttractionData testAttraction = new AttractionData();
 
         testAttraction.setLatitude(1.0);
@@ -24,15 +24,14 @@ public class AttractionEntityTest {
         hours.add(0.2300);
         testAttraction.setName("County Pool");
 
-        Assertions.assertEquals(testAttraction.getLatitude(), 1.0);
-        Assertions.assertEquals(testAttraction.getLongitude(), 2.0);
-        Assertions.assertEquals(testAttraction.getAddress(), "197 Yonge Street");
-        Assertions.assertEquals(testAttraction.getCountry(), "Canada");
-        Assertions.assertEquals(testAttraction.getLocality(), "ON");
-        Assertions.assertEquals(testAttraction.getPostcode(), "M5S 1K9");
-        Assertions.assertEquals(testAttraction.getRegion(), "Northwest");
-        Assertions.assertEquals(testAttraction.getName(), "County Pool");
-
+        assertEquals(1.0, testAttraction.getLatitude());
+        assertEquals(2.0, testAttraction.getLongitude());
+        assertEquals("197 Yonge Street", testAttraction.getAddress());
+        assertEquals("Canada", testAttraction.getCountry());
+        assertEquals("ON", testAttraction.getLocality());
+        assertEquals("M5S 1K9", testAttraction.getPostcode());
+        assertEquals("Northwest", testAttraction.getRegion());
+        assertEquals("County Pool", testAttraction.getName());
     }
 
 }

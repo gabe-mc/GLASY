@@ -6,6 +6,8 @@ GLASY is at its core an itinerary planner application, where we help plan the pe
 Feel free to view more details about our project here:
 - [Presentation Slides](https://docs.google.com/presentation/d/1Q-NKxURgN7VSk2V_3xQgE60xHGi_A5asFCm0aASuB58/edit?usp=sharing)
 
+Also, please feel free to view our accessibility report in the `accessibility-report.md` file.
+
 ## Table of Contents
 - [Software Specification](#software-specification)
 - [Features](#features)

@@ -72,15 +72,15 @@ Requirements:
 ## Usage
 
 When you start the program, press "Start".
-![SplashScreen](/src/main/resources/images/SplashScreen.png)
+![SplashScreen](/src/images/SplashScreen.png)
 
 You should be taken to a new screen where you are prompted to enter in information
 such as your maximum radius and start/end time.
-![ChooseOptionsNoneSelected](/src/main/resources/images/ChooseOptions_NoCurrent.png)
+![ChooseOptionsNoneSelected](/src/images/ChooseOptions_NoCurrent.png)
 
 Please enter in all that information, and leave nothing blank. Feel free to press the "use current location" button
 for the program to use your current location based on your IP address.
-![ChooseOptionsAllSelected](/src/main/resources/images/ChooseOptions_ChosenFilters.png)
+![ChooseOptionsAllSelected](/src/images/ChooseOptions_ChosenFilters.png)
 
 
 When you are finished, press the "Continue" button.
@@ -89,23 +89,23 @@ You will be brought to a new page where you are shown a bunch of locations based
 filters you entered in earlier. The locations will be shown in the form of a scrollable
 checkbox list, and you should select all the locations you wish to visit.
 
-![SelectLocations](/src/main/resources/images/DisplayOptions.png)
+![SelectLocations](/src/images/DisplayOptions.png)
 
 
 When you are finished, press the "Continue" button.
 
 Finally, you will have your itinerary displayed. You can view it or screenshot it.
 
-![DisplayItinerary](/src/main/resources/images/DisplayItinerary.png)
+![DisplayItinerary](/src/images/DisplayItinerary.png)
 
 You also have the option to save it as a .md file  using the "save" button, where
 you are prompted to select the folder you wish to save to.
 
-![ChooseFolder](/src/main/resources/images/SaveItinerary_ChooseFolder.png)
+![ChooseFolder](/src/images/SaveItinerary_ChooseFolder.png)
 
 When you save it, you may view it and a result like below should appear:
 
-![ShowSavedItinerary](/src/main/resources/images/SavedItinerary.png)
+![ShowSavedItinerary](/src/images/SavedItinerary.png)
 
 
 ## Future Work

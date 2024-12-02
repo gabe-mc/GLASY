@@ -73,7 +73,7 @@ public class ComputeTimeInteractor implements ComputeTimeInputBoundary{
 
         double lastTravelTime = sequentialLocations.get(0).getTravelTime();
         sequentialLocations.get(0).setVisitTime(timeConvert(startTime));
-        for (int i = 0; i < sequentialLocations.size() - 1; i++) {
+        for (int i = 1; i < sequentialLocations.size(); i++) {
             AttractionData node = sequentialLocations.get(i);
 
             calendar.add(Calendar.MINUTE, (int) lastTravelTime);

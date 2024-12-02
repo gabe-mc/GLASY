@@ -91,13 +91,11 @@ class ChooseOptionsInteractorTest {
     @Test
     void failureAddressUnkonwnTest() {
         AttractionData attraction = new AttractionData();
-        attraction.setAddress("197 Yonge Street");
-        attraction.setLatitude(43.653351);
-        attraction.setLongitude(-79.379372);
+        attraction.setAddress("The Gingerbread House");
+        attraction.setLatitude(-79.379372);
+        attraction.setLongitude(43.653351);
         attraction.setTravelTime(12);
-        attraction.setName("Pool");
-        attraction.setCountry("Canada");
-        Settings settings = new Settings(attraction, 0, 0, null, null, new HashMap<>());
+        Settings settings = new Settings(attraction, 10, 0, null, null, new HashMap<>());
         ChooseOptionsInputData chooseOptionsInputData = new ChooseOptionsInputData(settings);
 
         FoursquareLocationProvider foursquareLocationProvider = new FoursquareLocationProvider();

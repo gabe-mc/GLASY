@@ -3,59 +3,62 @@ package use_case.find_shortest_path;
 import data_access.GoogleMapsLocationProvider;
 import data_access.UserDataAccessObject;
 import entity.AttractionData;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FindShortestPathInteractorTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class FindShortestPathInteractorTest {
 
     @Test
-    public void successTest() {
+    void successTest() {
+        UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
+        GoogleMapsLocationProvider googleMapsLocationProvider = new GoogleMapsLocationProvider();
+        AttractionData attraction0 = new AttractionData();
+        attraction0.setAddress("15 Bloor St. Toronto, ON");
+        attraction0.setLatitude(43.669848);
+        attraction0.setLongitude(-79.387450);
+        userDataAccessObject.setStartingLocation(attraction0);
         AttractionData attraction1 = new AttractionData();
         attraction1.setAddress("15 Church St, Toronto ON");
+        attraction1.setLatitude(43.647953);
+        attraction1.setLongitude(-79.373326);
         AttractionData attraction2 = new AttractionData();
         attraction2.setAddress("197 Yonge St, Toronto ON");
+        attraction2.setLatitude(43.653347);
+        attraction2.setLongitude(-79.379373);
         AttractionData attraction3 = new AttractionData();
         attraction3.setAddress("101 Yonge St, Toronto ON");
+        attraction3.setLatitude(43.650199);
+        attraction3.setLongitude(-79.378272);
         ArrayList<AttractionData> addresses = new ArrayList<>();
         addresses.add(attraction1);
         addresses.add(attraction2);
         addresses.add(attraction3);
-        FindShortestPathOutputBoundary outputBoundary = new FindShortestPathOutputBoundary() {
+        FindShortestPathInputData inputData = new FindShortestPathInputData(addresses);
 
-            // TODO: Update test so since FindShortestPathInteractor now returns the output data and doesn't call
-            //  prepareSuccessView (since that should be done by the compute time use case
-            public void prepareSuccessView(FindShortestPathOutputData outputData) {
-                AttractionData attraction11 = new AttractionData();
-                attraction11.setAddress("15 Church St, Toronto ON");
-                AttractionData attraction22 = new AttractionData();
-                attraction22.setAddress("197 Yonge St, Toronto ON");
-                AttractionData attraction33 = new AttractionData();
-                attraction33.setAddress("101 Yonge St, Toronto ON");
-                ArrayList<String> addresses11 = new ArrayList<>();
-                addresses11.add(attraction11.getAddress());
-                addresses11.add(attraction33.getAddress());
-                addresses11.add(attraction22.getAddress());
-                List<AttractionData> output = outputData.getShortestPath();
-                ArrayList<String> outputStr = new ArrayList<>();
-                for (AttractionData put : output) {
-                    outputStr.add(put.getAddress());
-                }
-                Assertions.assertEquals(addresses11, outputStr);
+        FindShortestPathOutputBoundary outputBoundary = new FindShortestPathOutputBoundary() {
+            @Override
+            public void prepareFailView(String errorMessage) {
+                fail("Use case failure is unexpected.");
             }
 
             @Override
-            public void prepareFailView(String errorMessage) {}
-
-            @Override
-            public void switchToPreviousView() {}
+            public void switchToPreviousView() {
+                fail("Use case failure is unexpected.");
+            }
         };
-        FindShortestPathInputData inputData = new FindShortestPathInputData(addresses);
-        GoogleMapsLocationProvider googleObj = new GoogleMapsLocationProvider();
-        UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
-        FindShortestPathInputBoundary interactor = new FindShortestPathInteractor(googleObj, userDataAccessObject, outputBoundary);
-        interactor.execute(inputData);
+        FindShortestPathInputBoundary interactor = new FindShortestPathInteractor(googleMapsLocationProvider,
+                userDataAccessObject, outputBoundary);
+        FindShortestPathOutputData findShortestPathOutputData = interactor.execute(inputData);
+        assertNotNull(findShortestPathOutputData);
+        List<AttractionData> shortestPath = findShortestPathOutputData.getShortestPath();
+        assertEquals("15 Bloor St. Toronto, ON", shortestPath.get(0).getAddress());
+        assertEquals("197 Yonge St, Toronto ON", shortestPath.get(1).getAddress());
+        assertEquals("101 Yonge St, Toronto ON", shortestPath.get(2).getAddress());
+        assertEquals("15 Church St, Toronto ON", shortestPath.get(3).getAddress());
+
     }
 }

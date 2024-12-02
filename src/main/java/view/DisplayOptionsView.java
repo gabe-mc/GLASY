@@ -181,7 +181,6 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                     }
                 });
 
-//                loadImageAsync(checkBox, possibleLocation);
             }
             Timer imageLoadTimer = new Timer(100, new ActionListener() {
                 int currentIndex = 0;
@@ -191,18 +190,12 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                     // If all images are loaded, stop the Timer
                     if (currentIndex >= locations.size()) {
                         ((Timer) e.getSource()).stop();
-                        System.out.println("Done loading images");
                         return;
                     }
-
-                    // Get the current location and checkbox to load the image
                     AttractionData possibleLocation = locations.get(currentIndex);
                     JCheckBox checkBox = checkBoxes.get(currentIndex);
 
-                    // Load the image for the current location
                     loadImageAsync(checkBox, possibleLocation);
-
-                    // Increment the index to load the next image in the next cycle
                     currentIndex++;
                 }
             });
@@ -231,9 +224,8 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
             @Override
             protected void done() {
                 try {
-                    ImageIcon image = get();  // Get the loaded image
+                    ImageIcon image = get();
                     if (image != null) {
-                        // Update the checkbox with the loaded image
                         String htmlContent = checkBoxBuilder(
                                 possibleLocation.getName(),
                                 possibleLocation.getCategories().get(0),
@@ -242,18 +234,7 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                                 String.valueOf(possibleLocation.getRating()),
                                 image.getDescription()
                         );
-                        checkBox.setText(htmlContent);  // Set the HTML content with the image
-                    } else {
-                        // If the image failed to load, just update with no image
-                        String htmlContent = checkBoxBuilder(
-                                possibleLocation.getName(),
-                                possibleLocation.getCategories().get(0),
-                                possibleLocation.getAddress(),
-                                String.valueOf(possibleLocation.getPrice()),
-                                String.valueOf(possibleLocation.getRating()),
-                                ""  // No image URL
-                        );
-                        checkBox.setText(htmlContent);  // Set the HTML content without the image
+                        checkBox.setText(htmlContent);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();  // Handle exceptions if necessary

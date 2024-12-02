@@ -12,11 +12,8 @@
   - To go along with the last point, we could implement voice commands to allow blind users to use our software, or users who have poor fine motor skills
   - Lastly, we could add a new selection criteria and a new routing mode to only show routes that are wheelchair accessible, or have no stairs.
  
-  - Additionally, we can improve equitable use by having the option to travel via public-transit, cycling, or walking.
-  - If tourists are visiting the city, they would most likely be taking public transit within the city.
-  - At the moment, the itinerary is created and travel time is calculated using travel using the car.
-  - It would also be more equitable for people in urban areas (who would prefer walking or public transit), the sight-impared, or people at an economic disadvantage.
-  - We can add an option for the user to select which method of transport they would like to take or tell them what is the best way to get to each destination.
+  - Additionally, we can improve equitable use by having the option to travel via public-transit, cycling, or walking. If tourists are visiting the city, they would most likely be taking public transit within the city.
+  - At the moment, the itinerary is created and travel time is calculated using travel using the car.It would also be more equitable for people in urban areas (who would prefer walking or public transit), the sight-impared, or people at an economic disadvantage. We can add an option for the user to select which method of transport they would like to take or tell them what is the best way to get to each destination.
 
 - Principle 2: Flexibility in Use
   - We allow the user to regenerate their route, so that they could avoid certain areas of town or walk by a certain part of town on their way to their locations.

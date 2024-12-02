@@ -13,17 +13,18 @@ public class UseCurrentLocationInteractorTest {
 
     @Test
     public void successTest(){
-//        CommonLocationData currentLocation = new CommonLocationData();
-//        currentLocation.setAddress("197 Yonge Street");
-//        currentLocation.setCountry("Canada");
-//        currentLocation.setLongitude(1.0);
-//        currentLocation.setLatitude(2.0);
-
+        final UseCurrentLocationUserDataAccessInterface userDataAccessObject = new UseCurrentLocationUserDataAccessInterface() {
+            @Override
+            public LocationData getCurrentLocation() {
+                return null;
+            }
+        };
+        final UseCurrentLocationOutputBoundary chooseOptionsPresenter;
         LocationData currentLocation = userDataAccessObject.getCurrentLocation();
         UseCurrentLocationOutputBoundary outputBoundary = new UseCurrentLocationOutputBoundary() {
             @Override
             public void updateCurrentLocation(UseCurrentLocationOutputData outputData) {
-                assertEquals(currentLocation.);
+                assertEquals(currentLocation, outputData.getCurrentLocation());
             }
 
             @Override

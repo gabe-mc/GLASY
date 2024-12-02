@@ -1,13 +1,13 @@
 package use_case.save_itinerary;
 
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-public class SaveItineraryInteractorTest {
+
+class SaveItineraryInteractorTest {
     String filePath = "C:\\Users\\Lily";
 
     @Test
-    public void successTest(){
+    void successTest(){
         SaveItineraryOutputBoundary outputBoundary = new SaveItineraryOutputBoundary() {
             @Override
             public void switchToPreviousView() {

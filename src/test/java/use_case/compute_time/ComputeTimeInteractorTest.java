@@ -1,20 +1,20 @@
 package use_case.compute_time;
 
 import entity.AttractionData;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class ComputeTimeInteractorTest {
+class ComputeTimeInteractorTest {
 
     @Test
-    public void successTest() {
+    void successTest() {
         ArrayList<AttractionData> attractionsList = new ArrayList<>();
         AttractionData attraction1 = new AttractionData();
         attraction1.setAddress("197 Yonge Street");
@@ -43,10 +43,10 @@ public class ComputeTimeInteractorTest {
         ComputeTimeOutputBoundary outputBoundary = new ComputeTimeOutputBoundary() {
             @Override
             public void prepareSuccessView(ComputeTimeOutputData outputData) {
-                assertEquals(attraction1.getVisitTime(), "12:12 - 13:35");
-                assertEquals(attraction2.getVisitTime(), "13:47 - 15:10");
-                assertEquals(attraction3.getVisitTime(), "15:14 - 16:37");
-                assertEquals(attraction4.getVisitTime(), "16:47 - 18:10");
+                assertEquals("12:00", attraction1.getVisitTime());
+                assertEquals("12:12 - 14:03", attraction2.getVisitTime());
+                assertEquals("14:07 - 15:58", attraction3.getVisitTime());
+                assertEquals("16:08 - 18:00", attraction4.getVisitTime());
             }
 
             @Override
@@ -57,31 +57,31 @@ public class ComputeTimeInteractorTest {
         ComputeTimeInputData inputData = new ComputeTimeInputData(attractionsList);
         ComputeTimeUserDataAccessInterface computeTimeUserDataAccessInterface =
                 new ComputeTimeUserDataAccessInterface() {
-            @Override
-            public Date getStartTime() {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, 12); // 12:00 PM
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 0);
-                calendar.set(Calendar.MILLISECOND, 0);
-                return calendar.getTime();
-            }
+                    @Override
+                    public Date getStartTime() {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.HOUR_OF_DAY, 12); // 12:00 PM
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
+                        return calendar.getTime();
+                    }
 
-            @Override
-            public Date getEndTime() {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, 18); // 6:00 PM
-                calendar.set(Calendar.MINUTE, 0);
-                calendar.set(Calendar.SECOND, 0);
-                calendar.set(Calendar.MILLISECOND, 0);
-                return calendar.getTime();
-            }
+                    @Override
+                    public Date getEndTime() {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.HOUR_OF_DAY, 18); // 6:00 PM
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
+                        return calendar.getTime();
+                    }
 
-            @Override
-            public Image getMapImage() {
-                return null;
-            }
-        };
+                    @Override
+                    public Image getMapImage() {
+                        return null;
+                    }
+                };
 
         ComputeTimeInputBoundary interactor = new ComputeTimeInteractor(computeTimeUserDataAccessInterface,
                 outputBoundary);

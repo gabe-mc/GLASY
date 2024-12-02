@@ -3,15 +3,14 @@ package entity.user;
 import entity.AttractionData;
 import entity.Settings;
 import entity.User;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UserEntityTest {
 
@@ -42,10 +41,10 @@ class UserEntityTest {
         user.setSettings(settings);
         user.setMapImage(mapImage);
 
-        assertEquals(currentLocation, user.getCurrentLocation());
-        assertEquals(startingLocation, user.getStartingLocation());
-        assertEquals(settings, user.getSettings());
-        assertEquals(mapImage, user.getMapImage());
+        assertEquals(user.getCurrentLocation(), currentLocation);
+        assertEquals(user.getStartingLocation(), startingLocation);
+        assertEquals(user.getSettings(), settings);
+        assertEquals(user.getMapImage(), mapImage);
 
         User newUser = new User();
         assertNull(newUser.getCurrentLocation());

@@ -66,7 +66,7 @@ For each use case, we have made UML diagrams to show the relationship between ou
 git clone https://github.com/gabe-mc/GLASY.git
 cd GLASY
 ```
-2. Get the API keys from Google Maps, Foursquare and IPAPI and put them into a `resources` folder in `main` titled `application.properties`.
+2. Get the API keys from Google Maps, and Foursquare API and put them into a `resources` folder in `main` titled `application.properties` under `google.api.key` and `foursquare.api.key`.
 3. Build and run the application:
 ```angular2html
 cd src/main/java/app

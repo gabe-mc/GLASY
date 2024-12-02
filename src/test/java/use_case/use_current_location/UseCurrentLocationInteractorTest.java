@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UseCurrentLocationTest {
+class UseCurrentLocationInteractorTest {
     @Test
     void successTest() {
         CurrentLocationProvider currentLocationProvider = new CurrentLocationProvider();

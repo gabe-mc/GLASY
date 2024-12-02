@@ -11,6 +11,12 @@
   - We could implement text-to-speech functionality to allow users who are dyslexic or have poor sight to use our software.
   - To go along with the last point, we could implement voice commands to allow blind users to use our software, or users who have poor fine motor skills
   - Lastly, we could add a new selection criteria and a new routing mode to only show routes that are wheelchair accessible, or have no stairs.
+ 
+  - Additionally, we can improve equitable use by having the option to travel via public-transit, cycling, or walking.
+  - If tourists are visiting the city, they would most likely be taking public transit within the city.
+  - At the moment, the itinerary is created and travel time is calculated using travel using the car.
+  - It would also be more equitable for people in urban areas (who would prefer walking or public transit), the sight-impared, or people at an economic disadvantage.
+  - We can add an option for the user to select which method of transport they would like to take or tell them what is the best way to get to each destination.
 
 - Principle 2: Flexibility in Use
   - We allow the user to regenerate their route, so that they could avoid certain areas of town or walk by a certain part of town on their way to their locations.
@@ -21,6 +27,7 @@
   - Our program can implement a more simple interface, where default values are auto-filled if users do not enter them, to make the user experience most simple
   - We could implement an “advanced search” function to allow users to only see the most simple parameters, and then use advanced search if they want a more detailed set of parameters
   - Our results could give an interactive map instead of the static map, so the user could pan around and zoom into the route, which would be more intuitive than our static map we have currently.
+  - We could also display the attractions in different orders, depending on user needs. For example, sorting the locations from closest to farthest, or sorting by ratings. 
 
 - Principle 4: Perceptible Information
   - We could use both text and symbols within our program to give users who have trouble reading ability to better use the GUI

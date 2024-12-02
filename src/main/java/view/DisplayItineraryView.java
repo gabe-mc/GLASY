@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,38 +88,40 @@ public class DisplayItineraryView extends JPanel implements ActionListener, Prop
         this.backgroundLabel.add(saveButton);
 
         saveButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(saveButton)) {
-                            JFileChooser folderChooser = new JFileChooser();
-                            folderChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                            folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                            folderChooser.setDialogTitle("Select a folder to save");
+                evt -> {
+                    if (evt.getSource().equals(saveButton)) {
+                        JFileChooser folderChooser = new JFileChooser();
+                        folderChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                        folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                        folderChooser.setDialogTitle("Select a folder to save");
 
-                            int result = folderChooser.showSaveDialog(null);
-                            String filePath = "";
+                        int result = folderChooser.showSaveDialog(null);
+                        String filePath = "";
 
-                            if (result == JFileChooser.APPROVE_OPTION) {
-                                File selectedFolder = folderChooser.getSelectedFile();
-                                filePath = selectedFolder.getAbsolutePath();
-                                System.out.println("Selected folder path: " + filePath);
-                            } else {
-                                System.out.println("No folder selected");
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            File selectedFolder = folderChooser.getSelectedFile();
+                            filePath = selectedFolder.getAbsolutePath();
+                            if (filePath.endsWith(File.separator + selectedFolder.getName())) {
+                                filePath = filePath.substring(0, filePath.lastIndexOf(File.separator));
                             }
 
+                            System.out.println("Selected folder path: " + filePath);
+                        } else {
+                            System.out.println("No folder selected");
+                        }
 
-                            final DisplayItineraryState currentState = displayItineraryViewModel.getState();
-                            List<String[]> items = new ArrayList<String[]>();
 
-                            for (AttractionData info : currentState.getShortestPath()) {
-                                items.add(new String[]{info.getVisitTime(), info.getName(), info.getAddress()});
-                            }
+                        final DisplayItineraryState currentState = displayItineraryViewModel.getState();
+                        List<String[]> items = new ArrayList<String[]>();
 
-                            if (filePath != null) {
-                                displayItineraryController.execute(items, filePath);
-                            } else {
-                                System.out.println("No folder selected");
-                            }
+                        for (AttractionData info : currentState.getShortestPath()) {
+                            items.add(new String[]{info.getVisitTime(), info.getName(), info.getAddress()});
+                        }
+
+                        if (filePath != null) {
+                            displayItineraryController.execute(items, filePath);
+                        } else {
+                            System.out.println("No folder selected");
                         }
                     }
                 }

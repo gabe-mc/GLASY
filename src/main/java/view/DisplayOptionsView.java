@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -114,7 +117,7 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         System.out.println("Click " + evt.getActionCommand());
     }
 
-    public String checkBoxBuilder(String name, String type, String address, String price, String rating, String imageUrl) {
+    private String checkBoxBuilder(String name, String type, String address, String price, String rating, String imageUrl) {
         if (Objects.equals(price, "0")){
             price = "";
         } else {
@@ -125,9 +128,7 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
 
         final StringBuilder cssStyle = new StringBuilder();
         cssStyle.append("<html>");
-        cssStyle.append("<link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap' rel='stylesheet'>");
         cssStyle.append("<style>");
-        cssStyle.append("img { float: left; margin-right: 10px; }");
         cssStyle.append("body { font-family: 'Montserrat', sans-serif; padding: 20px; }");
         cssStyle.append("h1 { color: #52796F; font-size: 14px; }");
         cssStyle.append("h2 { margin-top: 0; margin-bottom: 5px; font-size: 10px; }");
@@ -137,16 +138,13 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
         cssStyle.append("</style>");
 
         return  cssStyle +
-                "<div style='border-left: 4px solid #52796F; padding-left: 10px;'>" +
-                "<div class='parent'>" +
-                    "<div class='child'>" +
-                    "<img src='" + imageUrl + "' width='120' height='120' style='margin-left: 10px;'/>" +
-                    "</div>" +
-                    "<div class='child'>" +
+                "<div class='item'>" +
+                        "<img src='" + imageUrl + "' width='120' height='120' />" +  // Image on the left
+                        "<div class='text'>" +
                         "<h1>" + name + "</h1>" +
                         "<h2>" + type + " - " + price + rating + "</h2>" +
                         "<p>" + address + "</p>" +
-                    "</div>" +
+                        "</div>" +
                 "</div>" +
                 "</html>";
     }
@@ -157,6 +155,8 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
             final DisplayOptionsState state = (DisplayOptionsState) evt.getNewValue();
 
             resultsCheckboxes.removeAll();
+            List<AttractionData> locations = new ArrayList<>();
+            List<JCheckBox> checkBoxes = new ArrayList<>();
             for (AttractionData possibleLocation : state.getCheckedLocationList().keySet()) {
                 JCheckBox checkBox = new JCheckBox(checkBoxBuilder(
                         possibleLocation.getName(),
@@ -164,10 +164,13 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                         possibleLocation.getAddress(),
                         String.valueOf(possibleLocation.getPrice()),
                         String.valueOf(possibleLocation.getRating()),
-                        possibleLocation.getPhotoUrl()
+                        ""
+//                        possibleLocation.getPhotoUrl()
                 ));
 
                 resultsCheckboxes.add(checkBox);
+                locations.add(possibleLocation);
+                checkBoxes.add(checkBox);
 
                 // Sample code for checkbox listeners
                 checkBox.addActionListener(new ActionListener() {
@@ -177,10 +180,88 @@ public class DisplayOptionsView extends JPanel implements ActionListener, Proper
                         state.setCheckedLocation(possibleLocation, source.isSelected());
                     }
                 });
+
+//                loadImageAsync(checkBox, possibleLocation);
             }
+            Timer imageLoadTimer = new Timer(100, new ActionListener() {
+                int currentIndex = 0;
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // If all images are loaded, stop the Timer
+                    if (currentIndex >= locations.size()) {
+                        ((Timer) e.getSource()).stop();
+                        System.out.println("Done loading images");
+                        return;
+                    }
+
+                    // Get the current location and checkbox to load the image
+                    AttractionData possibleLocation = locations.get(currentIndex);
+                    JCheckBox checkBox = checkBoxes.get(currentIndex);
+
+                    // Load the image for the current location
+                    loadImageAsync(checkBox, possibleLocation);
+
+                    // Increment the index to load the next image in the next cycle
+                    currentIndex++;
+                }
+            });
+
+            imageLoadTimer.start();
 
             errorLabel.setText(state.getErrorText());
         }
+    }
+
+    private void loadImageAsync(JCheckBox checkBox, AttractionData possibleLocation) {
+        SwingWorker<ImageIcon, Void> worker = new SwingWorker<ImageIcon, Void>() {
+            @Override
+            protected ImageIcon doInBackground() {
+                String imageUrl = possibleLocation.getPhotoUrl();
+                if (imageUrl == null || imageUrl.trim().isEmpty()) {
+                    return null;
+                }
+                try {
+                    return new ImageIcon(new URL(imageUrl));
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    ImageIcon image = get();  // Get the loaded image
+                    if (image != null) {
+                        // Update the checkbox with the loaded image
+                        String htmlContent = checkBoxBuilder(
+                                possibleLocation.getName(),
+                                possibleLocation.getCategories().get(0),
+                                possibleLocation.getAddress(),
+                                String.valueOf(possibleLocation.getPrice()),
+                                String.valueOf(possibleLocation.getRating()),
+                                image.getDescription()
+                        );
+                        checkBox.setText(htmlContent);  // Set the HTML content with the image
+                    } else {
+                        // If the image failed to load, just update with no image
+                        String htmlContent = checkBoxBuilder(
+                                possibleLocation.getName(),
+                                possibleLocation.getCategories().get(0),
+                                possibleLocation.getAddress(),
+                                String.valueOf(possibleLocation.getPrice()),
+                                String.valueOf(possibleLocation.getRating()),
+                                ""  // No image URL
+                        );
+                        checkBox.setText(htmlContent);  // Set the HTML content without the image
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();  // Handle exceptions if necessary
+                }
+            }
+        };
+
+        worker.execute();  // Execute the SwingWorker in the background
     }
 
     public DisplayOptionsController getDisplayOptionsController() {

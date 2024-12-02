@@ -44,6 +44,9 @@ public class ComputeTimeInteractorTest {
             @Override
             public void prepareSuccessView(ComputeTimeOutputData outputData) {
                 assertEquals(attraction1.getVisitTime(), "12:12 - 13:35");
+                assertEquals(attraction2.getVisitTime(), "13:47 - 15:10");
+                assertEquals(attraction3.getVisitTime(), "15:14 - 16:37");
+                assertEquals(attraction4.getVisitTime(), "16:47 - 18:10");
             }
 
             @Override

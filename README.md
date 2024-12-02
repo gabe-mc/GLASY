@@ -51,6 +51,12 @@ This program will:
 ## UML Diagrams
 For each use case, we have made UML diagrams to show the relationship between our classes.
 
+![StartAppUML](/src/images/StartAppUML.png)
+![UseCurrentLocationUML](/src/images/UseCurrentLocationUML.png)
+![ChooseOptionsUML](/src/images/ChooseOptionsUML.png)
+![ComputeTimeUML](/src/images/ComputeTimeUML.png)
+![FindShortestPathUML](/src/images/FindShortestPathUML.png)
+![SaveItineraryUML](/src/images/SavedItineraryUML.png)
 
 ## Run Instructions
 1. Clone the repository

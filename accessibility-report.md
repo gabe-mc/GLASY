@@ -39,11 +39,11 @@
 - Principle 6: Low Physical Effort
   - Allowing users to choose their route based on their activity preferences, with a new filter introduced for walking distance, where right now we only have activity radius. This will let users choose their physical effort they want to expend.
   - Users can access their itineraries later too if they want to, as they have the option to save it in a place of their choice
-  - We could package our app for samsung and apple phones, so that users are able to use their mobile phones to use our app, instead of needing to get out their computer and run our java program.
+  - We could package our app for Android and iOS phones, so that users are able to use their mobile phones to use our app, instead of needing to get out their computer and run our java program.
 
 - Principle 7: Size and Space for Approach and Use
   - Allowing our users to customize what they are shown on screen at once, allowing them to make their layout fit to their finger size, for tapping (on cell phone), or their window size to fit different computer display sizes.
-  - Change our file writing for our SaveItinerary 	to work for all operating systems, since they use different file writing protocols, so users on all OS can use it
+  - Change our file writing for our SaveItinerary to work for all operating systems, since they use different file writing protocols, so users on all OS can use it
   - Currently, the default size of the program is too large on smaller screen sizes, so we should change the program to be responsive based on the view width
 
 ### Question

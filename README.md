@@ -5,6 +5,7 @@ GLASY is at its core an itinerary planner application, where we help plan the pe
 
 Feel free to view more details about our project here:
 - [Presentation Slides](https://docs.google.com/presentation/d/1Q-NKxURgN7VSk2V_3xQgE60xHGi_A5asFCm0aASuB58/edit?usp=sharing)
+- [Initial Figma Mockups](https://www.figma.com/design/4ikzaXIxU03ChMTjC42FDH/GLASY?node-id=14-106&t=vnZ8vp40D5MOzdGA-1)
 
 Also, please feel free to view our accessibility report in the `accessibility-report.md` file.
 

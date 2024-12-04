@@ -89,13 +89,48 @@ class ChooseOptionsInteractorTest {
     }
 
     @Test
-    void failureAddressUnkonwnTest() {
+    void failureAddressUnknownTest() {
         AttractionData attraction = new AttractionData();
         attraction.setAddress("The Gingerbread House");
         attraction.setLatitude(-79.379372);
         attraction.setLongitude(43.653351);
         attraction.setTravelTime(12);
         Settings settings = new Settings(attraction, 10, 0, null, null, new HashMap<>());
+        ChooseOptionsInputData chooseOptionsInputData = new ChooseOptionsInputData(settings);
+
+        FoursquareLocationProvider foursquareLocationProvider = new FoursquareLocationProvider();
+        UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
+
+        ChooseOptionsOutputBoundary successPresenter = new ChooseOptionsOutputBoundary() {
+            @Override
+            public void prepareSuccessView(ChooseOptionsOutputData outputData) {
+                fail("Use case failure is unexpected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+                assertEquals("Couldn't find available locations", errorMessage);
+            }
+
+            @Override
+            public void switchToPreviousView() {
+                fail("Use case failure is unexpected.");
+            }
+        };
+
+        ChooseOptionsInputBoundary interactor = new ChooseOptionsInteractor(foursquareLocationProvider,
+                userDataAccessObject, successPresenter);
+        interactor.execute(chooseOptionsInputData);
+    }
+
+    @Test
+    void failureNoLocationsTest() {
+        AttractionData attraction = new AttractionData();
+        attraction.setAddress("197 Yonge Street");
+        attraction.setLatitude(-79.379372);
+        attraction.setLongitude(43.653351);
+        attraction.setTravelTime(12);
+        Settings settings = new Settings(attraction, 1, 9.5, null, null, new HashMap<>());
         ChooseOptionsInputData chooseOptionsInputData = new ChooseOptionsInputData(settings);
 
         FoursquareLocationProvider foursquareLocationProvider = new FoursquareLocationProvider();
